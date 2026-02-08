@@ -1,12 +1,36 @@
 <!doctype html>
-<html lang="en">
+<html lang="en-AU">
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>RBGA Website</title>
-    <meta name="description" content="RBGA website" />
+    <title>RMIT Board Game Association (RBGA) | Official Student Club</title>
+    <meta
+      name="description"
+      content="The RMIT Board Game Association (RBGA) is a student-run club at RMIT University in Melbourne, hosting board games, tabletop RPGs, and social events."
+    />
+    <meta name="theme-color" content="#15803d" />
+    <meta name="robots" content="index,follow" />
+
+    <meta property="og:title" content="RMIT Board Game Association (RBGA) | Official Student Club" />
+    <meta
+      property="og:description"
+      content="The RMIT Board Game Association (RBGA) is a student-run club at RMIT University in Melbourne, hosting board games, tabletop RPGs, and social events."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="RMIT Board Game Association" />
+    <meta property="og:locale" content="en_AU" />
+    <meta property="og:image" content="/media/people-playing-boardgames.jpg" />
+    <meta property="og:image:alt" content="People playing board games" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="RMIT Board Game Association (RBGA) | Official Student Club" />
+    <meta
+      name="twitter:description"
+      content="The RMIT Board Game Association (RBGA) is a student-run club at RMIT University in Melbourne, hosting board games, tabletop RPGs, and social events."
+    />
+    <meta name="twitter:image" content="/media/people-playing-boardgames.jpg" />
 
     <link
       rel="stylesheet"
@@ -23,6 +47,21 @@
     <link rel="icon" href="/favicon.ico" />
     <link rel="stylesheet" href="/styles.css" />
 
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "StudentOrganization",
+        "name": "RMIT Board Game Association",
+        "alternateName": "RBGA",
+        "affiliation": "RMIT University",
+        "sameAs": [
+          "https://www.instagram.com/rmit_board_game_association/",
+          "https://www.facebook.com/RMITBGA",
+          "https://discord.gg/gNFaQWjpEn"
+        ]
+      }
+    </script>
+
     <script src="/main.js" defer></script>
   </head>
 
@@ -33,6 +72,8 @@
           src="/media/RBGA_Simplify_Vertical_Black.png"
           alt="RBGA"
           decoding="async"
+          width="2481"
+          height="1748"
         />
       </div>
 
@@ -78,12 +119,19 @@
 
     <header class="container" id="home">
       <div class="hero-copy reveal" style="--delay: 0.15s">
-        <h1 class="big-title">Community for</h1>
-        <h1 class="big-title-other">Everyone</h1>
+        <h1 class="sr-only">RMIT Board Game Association (RBGA)</h1>
+        <h2 class="big-title">Community for</h2>
+        <h2 class="big-title-other">Everyone</h2>
 
         <p>
           Join RMIT's largest community of tabletop enthusiasts. From heavy
           strategy games to casual party favourites, we have a seat for everyone.
+        </p>
+        <p class="sr-only">
+          The RMIT Board Game Association (RBGA) is an RMIT University student club
+          for board games at RMIT and tabletop RPGs at RMIT. As an RMIT student club,
+          we host weekly sessions, social nights, and welcoming tables for new and
+          experienced players.
         </p>
 
         <div class="hero-actions">
@@ -106,11 +154,13 @@
         src="/media/people-playing-boardgames.jpg"
         alt="People playing board games"
         decoding="async"
+        fetchpriority="high"
+        width="4128"
+        height="6192"
       />
     </header>
 
     <main id="app">
-
       <section
         id="events"
         class="section container events-section"
@@ -124,6 +174,8 @@
               loading="lazy"
               decoding="async"
               class="lazy-image"
+              width="5542"
+              height="3696"
             />
           </div>
 
