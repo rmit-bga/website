@@ -233,7 +233,10 @@ a {
 .hero-banner {
   position: relative;
   margin: -1rem 0 0;
-  padding: 6rem 0;
+  padding: 3rem 0;
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
   overflow: hidden;
 }
 
@@ -246,7 +249,7 @@ a {
     url("media/picture-of-boardgames.webp") type("image/webp"),
     url("media/picture-of-boardgames.jpg") type("image/jpeg")
   );
-  filter: blur(22px);
+  filter: blur(5px);
   transform: scale(1.05);
   z-index: 0;
 }
@@ -268,7 +271,7 @@ a {
 }
 
 .hero-banner-content img {
-  height: clamp(220px, 18vw, 440px);
+  height: 70vh;
   width: auto;
   max-width: 90%;
   object-fit: contain;
