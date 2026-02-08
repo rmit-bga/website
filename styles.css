@@ -242,6 +242,10 @@ a {
   position: absolute;
   inset: -12%;
   background: url("media/picture-of-boardgames.jpg") center/cover no-repeat;
+  background-image: image-set(
+    url("media/picture-of-boardgames.webp") type("image/webp"),
+    url("media/picture-of-boardgames.jpg") type("image/jpeg")
+  );
   filter: blur(22px);
   transform: scale(1.05);
   z-index: 0;

@@ -69,13 +69,16 @@
   <body>
     <nav class="nav container reveal-fade" style="--delay: 0.05s" aria-label="Primary">
       <div class="brand">
-        <img
-          src="media/RBGA_Simplify_Vertical_Black.png"
-          alt="RBGA"
-          decoding="async"
-          width="2481"
-          height="1748"
-        />
+        <picture>
+          <source srcset="media/RBGA_Simplify_Vertical_Black.webp" type="image/webp" />
+          <img
+            src="media/RBGA_Simplify_Vertical_Black.png"
+            alt="RBGA"
+            decoding="async"
+            width="2481"
+            height="1748"
+          />
+        </picture>
       </div>
 
       <button
@@ -136,32 +139,38 @@
         </div>
       </div>
 
-      <img
-        id="header-image"
-        class="image reveal lazy-image"
-        style="--delay: 0.25s"
-        src="media/people-playing-boardgames.jpg"
-        alt="People playing board games"
-        decoding="async"
-        fetchpriority="high"
-        width="4128"
-        height="6192"
-      />
+      <picture>
+        <source srcset="media/people-playing-boardgames.webp" type="image/webp" />
+        <img
+          id="header-image"
+          class="image reveal lazy-image"
+          style="--delay: 0.25s"
+          src="media/people-playing-boardgames.jpg"
+          alt="People playing board games"
+          decoding="async"
+          fetchpriority="high"
+          width="4128"
+          height="6192"
+        />
+      </picture>
     </header>
 
     <main id="app">
       <section id="events" class="section container events-section" aria-labelledby="events-title">
         <div class="events-grid">
           <div class="event-media reveal" style="--delay: 0.1s">
-            <img
-              src="media/big-social-game.jpg"
-              alt="Club members playing a big social game"
-              loading="lazy"
-              decoding="async"
-              class="lazy-image"
-              width="5542"
-              height="3696"
-            />
+            <picture>
+              <source srcset="media/big-social-game.webp" type="image/webp" />
+              <img
+                src="media/big-social-game.jpg"
+                alt="Club members playing a big social game"
+                loading="lazy"
+                decoding="async"
+                class="lazy-image"
+                width="5542"
+                height="3696"
+              />
+            </picture>
           </div>
 
           <div class="event-content reveal" style="--delay: 0.2s">
