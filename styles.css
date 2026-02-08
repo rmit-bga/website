@@ -241,7 +241,7 @@ a {
   content: "";
   position: absolute;
   inset: -12%;
-  background: url("/media/picture-of-boardgames.jpg") center/cover no-repeat;
+  background: url("media/picture-of-boardgames.jpg") center/cover no-repeat;
   filter: blur(22px);
   transform: scale(1.05);
   z-index: 0;
@@ -609,13 +609,13 @@ header.container {
 }
 
 .event-icon-mask.calendar {
-  mask-image: url("/media/calendar_clock_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg");
-  -webkit-mask-image: url("/media/calendar_clock_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg");
+  mask-image: url("media/calendar_clock_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg");
+  -webkit-mask-image: url("media/calendar_clock_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg");
 }
 
 .event-icon-mask.location {
-  mask-image: url("/media/location_on_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg");
-  -webkit-mask-image: url("/media/location_on_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg");
+  mask-image: url("media/location_on_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg");
+  -webkit-mask-image: url("media/location_on_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg");
 }
 
 .event-card h3 {
@@ -733,11 +733,11 @@ header.container {
   height: 22px;
   display: block;
   background-color: currentColor;
-  mask-image: url("/media/groups_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg");
+  mask-image: url("media/groups_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg");
   mask-size: contain;
   mask-position: center;
   mask-repeat: no-repeat;
-  -webkit-mask-image: url("/media/groups_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg");
+  -webkit-mask-image: url("media/groups_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg");
   -webkit-mask-size: contain;
   -webkit-mask-position: center;
   -webkit-mask-repeat: no-repeat;
@@ -935,18 +935,18 @@ header.container {
 }
 
 .social-link.instagram::before {
-  mask-image: url("/media/instagram-svgrepo-com.svg");
-  -webkit-mask-image: url("/media/instagram-svgrepo-com.svg");
+  mask-image: url("media/instagram-svgrepo-com.svg");
+  -webkit-mask-image: url("media/instagram-svgrepo-com.svg");
 }
 
 .social-link.facebook::before {
-  mask-image: url("/media/facebook-svgrepo-com.svg");
-  -webkit-mask-image: url("/media/facebook-svgrepo-com.svg");
+  mask-image: url("media/facebook-svgrepo-com.svg");
+  -webkit-mask-image: url("media/facebook-svgrepo-com.svg");
 }
 
 .social-link.discord::before {
-  mask-image: url("/media/discord-icon-svgrepo-com.svg");
-  -webkit-mask-image: url("/media/discord-icon-svgrepo-com.svg");
+  mask-image: url("media/discord-icon-svgrepo-com.svg");
+  -webkit-mask-image: url("media/discord-icon-svgrepo-com.svg");
 }
 
 .social-link:hover,
