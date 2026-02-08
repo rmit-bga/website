@@ -1,5 +1,5 @@
 /* =========================
-   RBGA (LIGHT MODE) — Green & Brown Primary
+   RBGA (LIGHT MODE) - Green & Brown Primary
    ========================= */
 
 :root {
@@ -352,6 +352,14 @@ header.container {
   max-width: 560px;
 }
 
+.hero-title {
+  margin: 0 0 0.75rem;
+  font-size: 1.05rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
 .big-title,
 .big-title-other {
   font-size: clamp(3rem, 6vw, 4.5rem);
@@ -364,8 +372,12 @@ header.container {
 }
 
 .hero-copy p {
-  margin: 1.5rem 0 2.5rem;
+  margin: 1.1rem 0 0;
   color: var(--text-muted);
+}
+
+.hero-copy p:last-of-type {
+  margin-bottom: 2.5rem;
 }
 
 .hero-actions {
