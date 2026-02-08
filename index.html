@@ -21,7 +21,8 @@
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="RMIT Board Game Association" />
     <meta property="og:locale" content="en_AU" />
-    <meta property="og:image" content="/media/people-playing-boardgames.jpg" />
+    <!-- Use relative URLs so it works on GitHub Pages project sites AND on a future custom domain -->
+    <meta property="og:image" content="media/people-playing-boardgames.jpg" />
     <meta property="og:image:alt" content="People playing board games" />
 
     <meta name="twitter:card" content="summary_large_image" />
@@ -30,7 +31,7 @@
       name="twitter:description"
       content="The RMIT Board Game Association (RBGA) is a student-run club at RMIT University in Melbourne, hosting board games, tabletop RPGs, and social events."
     />
-    <meta name="twitter:image" content="/media/people-playing-boardgames.jpg" />
+    <meta name="twitter:image" content="media/people-playing-boardgames.jpg" />
 
     <link
       rel="stylesheet"
@@ -44,8 +45,8 @@
       rel="stylesheet"
     />
 
-    <link rel="icon" href="/media/RBGA_Simplify_Vertical_White.png" type="image/png" />
-    <link rel="stylesheet" href="/styles.css" />
+    <link rel="icon" href="media/RBGA_Simplify_Vertical_White.png" type="image/png" />
+    <link rel="stylesheet" href="styles.css" />
 
     <script type="application/ld+json">
       {
@@ -62,14 +63,14 @@
       }
     </script>
 
-    <script src="/main.js" defer></script>
+    <script src="main.js" defer></script>
   </head>
 
   <body>
     <nav class="nav container reveal-fade" style="--delay: 0.05s" aria-label="Primary">
       <div class="brand">
         <img
-          src="/media/RBGA_Simplify_Vertical_Black.png"
+          src="media/RBGA_Simplify_Vertical_Black.png"
           alt="RBGA"
           decoding="async"
           width="2481"
@@ -85,7 +86,7 @@
         aria-controls="primary-navigation"
       >
         <img
-          src="/media/menu_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg"
+          src="media/menu_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg"
           alt=""
           aria-hidden="true"
         />
@@ -108,11 +109,7 @@
 
     <section class="hero-banner" aria-label="RBGA introduction">
       <div class="hero-banner-content container reveal" style="--delay: 0.1s">
-        <img
-          src="/media/RBGA_Vector_Horizontal.svg"
-          alt="RBGA logo"
-          decoding="async"
-        />
+        <img src="media/RBGA_Vector_Horizontal.svg" alt="RBGA logo" decoding="async" />
       </div>
     </section>
 
@@ -123,14 +120,13 @@
         <h2 class="big-title-other">Everyone</h2>
 
         <p>
-          Join RMIT's largest community of tabletop enthusiasts. From heavy
-          strategy games to casual party favourites, we have a seat for everyone.
+          Join RMIT's largest community of tabletop enthusiasts. From heavy strategy games to casual
+          party favourites, we have a seat for everyone.
         </p>
         <p class="sr-only">
-          The RMIT Board Game Association (RBGA) is an RMIT University student club
-          for board games at RMIT and tabletop RPGs at RMIT. As an RMIT student club,
-          we host weekly sessions, social nights, and welcoming tables for new and
-          experienced players.
+          The RMIT Board Game Association (RBGA) is an RMIT University student club for board games at
+          RMIT and tabletop RPGs at RMIT. As an RMIT student club, we host weekly sessions, social
+          nights, and welcoming tables for new and experienced players.
         </p>
 
         <div class="hero-actions">
@@ -150,7 +146,7 @@
         id="header-image"
         class="image reveal lazy-image"
         style="--delay: 0.25s"
-        src="/media/people-playing-boardgames.jpg"
+        src="media/people-playing-boardgames.jpg"
         alt="People playing board games"
         decoding="async"
         fetchpriority="high"
@@ -160,15 +156,11 @@
     </header>
 
     <main id="app">
-      <section
-        id="events"
-        class="section container events-section"
-        aria-labelledby="events-title"
-      >
+      <section id="events" class="section container events-section" aria-labelledby="events-title">
         <div class="events-grid">
           <div class="event-media reveal" style="--delay: 0.1s">
             <img
-              src="/media/big-social-game.jpg"
+              src="media/big-social-game.jpg"
               alt="Club members playing a big social game"
               loading="lazy"
               decoding="async"
@@ -179,11 +171,12 @@
           </div>
 
           <div class="event-content reveal" style="--delay: 0.2s">
-            <h2 id="events-title">
-              Join Our <span>Regular Sessions</span>
-            </h2>
+            <h2 id="events-title">Join Our <span>Regular Sessions</span></h2>
             <p>
-              We gather twice a week on campus for to play our expansive library of games. Favourites include Monikers, The Mind. Blood on the Clocktower, Root and Wingspan, but we have something for everyone. New members are always welcome, whether you're a seasoned strategist or just looking for a fun way to meet people.
+              We gather twice a week on campus for to play our expansive library of games. Favourites
+              include Monikers, The Mind. Blood on the Clocktower, Root and Wingspan, but we have
+              something for everyone. New members are always welcome, whether you're a seasoned
+              strategist or just looking for a fun way to meet people.
             </p>
 
             <div class="event-stack">
@@ -212,7 +205,13 @@
                   <h3>Looking for special events?</h3>
                   <p>
                     Check our <a href="#discord">Discord</a> or
-                    <a href="https://campus.hellorubric.com/?s=10742" target="_blank" rel="noreferrer">Rubric</a>
+                    <a
+                      href="https://campus.hellorubric.com/?s=10742"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      Rubric
+                    </a>
                     for themed nights and other cross-club events.
                   </p>
                 </div>
@@ -224,11 +223,11 @@
 
       <section id="discord" class="section container" aria-labelledby="discord-title">
         <div class="discord-copy reveal" style="--delay: 0.1s">
-          <h2 id="discord-title">
-            Our Digital <span>Tabletop Hub</span>
-          </h2>
+          <h2 id="discord-title">Our Digital <span>Tabletop Hub</span></h2>
           <p>
-            We are most active on our Discord server, where we share event updates, photos, and have general chat about all things tabletop. It's the best way to connect with the community and stay in the loop on upcoming events and game nights.
+            We are most active on our Discord server, where we share event updates, photos, and have
+            general chat about all things tabletop. It's the best way to connect with the community
+            and stay in the loop on upcoming events and game nights.
           </p>
 
           <div class="discord-features">
@@ -238,10 +237,7 @@
               </div>
               <div>
                 <h3>Thriving Community</h3>
-                <p>
-                  Meet hundreds of RMIT students who share your passion for
-                  tabletop gaming.
-                </p>
+                <p>Meet hundreds of RMIT students who share your passion for tabletop gaming.</p>
               </div>
             </article>
 
@@ -259,19 +255,12 @@
               </div>
               <div>
                 <h3>Instant Updates</h3>
-                <p>
-                  Be the first to hear about our weekly meetups and special events.
-                </p>
+                <p>Be the first to hear about our weekly meetups and special events.</p>
               </div>
             </article>
           </div>
 
-          <a
-            class="discord-cta"
-            href="https://discord.gg/gNFaQWjpEn"
-            target="_blank"
-            rel="noreferrer"
-          >
+          <a class="discord-cta" href="https://discord.gg/gNFaQWjpEn" target="_blank" rel="noreferrer">
             Join Discord Server
           </a>
         </div>
@@ -318,40 +307,31 @@
               >
                 Instagram
               </a>
-              <a
-                class="social-link facebook"
-                href="https://www.facebook.com/RMITBGA"
-                target="_blank"
-                rel="noreferrer"
-              >
+              <a class="social-link facebook" href="https://www.facebook.com/RMITBGA" target="_blank" rel="noreferrer">
                 Facebook
               </a>
-              <a
-                class="social-link discord"
-                href="https://discord.gg/gNFaQWjpEn"
-                target="_blank"
-                rel="noreferrer"
-              >
+              <a class="social-link discord" href="https://discord.gg/gNFaQWjpEn" target="_blank" rel="noreferrer">
                 Discord
               </a>
             </div>
           </article>
         </div>
       </section>
+
       <section class="section rusu-support" aria-labelledby="rusu-title">
         <div class="container rusu-support-inner">
           <h2 id="rusu-title" class="sr-only">Proudly Supported by RUSU</h2>
           <img
             class="rusu-ribbon-image reveal lazy-image"
             style="--delay: 0.1s"
-            src="/media/RUSU Affiliation transparent.svg"
+            src="media/RUSU Affiliation transparent.svg"
             alt="RMIT University Student Union"
             loading="lazy"
             decoding="async"
           />
           <p class="rusu-copy reveal" style="--delay: 0.2s">
-            Our club is proudly supported by RMIT University Student Union (RUSU), helping us run events,
-            build community, and keep student-led activities accessible.
+            Our club is proudly supported by RMIT University Student Union (RUSU), helping us run
+            events, build community, and keep student-led activities accessible.
           </p>
         </div>
       </section>
