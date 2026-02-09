@@ -408,6 +408,10 @@ header.container {
   margin-top: 0.35rem;
 }
 
+.hero-callout.event-card-info {
+  align-items: flex-start;
+}
+
 .hero-actions {
   display: flex;
   gap: 1rem;
