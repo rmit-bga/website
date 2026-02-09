@@ -391,13 +391,21 @@ header.container {
   color: var(--primary);
 }
 
-.hero-copy p {
+.hero-copy > p {
   margin: 1.1rem 0 0;
   color: var(--text-muted);
 }
 
-.hero-copy p:last-of-type {
-  margin-bottom: 2.5rem;
+.hero-copy > p:last-of-type {
+  margin-bottom: 1.4rem;
+}
+
+.hero-callout {
+  margin-bottom: 2rem;
+}
+
+.hero-callout-text p + p {
+  margin-top: 0.35rem;
 }
 
 .hero-actions {
