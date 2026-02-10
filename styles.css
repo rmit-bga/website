@@ -359,6 +359,75 @@ header.container {
   max-width: 560px;
 }
 
+.mini-socials {
+  display: flex;
+  gap: 0.6rem;
+  margin-bottom: 1.1rem;
+}
+
+.mini-social {
+  width: 38px;
+  height: 38px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  background: #fff;
+  border: 1px solid var(--border);
+  color: var(--text);
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.mini-social::before {
+  content: "";
+  width: 18px;
+  height: 18px;
+  background-color: currentColor;
+  mask-size: contain;
+  mask-position: center;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+  -webkit-mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+}
+
+.mini-social.instagram::before {
+  mask-image: url("media/instagram-svgrepo-com.svg");
+  -webkit-mask-image: url("media/instagram-svgrepo-com.svg");
+}
+
+.mini-social.facebook::before {
+  mask-image: url("media/facebook-svgrepo-com.svg");
+  -webkit-mask-image: url("media/facebook-svgrepo-com.svg");
+}
+
+.mini-social.discord::before {
+  mask-image: url("media/discord-icon-svgrepo-com.svg");
+  -webkit-mask-image: url("media/discord-icon-svgrepo-com.svg");
+}
+
+.mini-social:hover,
+.mini-social:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.14);
+  border-color: rgba(15, 23, 42, 0.2);
+}
+
+.mini-social.instagram {
+  border-color: rgba(225, 29, 72, 0.35);
+  color: #e11d48;
+}
+
+.mini-social.facebook {
+  border-color: rgba(24, 119, 242, 0.35);
+  color: #1877f2;
+}
+
+.mini-social.discord {
+  border-color: rgba(88, 101, 242, 0.35);
+  color: #5865f2;
+}
+
 .hero-title {
   margin: 0 0 0.85rem;
   display: inline-flex;
