@@ -227,12 +227,13 @@
       </div>
 
       <picture>
-        <source srcset="media/people-playing-boardgames.webp" type="image/webp" />
+        <source data-srcset="media/people-playing-boardgames.webp" type="image/webp" />
         <img
           id="header-image"
           class="image reveal lazy-image"
           style="--delay: 0.25s"
-          src="media/people-playing-boardgames.jpg"
+          src="media/people-playing-boardgames-placeholder.jpg"
+          data-src="media/people-playing-boardgames.jpg"
           alt="People playing board games"
           decoding="async"
           fetchpriority="high"
@@ -251,9 +252,10 @@
         <div class="events-grid">
           <div class="event-media reveal" style="--delay: 0.1s">
             <picture>
-              <source srcset="media/big-social-game.webp" type="image/webp" />
+              <source data-srcset="media/big-social-game.webp" type="image/webp" />
               <img
-                src="media/big-social-game.jpg"
+                src="media/big-social-game-placeholder.jpg"
+                data-src="media/big-social-game.jpg"
                 alt="Club members playing a big social game"
                 loading="lazy"
                 decoding="async"
@@ -458,7 +460,7 @@
         <div class="container rusu-support-inner">
           <h2 id="rusu-title" class="sr-only">Proudly Supported by RUSU</h2>
           <img
-            class="rusu-ribbon-image reveal lazy-image"
+            class="rusu-ribbon-image reveal"
             style="--delay: 0.1s"
             src="media/RUSU Affiliation transparent.svg"
             alt="RMIT University Student Union"
@@ -515,14 +517,53 @@
         });
       }
 
-      // Remove shimmer placeholder once lazy images finish loading
+      // Swap blurred placeholders with full-resolution images
       const revealItems = document.querySelectorAll(".reveal, .reveal-fade");
       const prefersReducedMotion = window.matchMedia(
         "(prefers-reduced-motion: reduce)"
       );
       const lazyImages = document.querySelectorAll("img.lazy-image");
       const markImageLoaded = (img) => img.classList.add("is-loaded");
+      const getDeferredSources = (img) => {
+        const picture = img.closest("picture");
+        if (!picture) return [];
+        return picture.querySelectorAll("source[data-srcset]");
+      };
+      const hasDeferredImage = (img) =>
+        Boolean(
+          img.dataset.src || img.dataset.srcset || getDeferredSources(img).length
+        );
+      const swapInFullImage = (img) => {
+        getDeferredSources(img).forEach((source) => {
+          const fullSrcset = source.dataset.srcset;
+          if (!fullSrcset) return;
+          source.srcset = fullSrcset;
+          source.removeAttribute("data-srcset");
+        });
+
+        if (img.dataset.srcset) {
+          img.srcset = img.dataset.srcset;
+          img.removeAttribute("data-srcset");
+        }
+
+        if (img.dataset.src) {
+          img.src = img.dataset.src;
+          img.removeAttribute("data-src");
+        }
+      };
       lazyImages.forEach((img) => {
+        if (hasDeferredImage(img)) {
+          img.addEventListener("load", () => markImageLoaded(img), {
+            once: true,
+          });
+          img.addEventListener("error", () => markImageLoaded(img), {
+            once: true,
+          });
+          swapInFullImage(img);
+          if (img.complete) markImageLoaded(img);
+          return;
+        }
+
         if (img.complete) {
           markImageLoaded(img);
         } else {
