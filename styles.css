@@ -27,7 +27,30 @@
 
   /* Radii */
   --radius: 18px;
+  --radius-md: 14px;
   --radius-sm: 12px;
+  --radius-full: 999px;
+
+  /* Transitions */
+  --duration-fast: 0.2s;
+  --duration-normal: 0.25s;
+  --easing: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Brand colors */
+  --discord: #5865f2;
+  --discord-dark: #4752c4;
+  --discord-accent: #4f46e5;
+  --discord-rgb: 88 101 242;
+  --discord-accent-rgb: 79 70 229;
+  --instagram: #e11d48;
+  --instagram-rgb: 225 29 72;
+  --facebook: #1877f2;
+  --facebook-rgb: 24 119 242;
+
+  /* Shadow scale */
+  --shadow-xs: 0 8px 18px rgba(15, 23, 42, 0.08);
+  --shadow-sm: 0 10px 28px rgba(15, 23, 42, 0.06);
+  --shadow-hover: 0 16px 36px rgba(15, 23, 42, 0.12);
 
   /* Layout */
   --container: 1200px;
@@ -96,10 +119,6 @@ a {
   padding: 4.5rem 0;
 }
 
-.about-copy {
-  max-width: 760px;
-}
-
 /* =========================
    MOTION
    ========================= */
@@ -113,8 +132,8 @@ a {
 .js .reveal {
   opacity: 0;
   transform: translateY(22px);
-  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: opacity 0.7s var(--easing),
+    transform 0.7s var(--easing);
   transition-delay: var(--delay, 0s);
 }
 
@@ -140,9 +159,7 @@ a {
     opacity: 1;
     transform: none;
   }
-}
 
-@media (prefers-reduced-motion: reduce) {
   img.lazy-image {
     transition: none;
     filter: none;
@@ -178,14 +195,14 @@ a {
   overflow: hidden;
   background-clip: padding-box;
   box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
-  transition: transform 0.25s ease, border-radius 0.25s ease,
-    box-shadow 0.25s ease, background 0.25s ease;
+  transition: transform var(--duration-normal) ease, border-radius var(--duration-normal) ease,
+    box-shadow var(--duration-normal) ease, background var(--duration-normal) ease;
   will-change: transform;
 }
 
 .js .nav.reveal-fade {
   transition-property: opacity, transform, border-radius, box-shadow, background;
-  transition-duration: 0.6s, 0.25s, 0.25s, 0.25s, 0.25s;
+  transition-duration: 0.6s, var(--duration-normal), var(--duration-normal), var(--duration-normal), var(--duration-normal);
   transition-timing-function: ease, ease, ease, ease, ease;
   transition-delay: var(--delay, 0s), 0s, 0s, 0s, 0s;
 }
@@ -276,7 +293,7 @@ a {
   justify-content: center;
   width: 44px;
   height: 44px;
-  border-radius: 12px;
+  border-radius: var(--radius-sm);
   border: 1px solid var(--border);
   background: #fff;
   cursor: pointer;
@@ -305,7 +322,7 @@ a {
   width: 0;
   height: 2px;
   background: var(--primary);
-  transition: width 0.25s ease;
+  transition: width var(--duration-normal) ease;
 }
 
 .nav-links a:hover {
@@ -353,17 +370,30 @@ header.container {
 .mini-social {
   width: 38px;
   height: 38px;
-  border-radius: 999px;
+  border-radius: var(--radius-full);
   display: grid;
   place-items: center;
   background: #fff;
   border: 1px solid var(--border);
   color: var(--text);
-  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08);
-  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  box-shadow: var(--shadow-xs);
+  transition: transform var(--duration-fast) ease, box-shadow var(--duration-fast) ease, border-color var(--duration-fast) ease;
 }
 
-.mini-social::before {
+.mini-social:hover,
+.mini-social:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.14);
+  border-color: rgba(15, 23, 42, 0.2);
+}
+
+/* =========================
+   SHARED SOCIAL ICON STYLES
+   (applies to both .mini-social and .social-link)
+   ========================= */
+
+.mini-social::before,
+.social-link::before {
   content: "";
   width: 18px;
   height: 18px;
@@ -376,42 +406,45 @@ header.container {
   -webkit-mask-repeat: no-repeat;
 }
 
-.mini-social.instagram::before {
+.mini-social.instagram::before,
+.social-link.instagram::before {
   mask-image: url("media/instagram-svgrepo-com.svg");
   -webkit-mask-image: url("media/instagram-svgrepo-com.svg");
 }
 
-.mini-social.facebook::before {
+.mini-social.facebook::before,
+.social-link.facebook::before {
   mask-image: url("media/facebook-svgrepo-com.svg");
   -webkit-mask-image: url("media/facebook-svgrepo-com.svg");
 }
 
-.mini-social.discord::before {
+.mini-social.discord::before,
+.social-link.discord::before {
   mask-image: url("media/discord-icon-svgrepo-com.svg");
   -webkit-mask-image: url("media/discord-icon-svgrepo-com.svg");
 }
 
-.mini-social:hover,
-.mini-social:focus-visible {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.14);
-  border-color: rgba(15, 23, 42, 0.2);
+.mini-social.instagram,
+.social-link.instagram {
+  border-color: rgba(var(--instagram-rgb), 0.35);
+  color: var(--instagram);
 }
 
-.mini-social.instagram {
-  border-color: rgba(225, 29, 72, 0.35);
-  color: #e11d48;
+.mini-social.facebook,
+.social-link.facebook {
+  border-color: rgba(var(--facebook-rgb), 0.35);
+  color: var(--facebook);
 }
 
-.mini-social.facebook {
-  border-color: rgba(24, 119, 242, 0.35);
-  color: #1877f2;
+.mini-social.discord,
+.social-link.discord {
+  border-color: rgba(var(--discord-rgb), 0.35);
+  color: var(--discord);
 }
 
-.mini-social.discord {
-  border-color: rgba(88, 101, 242, 0.35);
-  color: #5865f2;
-}
+/* =========================
+   HERO (continued)
+   ========================= */
 
 .hero-title {
   margin: 0 0 0.85rem;
@@ -429,20 +462,15 @@ header.container {
   content: "";
   width: 36px;
   height: 2px;
-  border-radius: 999px;
+  border-radius: var(--radius-full);
   background: var(--accent);
   opacity: 0.7;
 }
 
-.big-title,
-.big-title-other {
+.big-title {
   font-size: clamp(3rem, 6vw, 4.5rem);
   line-height: 1.05;
   margin: 0;
-}
-
-.big-title-other {
-  color: var(--primary);
 }
 
 .hero-copy > p {
@@ -483,8 +511,8 @@ header.container {
   border: 1px solid transparent;
   cursor: pointer;
   font-weight: 700;
-  transition: transform 0.12s ease, background 0.2s ease, border-color 0.2s ease,
-    box-shadow 0.2s ease;
+  transition: transform 0.12s ease, background var(--duration-fast) ease, border-color var(--duration-fast) ease,
+    box-shadow var(--duration-fast) ease;
 }
 
 .hero-actions button:active,
@@ -514,8 +542,8 @@ header.container {
 .hero-actions button:last-child:hover,
 .hero-actions .hero-button.secondary:hover {
   background: var(--surface-soft);
-  color: #5865f2;
-  border-color: rgba(88, 101, 242, 0.45);
+  color: var(--discord);
+  border-color: rgba(var(--discord-rgb), 0.45);
 }
 
 #header-image {
@@ -594,19 +622,6 @@ header.container {
   gap: 1.25rem;
 }
 
-.event-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.55rem;
-  padding: 0.35rem 0.9rem;
-  border-radius: 999px;
-  background: #ffe7ec;
-  color: var(--primary);
-  font-weight: 700;
-  font-size: 0.9rem;
-  width: fit-content;
-}
-
 .event-content h2 {
   margin: 0;
   font-size: clamp(2.1rem, 3.7vw, 3rem);
@@ -650,8 +665,8 @@ header.container {
   border-radius: var(--radius);
   background: var(--surface);
   border: 1px solid var(--border);
-  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.06);
-  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--duration-fast) ease, box-shadow var(--duration-fast) ease, border-color var(--duration-fast) ease;
   will-change: transform;
 }
 
@@ -659,8 +674,8 @@ header.container {
 .js .discord-feature.reveal-fade,
 .js .contact-card.reveal-fade {
   transition-property: opacity, transform, box-shadow, border-color;
-  transition-duration: 0.6s, 0.2s, 0.2s, 0.2s;
-  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1), ease, ease, ease;
+  transition-duration: 0.6s, var(--duration-fast), var(--duration-fast), var(--duration-fast);
+  transition-timing-function: var(--easing), ease, ease, ease;
   transition-delay: var(--delay, 0s), 0s, 0s, 0s;
 }
 
@@ -669,31 +684,44 @@ header.container {
 .discord-feature:hover,
 .discord-feature:focus-within {
   transform: translateY(-4px);
-  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.12);
+  box-shadow: var(--shadow-hover);
   border-color: rgba(var(--primary-rgb), 0.25);
 }
 
-.event-icon {
+/* Shared icon box structure */
+.event-icon,
+.discord-feature-icon {
   width: 46px;
   height: 46px;
   flex: 0 0 46px;
-  border-radius: 14px;
+  border-radius: var(--radius-md);
   display: grid;
   place-items: center;
   background: #fff;
+  box-shadow: var(--shadow-xs);
+}
+
+.event-icon {
   color: var(--accent);
   border: 1px solid rgba(var(--primary-rgb), 0.18);
-  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08);
-  flex-shrink: 0;
+}
+
+.discord-feature-icon {
+  color: var(--discord-accent);
+  border: 1px solid rgba(var(--discord-accent-rgb), 0.18);
 }
 
 .event-icon svg,
-.event-icon img {
+.event-icon img,
+.discord-feature-icon svg,
+.discord-feature-icon img {
   width: 22px;
   height: 22px;
 }
 
-.event-icon-mask {
+/* Shared icon mask structure */
+.event-icon-mask,
+.discord-icon-mask {
   width: 22px;
   height: 22px;
   display: block;
@@ -716,14 +744,30 @@ header.container {
   -webkit-mask-image: url("media/location_on_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg");
 }
 
-.event-card h3 {
+.discord-icon-mask {
+  mask-image: url("media/groups_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg");
+  -webkit-mask-image: url("media/groups_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg");
+}
+
+.event-card h3,
+.discord-feature h3 {
   margin: 0 0 0.35rem;
   font-size: 1.1rem;
 }
 
-.event-card p {
+.event-card p,
+.discord-feature p {
   margin: 0;
   color: var(--text-muted);
+}
+
+.event-card-info {
+  background: #eef4ff;
+  border-color: #cfe0ff;
+}
+
+.event-card-info p {
+  color: #1f2a44;
 }
 
 .event-card-info a {
@@ -747,44 +791,16 @@ header.container {
   align-items: center;
 }
 
-.discord-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.55rem;
-  padding: 0.35rem 0.95rem;
-  border-radius: 999px;
-  background: #eef0ff;
-  color: #4f46e5;
-  font-weight: 700;
-  font-size: 0.9rem;
-  width: fit-content;
-}
-
-.discord-pill-icon {
-  display: inline-grid;
-  place-items: center;
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  background: #fff;
-  border: 1px solid rgba(79, 70, 229, 0.2);
-}
-
-.discord-pill svg {
-  width: 14px;
-  height: 14px;
-}
-
 .discord-copy h2 {
   margin: 0;
   font-size: clamp(2.1rem, 3.7vw, 3rem);
 }
 
 .discord-copy h2 span {
-  color: #4f46e5;
+  color: var(--discord-accent);
 }
 
-.discord-copy p {
+.discord-copy > p {
   color: var(--text-muted);
   margin: 1.25rem 0 2rem;
 }
@@ -803,64 +819,16 @@ header.container {
   --delay: 0.3s;
 }
 
-.discord-feature-icon {
-  width: 46px;
-  height: 46px;
-  flex: 0 0 46px;
-  border-radius: 14px;
-  display: grid;
-  place-items: center;
-  background: #fff;
-  color: #4f46e5;
-  border: 1px solid rgba(79, 70, 229, 0.18);
-  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08);
-}
-
-.discord-feature-icon svg {
-  width: 22px;
-  height: 22px;
-}
-
-.discord-feature-icon img {
-  width: 22px;
-  height: 22px;
-}
-
-.discord-icon-mask {
-  width: 22px;
-  height: 22px;
-  display: block;
-  background-color: currentColor;
-  mask-image: url("media/groups_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg");
-  mask-size: contain;
-  mask-position: center;
-  mask-repeat: no-repeat;
-  -webkit-mask-image: url("media/groups_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg");
-  -webkit-mask-size: contain;
-  -webkit-mask-position: center;
-  -webkit-mask-repeat: no-repeat;
-}
-
-.discord-feature h3 {
-  margin: 0 0 0.35rem;
-  font-size: 1.1rem;
-}
-
-.discord-feature p {
-  margin: 0;
-  color: var(--text-muted);
-}
-
 .discord-cta {
-  background: #5865f2;
+  background: var(--discord);
   color: #fff;
   border: none;
   padding: 0.95rem 1.7rem;
-  border-radius: 14px;
+  border-radius: var(--radius-md);
   font-weight: 800;
   cursor: pointer;
-  box-shadow: 0 16px 32px rgba(88, 101, 242, 0.3);
-  transition: transform 0.12s ease, background 0.2s ease;
+  box-shadow: 0 16px 32px rgba(var(--discord-rgb), 0.3);
+  transition: transform 0.12s ease, background var(--duration-fast) ease;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
@@ -868,7 +836,7 @@ header.container {
 }
 
 .discord-cta:hover {
-  background: #4752c4;
+  background: var(--discord-dark);
 }
 
 .discord-cta:active {
@@ -879,45 +847,10 @@ header.container {
   border-radius: var(--radius);
   overflow: hidden;
   border: 1px solid var(--border);
-  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.06);
+  box-shadow: var(--shadow-sm);
   background: #1f2024;
   display: grid;
   grid-template-rows: auto 1fr auto;
-}
-
-.discord-widget-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.85rem 1rem;
-  background: #5865f2;
-  color: #fff;
-  font-weight: 700;
-}
-
-.discord-brand {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.6rem;
-  font-size: 1rem;
-}
-
-.discord-logo {
-  width: 30px;
-  height: 30px;
-  display: grid;
-  place-items: center;
-}
-
-.discord-logo svg {
-  width: 22px;
-  height: 22px;
-}
-
-.discord-status {
-  font-size: 0.85rem;
-  font-weight: 600;
-  opacity: 0.9;
 }
 
 .discord-widget iframe {
@@ -925,13 +858,6 @@ header.container {
   width: 100%;
   height: 450px;
   border: 0;
-}
-
-.discord-widget-footer {
-  padding: 0.85rem 1rem;
-  font-size: 0.85rem;
-  color: #9aa0a6;
-  background: #1a1b1f;
 }
 
 /* =========================
@@ -972,7 +898,7 @@ header.container {
   border-radius: var(--radius);
   border: 1px solid var(--border);
   background: var(--surface);
-  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.06);
+  box-shadow: var(--shadow-sm);
   display: grid;
   gap: 0.75rem;
 }
@@ -1008,43 +934,18 @@ header.container {
   text-decoration: none;
   font-weight: 700;
   padding: 0.5rem 0.9rem;
-  border-radius: 999px;
+  border-radius: var(--radius-full);
   border: 1px solid var(--border);
   color: var(--text);
   background: #fff;
   display: inline-flex;
   align-items: center;
   gap: 0.55rem;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  transition: transform var(--duration-fast) ease, box-shadow var(--duration-fast) ease, border-color var(--duration-fast) ease;
 }
 
 .social-link::before {
-  content: "";
-  width: 18px;
-  height: 18px;
-  background-color: currentColor;
-  mask-size: contain;
-  mask-position: center;
-  mask-repeat: no-repeat;
-  -webkit-mask-size: contain;
-  -webkit-mask-position: center;
-  -webkit-mask-repeat: no-repeat;
   flex: 0 0 18px;
-}
-
-.social-link.instagram::before {
-  mask-image: url("media/instagram-svgrepo-com.svg");
-  -webkit-mask-image: url("media/instagram-svgrepo-com.svg");
-}
-
-.social-link.facebook::before {
-  mask-image: url("media/facebook-svgrepo-com.svg");
-  -webkit-mask-image: url("media/facebook-svgrepo-com.svg");
-}
-
-.social-link.discord::before {
-  mask-image: url("media/discord-icon-svgrepo-com.svg");
-  -webkit-mask-image: url("media/discord-icon-svgrepo-com.svg");
 }
 
 .social-link:hover,
@@ -1052,21 +953,6 @@ header.container {
   transform: translateY(-2px);
   box-shadow: 0 10px 22px rgba(15, 23, 42, 0.12);
   border-color: rgba(15, 23, 42, 0.2);
-}
-
-.social-link.instagram {
-  border-color: rgba(225, 29, 72, 0.35);
-  color: #e11d48;
-}
-
-.social-link.facebook {
-  border-color: rgba(24, 119, 242, 0.35);
-  color: #1877f2;
-}
-
-.social-link.discord {
-  border-color: rgba(88, 101, 242, 0.35);
-  color: #5865f2;
 }
 
 /* =========================
@@ -1107,6 +993,7 @@ footer {
 
   .nav {
     flex-wrap: wrap;
+    gap: 1rem;
   }
 
   .nav-toggle {
@@ -1138,10 +1025,6 @@ footer {
     padding: 3.5rem 0;
   }
 
-  .events-grid {
-    grid-template-columns: 1fr;
-  }
-
   .event-media img {
     max-height: 420px;
   }
@@ -1149,16 +1032,4 @@ footer {
   #discord {
     grid-template-columns: 1fr;
   }
-
-  .nav {
-    gap: 1rem;
-  }
-}
-.event-card-info {
-  background: #eef4ff;
-  border-color: #cfe0ff;
-}
-
-.event-card-info p {
-  color: #1f2a44;
 }
