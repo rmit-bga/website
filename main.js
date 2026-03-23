@@ -119,3 +119,21 @@ if (prefersReducedMotion.matches || !("IntersectionObserver" in window)) {
 window.addEventListener("scroll", updateNavState, { passive: true });
 window.addEventListener("load", updateNavState);
 updateNavState();
+
+// Committee recruitment popup
+const recruitPopup = document.getElementById("recruitPopup");
+const popupClose = document.getElementById("popupClose");
+
+if (recruitPopup && !sessionStorage.getItem("popupDismissed")) {
+  setTimeout(() => recruitPopup.classList.add("is-active"), 1500);
+
+  const closePopup = () => {
+    recruitPopup.classList.remove("is-active");
+    sessionStorage.setItem("popupDismissed", "1");
+  };
+
+  popupClose.addEventListener("click", closePopup);
+  recruitPopup.addEventListener("click", (e) => {
+    if (e.target === recruitPopup) closePopup();
+  });
+}
