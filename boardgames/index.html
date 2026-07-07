@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RMIT Board Game Association</title>
+  <meta name="description" content="Upcoming sessions and the board-game library of the RMIT Board Game Association (RBGA).">
+  <link rel="stylesheet" href="styles.css">
+  <!-- Config. RBGA_API_BASE = the API's public origin; its CORS_ALLOW_ORIGINS
+       must include this site's origin (https://rmit-bga.github.io — it does).
+       The other two power the events section. -->
+  <script>
+    window.RBGA_API_BASE = "https://rmitbga.duckdns.org";
+    window.RBGA_HELLORUBRIC_SOCIETY = "10742";   // club id on campus.hellorubric.com
+    window.RBGA_DISCORD_URL = "";                // optional: Discord invite → adds a "Join" button
+  </script>
+</head>
+<body>
+  <header class="site-header">
+    <h1>RMIT Board Game Association</h1>
+    <p class="tagline">Community board-game sessions at RMIT — and the library on our shelf.</p>
+  </header>
+
+  <main>
+    <section class="section" aria-labelledby="events-heading">
+      <h2 id="events-heading" class="section-heading">What's on</h2>
+      <p id="events-status" class="status">Loading events…</p>
+      <div id="events" class="events"></div>
+    </section>
+
+    <section class="section" aria-labelledby="library-heading">
+      <h2 id="library-heading" class="section-heading">Board game library</h2>
+      <div class="controls">
+        <input id="search" type="search" autocomplete="off" placeholder="Search title or publisher…" aria-label="Search by title or publisher">
+        <input id="players" type="number" min="1" inputmode="numeric" placeholder="Plays… players" aria-label="Filter by player count">
+      </div>
+      <p id="count" class="count" aria-live="polite"></p>
+      <p id="status" class="status">Loading the library…</p>
+      <div id="gallery" class="gallery"></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    RBGA · events via hellorubric · library live from the club inventory
+  </footer>
+
+  <script src="events.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
