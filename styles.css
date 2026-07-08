@@ -1102,6 +1102,40 @@ footer {
 }
 
 /* =========================
+   FIND US (video)
+   ========================= */
+
+.find-us {
+  display: grid;
+  gap: 2rem;
+}
+
+.find-us-header h2 {
+  margin: 0 0 0.75rem;
+  font-size: clamp(2.1rem, 3.7vw, 3rem);
+}
+
+.find-us-header h2 span {
+  color: var(--primary);
+}
+
+.find-us-header p {
+  margin: 0;
+  color: var(--text-muted);
+  max-width: 620px;
+}
+
+.find-us-video {
+  display: block;
+  width: min(100%, 900px);
+  height: auto;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  background: #000;
+}
+
+/* =========================
    GAMES TEASER (landing page)
    ========================= */
 
