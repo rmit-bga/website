@@ -171,7 +171,8 @@ a {
     transform: none;
   }
 
-  .featured-games {
+  .featured-games,
+  .whats-on {
     animation: none;
   }
 
@@ -983,6 +984,108 @@ footer {
   color: var(--text-muted);
 }
 
+
+/* =========================
+   WHATS ON (live events)
+   ========================= */
+
+.whats-on {
+  margin-top: 3rem;
+  display: grid;
+  gap: 1.25rem;
+  animation: featured-fade-in 0.6s var(--easing);
+}
+
+.whats-on-title {
+  margin: 0;
+  font-size: clamp(1.5rem, 2.4vw, 1.9rem);
+}
+
+.whats-on-title span {
+  color: var(--primary);
+}
+
+.whats-on-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.25rem;
+}
+
+.whats-on-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.4rem 1.6rem;
+  border-radius: var(--radius);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  text-decoration: none;
+  color: var(--text);
+  transition: transform var(--duration-fast) ease, box-shadow var(--duration-fast) ease, border-color var(--duration-fast) ease;
+  will-change: transform;
+}
+
+.whats-on-card:hover,
+.whats-on-card:focus-visible {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-hover);
+  border-color: rgba(var(--primary-rgb), 0.25);
+}
+
+.whats-on-date {
+  width: 56px;
+  flex: 0 0 56px;
+  padding: 0.45rem 0;
+  border-radius: var(--radius-md);
+  display: grid;
+  justify-items: center;
+  background: var(--surface-tint);
+  border: 1px solid rgba(var(--primary-rgb), 0.18);
+  box-shadow: var(--shadow-xs);
+}
+
+.whats-on-month {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--primary);
+}
+
+.whats-on-day {
+  font-size: 1.4rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.whats-on-body {
+  display: grid;
+  gap: 0.3rem;
+}
+
+.whats-on-event-title {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.whats-on-when,
+.whats-on-where {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.whats-on-info {
+  margin-top: 0.25rem;
+  width: fit-content;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-full);
+  background: var(--primary-soft);
+  color: var(--primary);
+}
 
 /* =========================
    GAMES TEASER (landing page)
