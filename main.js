@@ -122,7 +122,7 @@ updateNavState();
 
 // Landing page "What's on" list: upcoming events from hellorubric's JSON API
 // (the same call their site makes; CORS-open). Cards link to the event's
-// ticketing page. Fails silently — the static session cards still describe
+// ticketing page. Fails silently; the static session cards still describe
 // the regular schedule.
 const whatsOn = document.getElementById("whats-on");
 if (whatsOn) {
@@ -231,7 +231,7 @@ if (whatsOn) {
       return response.json();
     })
     .then((data) => {
-      // Only the "Events" section — others hold memberships, committee, etc.
+      // Only the "Events" section; others hold memberships, committee, etc.
       const events = (data.sections || [])
         .filter((section) => section.sectionname === "Events")
         .flatMap((section) => section.array || [])
@@ -257,7 +257,7 @@ if (whatsOn) {
 }
 
 // Landing page featured-games strip: pick a random tag every load and show a
-// handful of games from it. Fails silently — the static copy + CTA still work.
+// handful of games from it. Fails silently; the static copy + CTA still work.
 const featuredGames = document.getElementById("featured-games");
 if (featuredGames) {
   const featuredTag = document.getElementById("featured-tag");

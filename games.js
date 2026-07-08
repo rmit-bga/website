@@ -17,7 +17,7 @@ if (gamesGrid) {
   const isHttpUrl = (value) =>
     typeof value === "string" && value.startsWith("http");
 
-  // Every field except id, title and missing can be null — render defensively.
+  // Every field except id, title and missing can be null, so render defensively.
   const playersLabel = (game) => {
     const min = game.min_players;
     const max = game.max_players;
@@ -42,7 +42,7 @@ if (gamesGrid) {
       thumb.append(fallback);
     };
 
-    // Legacy CSV rows hold bare filenames here — only trust real URLs.
+    // Legacy CSV rows hold bare filenames here, so only trust real URLs.
     if (isHttpUrl(game.thumbnail)) {
       const img = document.createElement("img");
       img.src = game.thumbnail;

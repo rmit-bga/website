@@ -1493,7 +1493,7 @@ footer {
     flex: 1 1 auto;
   }
 
-  /* 5 tiles wrap unevenly on small screens — swipe sideways instead */
+  /* 5 tiles wrap unevenly on small screens, so swipe sideways instead */
   .featured-games-strip {
     grid-template-columns: none;
     grid-auto-flow: column;

@@ -1,7 +1,7 @@
 "use strict";
 
 // Club events, straight from hellorubric's own JSON API (the same call their
-// site makes). It's CORS-open, so the static page can fetch it directly — no
+// site makes). It's CORS-open, so the static page can fetch it directly: no
 // backend, nothing to maintain. If hellorubric ever changes it, the section
 // degrades to a friendly fallback rather than erroring.
 //
@@ -74,7 +74,7 @@ function makeEventCard(ev) {
 function emptyState(description) {
   const wrap = el("div", "events-empty");
   wrap.appendChild(el("p", null, description ||
-    "No upcoming sessions are scheduled right now — check back soon."));
+    "No upcoming sessions are scheduled right now. Check back soon."));
   if (DISCORD_URL) {
     const cta = el("a", "events-cta", "Join our Discord");
     cta.href = DISCORD_URL;
@@ -115,7 +115,7 @@ async function loadEvents() {
       eventsEl.replaceChildren(emptyState(data.description));
     }
   } catch (err) {
-    // Never alarm a visitor — fall back to the friendly empty state.
+    // Never alarm a visitor; fall back to the friendly empty state.
     eventsStatusEl.textContent = "";
     eventsEl.replaceChildren(emptyState(""));
   }

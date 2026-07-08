@@ -36,7 +36,7 @@ function makeCover(g) {
     });
     cover.appendChild(img);
   } else {
-    // CSV imports store a bare filename here, not a usable URL — show a tile.
+    // CSV imports store a bare filename here, not a usable URL, so show a tile.
     cover.classList.add("cover--fallback");
     cover.textContent = initial(g.title);
   }
