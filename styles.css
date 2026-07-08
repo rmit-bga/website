@@ -1007,15 +1007,14 @@ footer {
 
 .whats-on-list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 1.25rem;
 }
 
 .whats-on-card {
   display: flex;
-  align-items: flex-start;
-  gap: 1rem;
-  padding: 1.4rem 1.6rem;
+  flex-direction: column;
+  overflow: hidden;
   border-radius: var(--radius);
   background: var(--surface);
   border: 1px solid var(--border);
@@ -1031,6 +1030,21 @@ footer {
   transform: translateY(-4px);
   box-shadow: var(--shadow-hover);
   border-color: rgba(var(--primary-rgb), 0.25);
+}
+
+.whats-on-image {
+  width: 100%;
+  aspect-ratio: 2 / 1;
+  object-fit: cover;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface-soft);
+}
+
+.whats-on-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.4rem 1.6rem;
 }
 
 .whats-on-date {
