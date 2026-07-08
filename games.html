@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Games Library | RMIT Board Game Association (RBGA)</title>
+    <meta name="application-name" content="RMIT Board Game Association" />
+    <meta
+      name="description"
+      content="Browse the RMIT Board Game Association's library of 170+ board games and card games, available to play at our weekly sessions on campus."
+    />
+    <meta name="theme-color" content="#15803d" />
+    <meta name="robots" content="index,follow" />
+
+    <meta
+      property="og:title"
+      content="Games Library | RMIT Board Game Association (RBGA)"
+    />
+    <meta
+      property="og:description"
+      content="Browse the RMIT Board Game Association's library of 170+ board games and card games, available to play at our weekly sessions on campus."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="RMIT Board Game Association" />
+    <meta property="og:locale" content="en_AU" />
+    <!-- Use relative URLs so it works on GitHub Pages project sites AND on a future custom domain -->
+    <meta property="og:image" content="media/people-playing-boardgames.jpg" />
+    <meta property="og:image:alt" content="People playing board games" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Games Library | RMIT Board Game Association (RBGA)"
+    />
+    <meta
+      name="twitter:description"
+      content="Browse the RMIT Board Game Association's library of 170+ board games and card games, available to play at our weekly sessions on campus."
+    />
+    <meta name="twitter:image" content="media/people-playing-boardgames.jpg" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="icon" type="image/x-icon" href="favicon.ico?v=20260319" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="48x48"
+      href="favicon-48x48.png?v=20260319"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="favicon-32x32.png?v=20260319"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="apple-touch-icon.png?v=20260319"
+    />
+    <link rel="stylesheet" href="styles.css" />
+
+    <script src="main.js" defer></script>
+    <script src="games.js" defer></script>
+  </head>
+
+  <body>
+    <nav
+      class="nav container reveal-fade"
+      style="--delay: 0.05s"
+      aria-label="Primary"
+    >
+      <div class="brand">
+        <a href="index.html" aria-label="RBGA home">
+          <picture>
+            <source srcset="media/RBGA_Simplify_Vertical_Black.webp" type="image/webp" />
+            <img
+              src="media/RBGA_Simplify_Vertical_Black.png"
+              alt="RBGA"
+              decoding="async"
+              width="2481"
+              height="1748"
+            />
+          </picture>
+        </a>
+      </div>
+
+      <button
+        class="nav-toggle"
+        type="button"
+        aria-label="Toggle navigation"
+        aria-expanded="false"
+        aria-controls="primary-navigation"
+      >
+        <img
+          src="media/menu_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg"
+          alt=""
+          aria-hidden="true"
+        />
+      </button>
+
+      <div class="nav-links" id="primary-navigation">
+        <a href="index.html#discord">Discord</a>
+        <a href="index.html#events">Events</a>
+        <a href="games.html" aria-current="page">Games</a>
+        <a href="index.html#contact">Contact</a>
+        <a
+          id="membershipButton"
+          href="https://campus.hellorubric.com/?tab=memberships&s=10742"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Membership
+        </a>
+      </div>
+    </nav>
+
+    <main id="app">
+      <section
+        class="section container games-page"
+        aria-labelledby="games-page-title"
+      >
+        <div class="games-page-header reveal" style="--delay: 0.1s">
+          <h1 id="games-page-title">Our <span>Games Library</span></h1>
+          <p>
+            Every game here lives in club storage and is free to play at our
+            regular sessions. Search by name or filter by category to find your
+            next favourite.
+          </p>
+        </div>
+
+        <form
+          class="games-toolbar reveal"
+          style="--delay: 0.15s"
+          role="search"
+          aria-label="Search the games library"
+        >
+          <input
+            type="search"
+            id="games-search"
+            name="search"
+            placeholder="Search by title or publisher&hellip;"
+            autocomplete="off"
+            aria-label="Search games by title or publisher"
+          />
+          <select id="games-tag" name="tag" aria-label="Filter games by category">
+            <option value="">All categories</option>
+          </select>
+        </form>
+
+        <p class="games-count" id="games-count" role="status"></p>
+
+        <div class="games-status" id="games-error" hidden>
+          <h2>Couldn't load the library</h2>
+          <p>
+            The games list is having a quick lie down. Give it a moment, then
+            try again.
+          </p>
+          <button type="button" id="games-retry" class="games-retry">
+            Try again
+          </button>
+        </div>
+
+        <div class="games-status" id="games-empty" hidden>
+          <h2>No games found</h2>
+          <p>No games match your search. Try a different name or category.</p>
+        </div>
+
+        <div class="games-grid" id="games-grid">
+          <div class="game-card game-card-skeleton" aria-hidden="true"></div>
+          <div class="game-card game-card-skeleton" aria-hidden="true"></div>
+          <div class="game-card game-card-skeleton" aria-hidden="true"></div>
+          <div class="game-card game-card-skeleton" aria-hidden="true"></div>
+          <div class="game-card game-card-skeleton" aria-hidden="true"></div>
+          <div class="game-card game-card-skeleton" aria-hidden="true"></div>
+          <div class="game-card game-card-skeleton" aria-hidden="true"></div>
+          <div class="game-card game-card-skeleton" aria-hidden="true"></div>
+        </div>
+
+        <noscript>
+          <p class="games-count">
+            The games library needs JavaScript to load. Come say hi at a
+            session instead &mdash; the whole collection is there!
+          </p>
+        </noscript>
+      </section>
+    </main>
+
+    <footer class="container reveal" style="--delay: 0.15s">
+      <p>&copy; <span id="year"></span> RBGA</p>
+    </footer>
+  </body>
+</html>

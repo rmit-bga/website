@@ -120,3 +120,83 @@ window.addEventListener("scroll", updateNavState, { passive: true });
 window.addEventListener("load", updateNavState);
 updateNavState();
 
+// Landing page featured-games strip: pick a random tag every load and show a
+// handful of games from it. Fails silently — the static copy + CTA still work.
+const featuredGames = document.getElementById("featured-games");
+if (featuredGames) {
+  const featuredTag = document.getElementById("featured-tag");
+  const featuredStrip = document.getElementById("featured-strip");
+  const browseCta = document.getElementById("browse-games-cta");
+  const TILE_COUNT = 5;
+
+  const shuffle = (items) => {
+    const copy = [...items];
+    for (let i = copy.length - 1; i > 0; i -= 1) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [copy[i], copy[j]] = [copy[j], copy[i]];
+    }
+    return copy;
+  };
+
+  fetch("https://rmitbga.duckdns.org/board-games")
+    .then((response) => {
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      return response.json();
+    })
+    .then((games) => {
+      const inLibrary = games.filter((game) => !game.missing);
+      // Only feature games with a real thumbnail URL (legacy rows hold bare filenames).
+      const withThumbs = inLibrary.filter(
+        (game) =>
+          typeof game.thumbnail === "string" &&
+          game.thumbnail.startsWith("http")
+      );
+
+      const byTag = new Map();
+      withThumbs.forEach((game) => {
+        (Array.isArray(game.tags) ? game.tags : []).forEach((tag) => {
+          if (!tag) return;
+          if (!byTag.has(tag)) byTag.set(tag, []);
+          byTag.get(tag).push(game);
+        });
+      });
+
+      const candidates = [...byTag.entries()].filter(
+        ([, tagged]) => tagged.length >= 4
+      );
+      if (!candidates.length) return;
+
+      const [tag, tagged] =
+        candidates[Math.floor(Math.random() * candidates.length)];
+      featuredTag.textContent = tag;
+
+      shuffle(tagged)
+        .slice(0, TILE_COUNT)
+        .forEach((game) => {
+          const tile = document.createElement("a");
+          tile.className = "featured-game";
+          tile.href = "games.html";
+
+          const img = document.createElement("img");
+          img.src = game.thumbnail;
+          img.alt = "";
+          img.loading = "lazy";
+          img.decoding = "async";
+          tile.append(img);
+
+          const label = document.createElement("span");
+          label.className = "featured-game-title";
+          label.textContent = game.title;
+          tile.append(label);
+
+          featuredStrip.append(tile);
+        });
+
+      if (browseCta) {
+        browseCta.textContent = `Browse all ${inLibrary.length} games`;
+      }
+      featuredGames.hidden = false;
+    })
+    .catch(() => {});
+}
+
