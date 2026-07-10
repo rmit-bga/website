@@ -168,6 +168,20 @@ const makeEventCard = (ev) => {
   const card = document.createElement("div");
   card.className = "whats-on-card";
 
+  if (typeof ev.image === "string" && ev.image.startsWith("http")) {
+    const banner = document.createElement("img");
+    banner.className = "whats-on-image";
+    banner.src = ev.image;
+    banner.alt = "";
+    banner.decoding = "async";
+    banner.addEventListener("error", () => banner.remove(), { once: true });
+    card.append(banner);
+  }
+
+  const row = document.createElement("div");
+  row.className = "whats-on-row";
+  card.append(row);
+
   const date = document.createElement("div");
   date.className = "whats-on-date";
   const month = document.createElement("span");
@@ -177,7 +191,7 @@ const makeEventCard = (ev) => {
   day.className = "whats-on-day";
   day.textContent = ev.day || "";
   date.append(month, day);
-  card.append(date);
+  row.append(date);
 
   const body = document.createElement("div");
   const title = document.createElement("h3");
@@ -190,7 +204,7 @@ const makeEventCard = (ev) => {
     when.textContent = ev.formatteddate;
     body.append(when);
   }
-  card.append(body);
+  row.append(body);
   return card;
 };
 

@@ -282,12 +282,26 @@ body::before {
 
 .whats-on-card {
   display: flex;
-  align-items: center;
-  gap: clamp(14px, 1.6vw, 26px);
-  padding: clamp(14px, 1.8vw, 26px);
+  flex-direction: column;
+  overflow: hidden;
   border: 2px solid rgba(15, 23, 42, 0.08);
   border-radius: 18px;
   background: #ffffff;
+}
+
+.whats-on-image {
+  width: 100%;
+  aspect-ratio: 2 / 1;
+  max-height: clamp(110px, 18vh, 180px);
+  object-fit: cover;
+  border-bottom: 2px solid rgba(15, 23, 42, 0.08);
+}
+
+.whats-on-row {
+  display: flex;
+  align-items: center;
+  gap: clamp(14px, 1.6vw, 26px);
+  padding: clamp(14px, 1.8vw, 26px);
 }
 
 .whats-on-date {
