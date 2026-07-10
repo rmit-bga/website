@@ -85,6 +85,18 @@ const setPaused = (value) => {
   }
 };
 
+// Point the join headline at the next session: City runs Mon & Wed,
+// Bundoora Wed, so the next session day is always today, tomorrow, or Monday
+const joinDay = document.getElementById("join-day");
+const updateJoinDay = () => {
+  const day = new Date().getDay();
+  if (day === 1 || day === 3) joinDay.textContent = "play today.";
+  else if (day === 0 || day === 2) joinDay.textContent = "play tomorrow.";
+  else joinDay.textContent = "play Monday.";
+};
+updateJoinDay();
+setInterval(updateJoinDay, 60 * 60 * 1000);
+
 // First card
 showSlide(slides[0], 0);
 
