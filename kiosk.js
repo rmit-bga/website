@@ -1,5 +1,5 @@
-// RBGA kiosk engine: deals slide cards onto the felt on a timer, pulls live
-// events and the games library when the network allows, and keeps the laptop
+// RBGA kiosk engine: crossfades slide cards on a timer, pulls live events
+// and the games library when the network allows, and keeps the laptop
 // screen awake at the stall. Unlinked from the rest of the site on purpose.
 
 const slides = Array.from(document.querySelectorAll(".slide"));
@@ -40,7 +40,7 @@ const showSlide = (slide, direction) => {
   current = slides.indexOf(slide);
 
   if (previous && previous !== slide) {
-    previous.classList.remove("is-active", "is-dealing");
+    previous.classList.remove("is-active", "is-entering");
     previous.classList.add("is-leaving");
     previous.addEventListener(
       "animationend",
@@ -49,11 +49,11 @@ const showSlide = (slide, direction) => {
     );
   }
 
-  slide.classList.add("is-active", "is-dealing");
+  slide.classList.add("is-active", "is-entering");
   slide.addEventListener(
     "animationend",
     (event) => {
-      if (event.target === slide) slide.classList.remove("is-dealing");
+      if (event.target === slide) slide.classList.remove("is-entering");
     },
     { once: true }
   );

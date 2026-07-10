@@ -1,5 +1,6 @@
 /* RBGA kiosk: an unlinked attract screen for stall laptops.
-   The screen is a felt card table; each slide is a card dealt onto it. */
+   The screen is a felt card table; slides crossfade and their
+   elements stagger in one by one. */
 
 :root {
   --felt: #0c2f1c;
@@ -12,7 +13,7 @@
   --accent: #8b5e34;
   --radius-card: clamp(18px, 2.5vw, 34px);
   --rail-h: clamp(92px, 13vh, 128px);
-  --deal-easing: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 * {
@@ -97,40 +98,67 @@ body::before {
   visibility: hidden;
 }
 
-/* Card states: dealt in from the bottom right, swept away to the left */
+/* Card states: the new card fades in over the old one, which holds
+   still underneath until the crossfade finishes */
 .card.is-active {
   visibility: visible;
   z-index: 2;
-  transform: translate(0, 0) rotate(0deg);
 }
 
-.card.is-dealing {
-  animation: deal 0.75s var(--deal-easing) both;
+.card.is-entering {
+  animation: card-fade 0.75s ease both;
 }
 
 .card.is-leaving {
   visibility: visible;
   z-index: 1;
-  animation: sweep 0.75s ease-in both;
+  animation: card-hold 0.75s linear both;
 }
 
-@keyframes deal {
-  from {
-    transform: translate(24%, 112%) rotate(7deg);
-  }
-  to {
-    transform: translate(0, 0) rotate(0deg);
-  }
+@keyframes card-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
-@keyframes sweep {
+@keyframes card-hold {
+  from { opacity: 1; }
+  to { opacity: 1; }
+}
+
+/* Once the card is up, its elements rise in one after another.
+   Longhand properties on purpose: the animation shorthand would reset
+   the per-element animation-delay set below. */
+.card.is-active .card-inner > :not(.photo-img):not(.session-row):not(.whats-on-list):not(.join-row),
+.card.is-active .session-row > .session,
+.card.is-active .whats-on-list > .whats-on-card,
+.card.is-active .join-row > .join-qr {
+  animation-name: rise-in;
+  animation-duration: 0.7s;
+  animation-timing-function: var(--ease-out);
+  animation-fill-mode: both;
+}
+
+.card.is-active .card-inner > :nth-child(1) { animation-delay: 0.25s; }
+.card.is-active .card-inner > :nth-child(2) { animation-delay: 0.4s; }
+.card.is-active .card-inner > :nth-child(3) { animation-delay: 0.55s; }
+
+.card.is-active .session-row > :nth-child(1),
+.card.is-active .whats-on-list > :nth-child(1),
+.card.is-active .join-row > :nth-child(1) { animation-delay: 0.55s; }
+.card.is-active .session-row > :nth-child(2),
+.card.is-active .whats-on-list > :nth-child(2),
+.card.is-active .join-row > :nth-child(2) { animation-delay: 0.7s; }
+.card.is-active .whats-on-list > :nth-child(3) { animation-delay: 0.85s; }
+.card.is-active .whats-on-list > :nth-child(4) { animation-delay: 1s; }
+
+@keyframes rise-in {
   from {
-    transform: translate(0, 0) rotate(0deg);
-    opacity: 1;
-  }
-  to {
-    transform: translate(-30%, 8%) rotate(-8deg);
     opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
   }
 }
 
@@ -471,31 +499,17 @@ body::before {
   letter-spacing: 0.12em;
 }
 
-/* ---------- Reduced motion: crossfade instead of dealing ---------- */
+/* ---------- Reduced motion: keep the gentle crossfade, drop the rest ---------- */
 
 @media (prefers-reduced-motion: reduce) {
-  .card.is-dealing {
-    animation: fade-in 0.6s ease both;
-  }
-
-  .card.is-leaving {
-    animation: fade-out 0.6s ease both;
-  }
-
+  .card.is-active .card-inner > *,
+  .card.is-active .session-row > .session,
+  .card.is-active .whats-on-list > .whats-on-card,
+  .card.is-active .join-row > .join-qr,
   .card.is-active .photo-img,
   .marquee-row.drift-left,
   .marquee-row.drift-right {
     animation: none;
-  }
-
-  @keyframes fade-in {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-
-  @keyframes fade-out {
-    from { opacity: 1; }
-    to { opacity: 0; }
   }
 }
 
