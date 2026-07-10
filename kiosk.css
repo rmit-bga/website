@@ -1,0 +1,529 @@
+/* RBGA kiosk: an unlinked attract screen for stall laptops.
+   The screen is a felt card table; each slide is a card dealt onto it. */
+
+:root {
+  --felt: #0c2f1c;
+  --felt-deep: #071f12;
+  --card: #fdfbf5;
+  --ink: #0f172a;
+  --ink-muted: #46554d;
+  --brand: #15803d;
+  --brand-bright: #22c55e;
+  --accent: #8b5e34;
+  --radius-card: clamp(18px, 2.5vw, 34px);
+  --rail-h: clamp(92px, 13vh, 128px);
+  --deal-easing: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+body {
+  font-family: "Montserrat", system-ui, sans-serif;
+  color: var(--ink);
+  background:
+    radial-gradient(120% 90% at 50% 30%, var(--felt) 0%, var(--felt-deep) 100%);
+  display: flex;
+  flex-direction: column;
+  cursor: default;
+}
+
+body.hide-cursor {
+  cursor: none;
+}
+
+/* Subtle felt grain over the whole table */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Slide progress hairline */
+.timer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  z-index: 30;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.timer-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--brand-bright);
+}
+
+.timer-fill.is-running {
+  animation: timer-run linear forwards;
+}
+
+@keyframes timer-run {
+  from { width: 0%; }
+  to { width: 100%; }
+}
+
+/* ---------- The table and its cards ---------- */
+
+.table {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  padding: clamp(16px, 3vh, 36px) clamp(16px, 4vw, 48px) 0;
+}
+
+.card {
+  position: absolute;
+  inset: clamp(16px, 3vh, 36px) clamp(16px, 4vw, 48px) 0;
+  background: var(--card);
+  border-radius: var(--radius-card) var(--radius-card) 0 0;
+  box-shadow:
+    0 -2px 0 rgba(255, 255, 255, 0.25) inset,
+    0 30px 70px rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+  visibility: hidden;
+}
+
+/* Card states: dealt in from the bottom right, swept away to the left */
+.card.is-active {
+  visibility: visible;
+  z-index: 2;
+  transform: translate(0, 0) rotate(0deg);
+}
+
+.card.is-dealing {
+  animation: deal 0.75s var(--deal-easing) both;
+}
+
+.card.is-leaving {
+  visibility: visible;
+  z-index: 1;
+  animation: sweep 0.75s ease-in both;
+}
+
+@keyframes deal {
+  from {
+    transform: translate(24%, 112%) rotate(7deg);
+  }
+  to {
+    transform: translate(0, 0) rotate(0deg);
+  }
+}
+
+@keyframes sweep {
+  from {
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 1;
+  }
+  to {
+    transform: translate(-30%, 8%) rotate(-8deg);
+    opacity: 0;
+  }
+}
+
+.card-inner {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(28px, 5vh, 72px) clamp(28px, 6vw, 96px);
+}
+
+/* ---------- Type ---------- */
+
+.eyebrow {
+  margin: 0 0 clamp(10px, 1.6vh, 20px);
+  font-size: clamp(14px, 1.6vw, 24px);
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--brand);
+}
+
+.display {
+  margin: 0;
+  font-size: clamp(40px, 6.5vw, 110px);
+  font-weight: 800;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+
+.display span {
+  color: var(--brand);
+}
+
+.lede {
+  margin: clamp(14px, 2.4vh, 28px) 0 0;
+  max-width: 26em;
+  font-size: clamp(18px, 2.1vw, 32px);
+  font-weight: 500;
+  line-height: 1.45;
+  color: var(--ink-muted);
+}
+
+/* ---------- Attract slide ---------- */
+
+.attract {
+  align-items: flex-start;
+  text-align: left;
+}
+
+.attract-logo {
+  width: clamp(220px, 30vw, 460px);
+  height: auto;
+  margin-bottom: clamp(16px, 3vh, 36px);
+}
+
+/* ---------- Photo slides ---------- */
+
+.card-inner.photo {
+  padding: 0;
+  justify-content: flex-end;
+}
+
+.photo-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card.is-active .photo-img {
+  animation: kenburns 14s ease-out forwards;
+}
+
+@keyframes kenburns {
+  from { transform: scale(1); }
+  to { transform: scale(1.07); }
+}
+
+.photo-caption {
+  position: relative;
+  margin: 0;
+  padding: clamp(80px, 14vh, 160px) clamp(28px, 6vw, 96px) clamp(28px, 5vh, 64px);
+  font-size: clamp(22px, 2.6vw, 42px);
+  font-weight: 700;
+  line-height: 1.25;
+  color: #ffffff;
+  background: linear-gradient(to top, rgba(5, 20, 12, 0.85), rgba(5, 20, 12, 0));
+  text-wrap: balance;
+}
+
+/* ---------- Sessions slide ---------- */
+
+.session-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(16px, 3vw, 40px);
+  margin-top: clamp(24px, 4.5vh, 52px);
+}
+
+.session {
+  border-left: clamp(4px, 0.5vw, 8px) solid var(--brand);
+  padding-left: clamp(16px, 2vw, 32px);
+}
+
+.session h3 {
+  margin: 0;
+  font-size: clamp(22px, 2.6vw, 42px);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.session-when {
+  margin: clamp(6px, 1vh, 12px) 0 0;
+  font-size: clamp(17px, 1.9vw, 30px);
+  font-weight: 600;
+  color: var(--brand);
+}
+
+.session-where {
+  margin: clamp(4px, 0.8vh, 10px) 0 0;
+  font-size: clamp(15px, 1.6vw, 24px);
+  color: var(--ink-muted);
+}
+
+/* ---------- What's on slide ---------- */
+
+.whats-on-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(12px, 2vw, 28px);
+  margin-top: clamp(20px, 4vh, 44px);
+}
+
+.whats-on-card {
+  display: flex;
+  align-items: center;
+  gap: clamp(14px, 1.6vw, 26px);
+  padding: clamp(14px, 1.8vw, 26px);
+  border: 2px solid rgba(15, 23, 42, 0.08);
+  border-radius: 18px;
+  background: #ffffff;
+}
+
+.whats-on-date {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: clamp(64px, 6vw, 96px);
+  padding: clamp(8px, 1vh, 14px) 0;
+  border-radius: 14px;
+  background: var(--brand);
+  color: #ffffff;
+}
+
+.whats-on-month {
+  font-size: clamp(12px, 1.1vw, 18px);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.whats-on-day {
+  font-size: clamp(24px, 2.6vw, 42px);
+  font-weight: 800;
+  line-height: 1.05;
+}
+
+.whats-on-title {
+  margin: 0;
+  font-size: clamp(17px, 1.8vw, 28px);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.whats-on-when {
+  margin: clamp(3px, 0.5vh, 8px) 0 0;
+  font-size: clamp(13px, 1.3vw, 20px);
+  color: var(--ink-muted);
+}
+
+/* ---------- Library slide ---------- */
+
+.card-inner.library {
+  padding: 0;
+  justify-content: space-between;
+}
+
+.library-copy {
+  padding: clamp(28px, 5vh, 64px) clamp(28px, 6vw, 96px) 0;
+}
+
+.library-marquee {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(10px, 1.4vh, 18px);
+  padding-bottom: clamp(20px, 3.5vh, 40px);
+}
+
+.marquee-row {
+  display: flex;
+  gap: clamp(10px, 1.2vw, 18px);
+  width: max-content;
+}
+
+.marquee-row img {
+  width: clamp(84px, 9.5vw, 150px);
+  height: clamp(84px, 9.5vw, 150px);
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.18);
+}
+
+.marquee-row.drift-left {
+  animation: drift-left 60s linear infinite;
+}
+
+.marquee-row.drift-right {
+  animation: drift-right 60s linear infinite;
+}
+
+@keyframes drift-left {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@keyframes drift-right {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
+}
+
+/* ---------- Join slide ---------- */
+
+.join {
+  align-items: center;
+  text-align: center;
+}
+
+.join-row {
+  display: flex;
+  gap: clamp(32px, 6vw, 96px);
+  margin-top: clamp(24px, 5vh, 56px);
+}
+
+.join-qr img {
+  width: clamp(160px, 22vh, 300px);
+  height: clamp(160px, 22vh, 300px);
+  padding: clamp(10px, 1.4vh, 18px);
+  background: #ffffff;
+  border: 3px solid var(--ink);
+  border-radius: 20px;
+}
+
+.join-qr p {
+  margin: clamp(10px, 1.6vh, 18px) 0 0;
+  font-size: clamp(18px, 2vw, 32px);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* ---------- Persistent QR rail ---------- */
+
+.rail {
+  flex: none;
+  height: var(--rail-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 0 clamp(16px, 4vw, 48px);
+}
+
+.rail-logo {
+  height: calc(var(--rail-h) * 0.62);
+  width: auto;
+}
+
+.rail-chips {
+  display: flex;
+  gap: clamp(12px, 2vw, 28px);
+}
+
+.rail-chip {
+  display: flex;
+  align-items: center;
+  gap: clamp(10px, 1.2vw, 16px);
+  padding: clamp(8px, 1.1vh, 12px) clamp(12px, 1.6vw, 22px);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  text-decoration: none;
+}
+
+.rail-chip img {
+  width: calc(var(--rail-h) * 0.58);
+  height: calc(var(--rail-h) * 0.58);
+  padding: 5px;
+  background: #ffffff;
+  border-radius: 10px;
+}
+
+.rail-chip span {
+  font-size: clamp(12px, 1.2vw, 18px);
+  font-weight: 500;
+  line-height: 1.3;
+  color: rgba(255, 255, 255, 0.75);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.rail-chip strong {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.rail-hint {
+  margin: 0;
+  font-size: clamp(11px, 1vw, 15px);
+  color: rgba(255, 255, 255, 0.4);
+  transition: opacity 0.6s ease;
+}
+
+.rail-hint.is-hidden {
+  opacity: 0;
+}
+
+/* ---------- Paused badge ---------- */
+
+.paused-badge {
+  position: fixed;
+  top: clamp(24px, 5vh, 56px);
+  right: clamp(24px, 5vw, 64px);
+  z-index: 40;
+  padding: 10px 22px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: #ffffff;
+  font-size: clamp(14px, 1.4vw, 20px);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+/* ---------- Reduced motion: crossfade instead of dealing ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .card.is-dealing {
+    animation: fade-in 0.6s ease both;
+  }
+
+  .card.is-leaving {
+    animation: fade-out 0.6s ease both;
+  }
+
+  .card.is-active .photo-img,
+  .marquee-row.drift-left,
+  .marquee-row.drift-right {
+    animation: none;
+  }
+
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes fade-out {
+    from { opacity: 1; }
+    to { opacity: 0; }
+  }
+}
+
+/* Portrait or narrow screens: stack what needs stacking */
+@media (max-width: 760px), (orientation: portrait) {
+  .session-row,
+  .whats-on-list {
+    grid-template-columns: 1fr;
+  }
+
+  .join-row {
+    gap: 24px;
+  }
+
+  .rail-logo {
+    display: none;
+  }
+
+  .rail-hint {
+    display: none;
+  }
+}

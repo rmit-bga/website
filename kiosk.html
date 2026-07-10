@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>RBGA Kiosk</title>
+    <!-- Stall display screen. Deliberately unlinked from the rest of the site. -->
+    <meta name="robots" content="noindex,nofollow" />
+    <meta name="theme-color" content="#0c2f1c" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="icon" type="image/x-icon" href="favicon.ico?v=20260319" />
+    <link rel="stylesheet" href="kiosk.css" />
+    <script src="kiosk.js" defer></script>
+  </head>
+
+  <body>
+    <div class="timer" aria-hidden="true"><div class="timer-fill" id="timer-fill"></div></div>
+
+    <main class="table" id="table" aria-label="RBGA stall display">
+      <!-- 1. Attract -->
+      <section class="card slide" data-duration="8000">
+        <div class="card-inner attract">
+          <img
+            class="attract-logo"
+            src="media/RBGA_Vector_Horizontal.svg"
+            alt="RBGA"
+            decoding="async"
+          />
+          <h1 class="display">Board games.<br />Every week. Free.</h1>
+          <p class="lede">RMIT City &amp; Bundoora campuses. Everyone welcome.</p>
+        </div>
+      </section>
+
+      <!-- 2. Photo -->
+      <section class="card slide" data-duration="8000">
+        <div class="card-inner photo">
+          <img
+            class="photo-img"
+            src="media/people-playing-boardgames.jpg"
+            alt="People playing board games at an RBGA session"
+            decoding="async"
+          />
+          <p class="photo-caption">
+            No experience needed. Turn up and someone will get you seated.
+          </p>
+        </div>
+      </section>
+
+      <!-- 3. New here -->
+      <section class="card slide" data-duration="9000">
+        <div class="card-inner copy">
+          <p class="eyebrow">New to board games?</p>
+          <h2 class="display">Never played?<br /><span>Perfect.</span></h2>
+          <p class="lede">
+            Most of us hadn't either. You don't need to bring anything, know
+            any rules, or stay the whole time.
+          </p>
+        </div>
+      </section>
+
+      <!-- 4. Sessions -->
+      <section class="card slide" data-duration="11000">
+        <div class="card-inner copy">
+          <p class="eyebrow">Weekly sessions</p>
+          <h2 class="display">Same time,<br />same tables.</h2>
+          <div class="session-row">
+            <div class="session">
+              <h3>City</h3>
+              <p class="session-when">Mon &amp; Wed, 2:30 PM til late</p>
+              <p class="session-where">Building 57, Level 4, Room 57.4.37</p>
+            </div>
+            <div class="session">
+              <h3>Bundoora</h3>
+              <p class="session-when">Wed, from 3 PM</p>
+              <p class="session-where">Building 204, 225-245 Plenty Rd</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. What's on (filled from the Rubric API; removed if it fails) -->
+      <section class="card slide" data-duration="12000" id="whats-on-slide" hidden>
+        <div class="card-inner copy">
+          <p class="eyebrow">Coming up</p>
+          <h2 class="display">What's on</h2>
+          <div class="whats-on-list" id="whats-on-list"></div>
+        </div>
+      </section>
+
+      <!-- 6. Games library (filled from the library API; removed if it fails) -->
+      <section class="card slide" data-duration="12000" id="library-slide" hidden>
+        <div class="card-inner library">
+          <div class="library-copy">
+            <p class="eyebrow">The library</p>
+            <h2 class="display" id="library-title">Hundreds of games.<br />All free to play.</h2>
+            <p class="lede">Party games, heavy strategy, quick fillers: something for every table.</p>
+          </div>
+          <div class="library-marquee" id="library-marquee" aria-hidden="true"></div>
+        </div>
+      </section>
+
+      <!-- 7. Photo -->
+      <section class="card slide" data-duration="8000">
+        <div class="card-inner photo">
+          <img
+            class="photo-img"
+            src="media/big-social-game.jpg"
+            alt="Club members playing a big social game"
+            decoding="async"
+          />
+          <p class="photo-caption">Big social games, most weeks. Bring friends or make some.</p>
+        </div>
+      </section>
+
+      <!-- 8. Join -->
+      <section class="card slide" data-duration="14000">
+        <div class="card-inner join">
+          <h2 class="display">Join in 10 seconds.<br /><span>It's free.</span></h2>
+          <div class="join-row">
+            <div class="join-qr">
+              <img src="media/qr-membership.svg" alt="QR code for free RBGA membership" />
+              <p>Free membership</p>
+            </div>
+            <div class="join-qr">
+              <img src="media/qr-discord.svg" alt="QR code for the RBGA Discord server" />
+              <p>Discord</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="rail" aria-label="Scan to join">
+      <img
+        class="rail-logo"
+        src="media/RBGA_Simplify_Vertical_White.png"
+        alt="RBGA"
+        decoding="async"
+      />
+      <div class="rail-chips">
+        <a
+          class="rail-chip"
+          href="https://campus.hellorubric.com/?tab=memberships&s=10742"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <img src="media/qr-membership.svg" alt="" aria-hidden="true" />
+          <span>Scan for<br /><strong>free membership</strong></span>
+        </a>
+        <a
+          class="rail-chip"
+          href="https://discord.gg/gNFaQWjpEn"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <img src="media/qr-discord.svg" alt="" aria-hidden="true" />
+          <span>Scan to<br /><strong>join the Discord</strong></span>
+        </a>
+      </div>
+      <p class="rail-hint" id="rail-hint">Press F for fullscreen</p>
+    </footer>
+
+    <div class="paused-badge" id="paused-badge" hidden>Paused</div>
+  </body>
+</html>
