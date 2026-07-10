@@ -5,7 +5,7 @@
 const slides = Array.from(document.querySelectorAll(".slide"));
 const timerFill = document.getElementById("timer-fill");
 const pausedBadge = document.getElementById("paused-badge");
-const railHint = document.getElementById("rail-hint");
+const fsHint = document.getElementById("fs-hint");
 
 const DEAL_MS = 750;
 let current = 0;
@@ -107,9 +107,9 @@ document.addEventListener("keydown", (event) => {
 });
 
 document.addEventListener("fullscreenchange", () => {
-  railHint.classList.toggle("is-hidden", Boolean(document.fullscreenElement));
+  fsHint.classList.toggle("is-hidden", Boolean(document.fullscreenElement));
 });
-setTimeout(() => railHint.classList.add("is-hidden"), 20000);
+setTimeout(() => fsHint.classList.add("is-hidden"), 20000);
 
 // Hide the cursor while idle so the screen reads as a display, not a desktop
 let cursorTimer = null;
