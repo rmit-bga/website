@@ -6,6 +6,7 @@ if (gamesGrid) {
   const API_URL = "https://rmitbga.duckdns.org/board-games";
   const searchInput = document.getElementById("games-search");
   const tagSelect = document.getElementById("games-tag");
+  const locationSelect = document.getElementById("games-location");
   const countEl = document.getElementById("games-count");
   const errorEl = document.getElementById("games-error");
   const emptyEl = document.getElementById("games-empty");
@@ -125,11 +126,32 @@ if (gamesGrid) {
       });
   };
 
+  const populateLocationSelect = () => {
+    // Keep only the "All campuses" option (retry after a failed load re-runs this).
+    while (locationSelect.options.length > 1) locationSelect.remove(1);
+    const locationSet = new Set();
+    allGames.forEach((game) => {
+      if (game.location) locationSet.add(game.location);
+    });
+    [...locationSet]
+      .sort((a, b) => a.localeCompare(b))
+      .forEach((location) => {
+        const option = document.createElement("option");
+        option.value = location;
+        option.textContent = location;
+        locationSelect.append(option);
+      });
+  };
+
   const filteredGames = () => {
     const query = searchInput.value.trim().toLowerCase();
     const tag = tagSelect.value;
+    const location = locationSelect.value;
     return allGames.filter((game) => {
       if (tag && !(Array.isArray(game.tags) && game.tags.includes(tag))) {
+        return false;
+      }
+      if (location && game.location !== location) {
         return false;
       }
       if (!query) return true;
@@ -166,6 +188,7 @@ if (gamesGrid) {
         // Hide games the last stocktake couldn't find.
         allGames = games.filter((game) => !game.missing);
         populateTagSelect();
+        populateLocationSelect();
         render();
       })
       .catch(showError);
@@ -177,6 +200,7 @@ if (gamesGrid) {
     searchTimer = setTimeout(render, 150);
   });
   tagSelect.addEventListener("change", render);
+  locationSelect.addEventListener("change", render);
   toolbar.addEventListener("submit", (event) => event.preventDefault());
   retryButton.addEventListener("click", load);
 
