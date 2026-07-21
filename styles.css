@@ -716,7 +716,18 @@ a {
   position: absolute;
   inset: -18%;
   z-index: 0;
-  background: var(--primary);
+  /* A ramp, not a flat fill. Whatever the fields leave bare still reads as
+     part of the poster rather than as one wash of teal, and it keeps warmth on
+     the page even at the moments when the orange fields have swept away. */
+  background: linear-gradient(
+    118deg,
+    var(--signal) 0%,
+    var(--accent) 28%,
+    var(--paper) 48%,
+    var(--moss) 68%,
+    var(--primary) 88%,
+    var(--primary-hover) 100%
+  );
   filter: blur(72px);
   pointer-events: none;
   /* Its own layer, so drifting children do not repaint the band behind them. */
@@ -739,16 +750,24 @@ a {
   animation-delay: var(--delay, 0s);
 }
 
-/* Mismatched durations, none of them multiples of another, so the field never
-   settles into a visible repeat. */
+/* Sized in vmax, not percent. Percent resolves against the container's width
+   alone, so on a narrow viewport the fields shrank while the band stayed 70vh
+   tall and the base showed through everywhere. vmax keys them to the larger
+   axis instead, so a tall narrow frame gets fields that still cover it.
+
+   Weighted warm: seven of the eleven are orange or red, because the balance
+   read as mostly teal with the base showing between them. Sizes run 25vmax to
+   80vmax so the field has a real range of scale rather than one average blob
+   repeated. Durations are mismatched and none is a multiple of another, with
+   negative delays so the field arrives mid-drift. */
 .blob-1 {
   --blob: var(--accent);
   --drift: drift-a;
   --dur: 13s;
-  width: 54%;
+  width: 72vmax;
   aspect-ratio: 1;
-  top: -6%;
-  left: -4%;
+  top: -18%;
+  left: -14%;
 }
 
 .blob-2 {
@@ -756,18 +775,18 @@ a {
   --drift: drift-b;
   --dur: 17s;
   --delay: -6s;
-  width: 40%;
+  width: 30vmax;
   aspect-ratio: 1;
   top: 34%;
   left: 16%;
 }
 
 .blob-3 {
-  --blob: var(--moss);
+  --blob: var(--accent);
   --drift: drift-c;
   --dur: 21s;
   --delay: -9s;
-  width: 58%;
+  width: 58vmax;
   aspect-ratio: 1;
   top: -12%;
   left: 38%;
@@ -778,43 +797,87 @@ a {
   --drift: drift-d;
   --dur: 11s;
   --delay: -4s;
-  width: 34%;
+  width: 25vmax;
   aspect-ratio: 1;
   top: 44%;
   left: 60%;
 }
 
 .blob-5 {
-  --blob: var(--primary-hover);
+  --blob: var(--accent-deep);
   --drift: drift-b;
   --dur: 19s;
   --delay: -13s;
-  width: 50%;
+  width: 66vmax;
   aspect-ratio: 1;
-  top: 6%;
-  left: 72%;
+  top: 2%;
+  left: 70%;
 }
 
 .blob-6 {
-  --blob: var(--accent-deep);
+  --blob: var(--accent);
   --drift: drift-a;
   --dur: 15s;
   --delay: -3s;
-  width: 32%;
+  width: 38vmax;
   aspect-ratio: 1;
   top: 54%;
-  left: 32%;
+  left: 30%;
 }
 
 .blob-7 {
-  --blob: var(--accent);
+  --blob: var(--moss);
   --drift: drift-d;
   --dur: 18s;
   --delay: -8s;
-  width: 44%;
+  width: 46vmax;
   aspect-ratio: 1;
-  top: 22%;
-  left: 4%;
+  top: 20%;
+  left: 2%;
+}
+
+.blob-8 {
+  --blob: var(--paper);
+  --drift: drift-c;
+  --dur: 23s;
+  --delay: -17s;
+  width: 28vmax;
+  aspect-ratio: 1;
+  top: 62%;
+  left: 82%;
+}
+
+.blob-9 {
+  --blob: var(--accent);
+  --drift: drift-a;
+  --dur: 14s;
+  --delay: -11s;
+  width: 80vmax;
+  aspect-ratio: 1;
+  top: 26%;
+  left: 44%;
+}
+
+.blob-10 {
+  --blob: var(--signal);
+  --drift: drift-d;
+  --dur: 12s;
+  --delay: -2s;
+  width: 34vmax;
+  aspect-ratio: 1;
+  top: -6%;
+  left: 88%;
+}
+
+.blob-11 {
+  --blob: var(--primary-hover);
+  --drift: drift-b;
+  --dur: 16s;
+  --delay: -15s;
+  width: 52vmax;
+  aspect-ratio: 1;
+  top: 48%;
+  left: -8%;
 }
 
 /* Four paths rather than one. Sharing a single set made every field travel the
