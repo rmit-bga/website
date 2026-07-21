@@ -1812,14 +1812,10 @@ footer {
 .whats-on-card {
   display: flex;
   flex-direction: column;
-  /* `clip` rather than `hidden`: it crops the banner to the rounded corners
-     the same way, but honours overflow-clip-margin, so the hover hit strip
-     added in the MOTION section survives instead of being cropped off. */
-  overflow: clip;
-  /* Measured from the PADDING box, so this has to exceed the 4px lift by the
-     border width to actually clear the border box. 8px leaves room; nothing
-     inside overflows anyway, the banner image fits. */
-  overflow-clip-margin: 8px;
+  /* No clipping. The banner rounds its own top corners instead, which leaves
+     the card free of a clip region that would crop the hover hit strip. An
+     inflated clip margin is not a substitute: it widens the rounded corner
+     along with everything else, so the banner's square corners escape it. */
   border-radius: var(--radius);
   background: var(--surface);
   border: 2px solid var(--ink);
@@ -1837,6 +1833,8 @@ footer {
 }
 
 .whats-on-image {
+  /* Matches the card's inner corner: its radius less the 2px border. */
+  border-radius: calc(var(--radius) - 2px) calc(var(--radius) - 2px) 0 0;
   width: 100%;
   aspect-ratio: 2 / 1;
   object-fit: cover;
@@ -2105,11 +2103,9 @@ footer {
   border: 2px solid var(--ink);
   background: var(--surface);
   box-shadow: var(--shadow-sm);
-  /* `clip` not `hidden`, for the same reason as .whats-on-card: it crops the
-     cover art to the rounded corners identically, but honours the clip margin,
-     so the hover hit strip is not cropped away along with it. */
-  overflow: clip;
-  overflow-clip-margin: 8px;
+  /* No clipping, for the same reason as .whats-on-card: the thumbnail block
+     rounds its own top corners, so the card needs no clip region that would
+     crop the hover hit strip. */
   transition: transform var(--duration-fast) ease, box-shadow var(--duration-fast) ease;
   will-change: transform;
 }
@@ -2121,6 +2117,8 @@ footer {
 }
 
 .game-thumb {
+  /* Matches the card's inner corner: its radius less the 2px border. */
+  border-radius: calc(var(--radius) - 2px) calc(var(--radius) - 2px) 0 0;
   padding: 1rem;
   display: grid;
   place-items: center;
