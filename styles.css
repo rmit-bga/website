@@ -245,6 +245,117 @@ a {
   opacity: 1;
 }
 
+/* Hero headline drop.
+   Letters fall under gravity, land, bounce and settle with a slight tilt, then
+   the wave stops and the closing phrase arrives as one mass and squashes on
+   impact. The rhythm break is the point, so this is the hero only: a second
+   one further down the page would stop reading as an impact.
+   Word wrappers are what keep the browser breaking between words rather than
+   inside them, since each letter is its own inline-block. */
+.drop-title .word {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.drop-title .l {
+  display: inline-block;
+}
+
+.drop-title .slam {
+  display: inline-block;
+  transform-origin: 50% 100%;
+}
+
+.js .drop-title .l,
+.js .drop-title .slam {
+  opacity: 0;
+}
+
+.js .drop-title.is-dropped .l {
+  animation: letter-drop 0.52s forwards;
+  animation-delay: calc(var(--i) * 34ms);
+}
+
+/* Easing changes per stop: accelerate in like a falling body, decelerate out
+   of the landing, then ease back into the bounce. One curve reads as a slide. */
+@keyframes letter-drop {
+  0% {
+    opacity: 0;
+    transform: translateY(-46px) rotate(var(--r));
+    animation-timing-function: cubic-bezier(0.6, 0.04, 0.98, 0.34);
+  }
+  55% {
+    opacity: 1;
+    transform: translateY(0) rotate(calc(var(--r) * 0.45));
+    animation-timing-function: ease-out;
+  }
+  70% {
+    transform: translateY(-9px) rotate(calc(var(--r) * -0.4));
+    animation-timing-function: ease-in;
+  }
+  85% {
+    transform: translateY(0) rotate(calc(var(--r) * 0.22));
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotate(0);
+  }
+}
+
+.js .drop-title.is-dropped .slam {
+  animation: word-slam 0.46s forwards;
+  animation-delay: var(--slam-delay, 1s);
+}
+
+/* Squash and stretch is what gives the word weight. */
+@keyframes word-slam {
+  0% {
+    opacity: 0;
+    transform: translateY(-104px) scaleY(1.18) scaleX(0.94);
+    animation-timing-function: cubic-bezier(0.7, 0.02, 0.98, 0.3);
+  }
+  58% {
+    opacity: 1;
+    transform: translateY(0) scaleY(0.78) scaleX(1.09);
+    animation-timing-function: ease-out;
+  }
+  72% {
+    transform: translateY(-7px) scaleY(1.06) scaleX(0.97);
+  }
+  86% {
+    transform: translateY(0) scaleY(0.96) scaleX(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* The line rattles, never the page. */
+.js .drop-title.is-dropped {
+  animation: line-rattle 0.34s ease-out;
+  animation-delay: var(--impact-at, 1.27s);
+}
+
+@keyframes line-rattle {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(0);
+  }
+  15% {
+    transform: translate(-3px, 2px) rotate(-0.35deg);
+  }
+  35% {
+    transform: translate(3px, -1px) rotate(0.3deg);
+  }
+  55% {
+    transform: translate(-2px, 1px) rotate(-0.2deg);
+  }
+  78% {
+    transform: translate(1px, 0) rotate(0.1deg);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .js .reveal,
   .js .reveal-fade {
@@ -262,6 +373,19 @@ a {
   .featured-games,
   .whats-on {
     animation: none;
+  }
+
+  .js .drop-title,
+  .js .drop-title.is-dropped,
+  .js .drop-title.is-dropped .l,
+  .js .drop-title.is-dropped .slam {
+    animation: none;
+  }
+
+  .js .drop-title .l,
+  .js .drop-title .slam {
+    opacity: 1;
+    transform: none;
   }
 
   .game-card-skeleton {

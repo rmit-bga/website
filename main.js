@@ -116,6 +116,73 @@ if (prefersReducedMotion.matches || !("IntersectionObserver" in window)) {
   revealItems.forEach((item) => observer.observe(item));
 }
 
+// Hero headline: split the lead phrase into per-letter spans nested inside
+// per-word wrappers. The closing phrase stays whole so it can land as one mass,
+// and so its accent styling survives. Split in JS rather than the markup to
+// keep index.html readable and the heading selectable and announced as text.
+const dropTitle = document.querySelector(".drop-title");
+if (dropTitle) {
+  const slam = dropTitle.querySelector(".slam");
+  const lead = slam ? (slam.previousSibling?.textContent || "").trim() : "";
+
+  if (slam && lead) {
+    dropTitle.setAttribute(
+      "aria-label",
+      dropTitle.textContent.replace(/\s+/g, " ").trim()
+    );
+
+    const built = document.createDocumentFragment();
+    let count = 0;
+    lead.split(/\s+/).forEach((word) => {
+      const wrapper = document.createElement("span");
+      wrapper.className = "word";
+      wrapper.setAttribute("aria-hidden", "true");
+      [...word].forEach((char) => {
+        const letter = document.createElement("span");
+        letter.className = "l";
+        letter.style.setProperty("--i", count);
+        // Deterministic tilt across -5deg to 5deg. Reads as noise, but replays
+        // identically, where a random angle per load would feel unstable.
+        letter.style.setProperty("--r", (((count * 37) % 11) - 5) + "deg");
+        letter.textContent = char;
+        wrapper.append(letter);
+        count += 1;
+      });
+      built.append(wrapper, " ");
+    });
+
+    slam.setAttribute("aria-hidden", "true");
+    dropTitle.textContent = "";
+    dropTitle.append(built, slam);
+
+    // Hold a beat after the last letter lands, so the slam breaks the rhythm
+    // instead of continuing it. Derived from the letter count so the pause
+    // stays right if the copy changes.
+    const slamDelay = count * 34 + 520 * 0.6 + 180;
+    dropTitle.style.setProperty("--slam-delay", slamDelay + "ms");
+    // 58% into the slam is where the squash bottoms out.
+    dropTitle.style.setProperty("--impact-at", slamDelay + 0.58 * 460 + "ms");
+  }
+
+  const startDrop = () => dropTitle.classList.add("is-dropped");
+  if (prefersReducedMotion.matches || !("IntersectionObserver" in window)) {
+    startDrop();
+  } else {
+    const dropObserver = new IntersectionObserver(
+      (entries, currentObserver) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            startDrop();
+            currentObserver.disconnect();
+          }
+        });
+      },
+      { threshold: 0, rootMargin: "0px 0px -80px 0px" }
+    );
+    dropObserver.observe(dropTitle);
+  }
+}
+
 window.addEventListener("scroll", updateNavState, { passive: true });
 window.addEventListener("load", updateNavState);
 updateNavState();
