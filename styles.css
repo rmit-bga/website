@@ -283,21 +283,45 @@ a {
 }
 
 /* The hole gathers inward before it opens, so the reveal reads as pressure
-   rather than a zoom. Same anticipation beat as the headline slam. */
+   rather than a zoom. Same anticipation beat as the headline slam.
+
+   Position has to travel, and it has to be a percentage rather than a pixel
+   offset. A percentage anchor converges on that same fraction of the mask as
+   it grows, so wherever it ends is the shape the viewport finishes inside; a
+   pixel offset becomes negligible at scale and always converges on the
+   geometric centre. The centre of this wordmark is the gap between B and G,
+   which is transparent, so centred growth opens onto ink instead of a letter.
+
+   57.5% / 39% is the deepest solid point inside the G, measured off the
+   artwork rather than eyeballed: a distance transform of the mask's alpha
+   puts it 7% of the artwork's width clear of any edge. At the final size that
+   is around 1370px of solid in every direction, comfortably more than the
+   830px half-diagonal of a 1400x900 viewport, so the screen ends fully inside
+   the letter and the ink is simply gone.
+
+   It stays centred through the hold so the title card is not lopsided, and
+   only drifts once the shape is large enough that the travel reads as moving
+   through the letter rather than sliding the logo sideways. */
 @keyframes intro-open {
   0%,
   18% {
+    -webkit-mask-position: center, 50% 50%;
+    mask-position: center, 50% 50%;
     -webkit-mask-size: 100% 100%, 72vw auto;
     mask-size: 100% 100%, 72vw auto;
     visibility: visible;
   }
   27% {
+    -webkit-mask-position: center, 50% 50%;
+    mask-position: center, 50% 50%;
     -webkit-mask-size: 100% 100%, 64vw auto;
     mask-size: 100% 100%, 64vw auto;
     animation-timing-function: cubic-bezier(0.7, 0, 0.85, 0.35);
   }
   62%,
   100% {
+    -webkit-mask-position: center, 57.5% 39%;
+    mask-position: center, 57.5% 39%;
     -webkit-mask-size: 100% 100%, 1400vw auto;
     mask-size: 100% 100%, 1400vw auto;
     visibility: hidden;
