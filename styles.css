@@ -556,6 +556,12 @@ a {
     animation: none;
   }
 
+  /* Scroll the band away with the page instead of pinning it. Parallax is
+     exactly the kind of decoupled movement this setting is asking about. */
+  .hero-banner {
+    position: relative;
+  }
+
   .js .drop-title,
   .js .drop-title.is-dropped,
   .js .drop-title.is-dropped .l,
@@ -644,14 +650,32 @@ a {
    HERO BANNER
    ========================= */
 
+/* The band stays pinned while the page rides up over it. Sticky rather than
+   fixed, so it still participates in layout and needs no spacer, and so it
+   releases naturally at the end of its container. */
 .hero-banner {
-  position: relative;
+  position: sticky;
+  top: 0;
+  z-index: 0;
   margin: -1rem 0 0;
   padding: 3rem 0;
   min-height: 70vh;
   display: flex;
   align-items: center;
   overflow: hidden;
+}
+
+/* The layer that covers it. Opaque and full width: the body background paints
+   behind the sticky band rather than over it, and #home and the footer are
+   .container width, so their own backgrounds would leave the gutters clear. */
+.page-body {
+  position: relative;
+  z-index: 1;
+  background: var(--paper);
+  /* The band's own bottom rule now sits behind this layer, so the rule has to
+     travel with the covering edge instead. Without it the seam is the one hard
+     boundary on the page with no ink on it. */
+  border-top: 3px solid var(--ink);
 }
 
 .hero-banner {
