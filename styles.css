@@ -245,6 +245,63 @@ a {
   opacity: 1;
 }
 
+/* Hover lifts these up and to the left, away from their shadow. That vacates a
+   strip along the right and bottom edges, and a pointer resting in that strip
+   is left outside the element the instant it lifts: hover drops, the element
+   springs back under the pointer, hover fires again, and it oscillates for as
+   long as the pointer holds still. Moving the mouse hides it, holding still
+   does not, which is the wrong way round for a hover effect.
+
+   Extend the hit area by the lift distance while lifted, so the element never
+   leaves the pointer behind. ::after rides along with the transform, so
+   offsetting it in the element's own space puts its edge back over the
+   footprint the element occupied before it moved.
+
+   The negative z-index keeps it behind the card's own content, so links inside
+   a card still take the click; out in the strip there is nothing else to hit,
+   so it registers there. */
+.mini-social,
+.social-link {
+  --lift: 2px;
+}
+
+.event-card,
+.discord-feature,
+.whats-on-card,
+.featured-game,
+.game-card {
+  --lift: 4px;
+}
+
+.mini-social,
+.social-link,
+.event-card,
+.discord-feature,
+.whats-on-card,
+.featured-game,
+.game-card {
+  position: relative;
+}
+
+.mini-social:hover::after,
+.social-link:hover::after,
+.event-card:hover::after,
+.discord-feature:hover::after,
+.whats-on-card:hover::after,
+.featured-game:hover::after,
+.game-card:hover::after {
+  content: "";
+  position: absolute;
+  /* Absolutely positioned children resolve against the PADDING box, so plain
+     negative offsets stop at the border edge and extend nothing. Inset past the
+     border first, then translate by the lift: that lands this box exactly over
+     the footprint the element occupied before it moved. */
+  inset: -3px;
+  transform: translate(var(--lift), var(--lift));
+  z-index: -1;
+}
+
+
 /* =========================
    INTRO
    ========================= */
@@ -1755,7 +1812,14 @@ footer {
 .whats-on-card {
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  /* `clip` rather than `hidden`: it crops the banner to the rounded corners
+     the same way, but honours overflow-clip-margin, so the hover hit strip
+     added in the MOTION section survives instead of being cropped off. */
+  overflow: clip;
+  /* Measured from the PADDING box, so this has to exceed the 4px lift by the
+     border width to actually clear the border box. 8px leaves room; nothing
+     inside overflows anyway, the banner image fits. */
+  overflow-clip-margin: 8px;
   border-radius: var(--radius);
   background: var(--surface);
   border: 2px solid var(--ink);
@@ -2041,7 +2105,11 @@ footer {
   border: 2px solid var(--ink);
   background: var(--surface);
   box-shadow: var(--shadow-sm);
-  overflow: hidden;
+  /* `clip` not `hidden`, for the same reason as .whats-on-card: it crops the
+     cover art to the rounded corners identically, but honours the clip margin,
+     so the hover hit strip is not cropped away along with it. */
+  overflow: clip;
+  overflow-clip-margin: 8px;
   transition: transform var(--duration-fast) ease, box-shadow var(--duration-fast) ease;
   will-change: transform;
 }
