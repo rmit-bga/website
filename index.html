@@ -279,19 +279,27 @@
       </div>
     </nav>
 
-    <section class="hero-banner" aria-label="RBGA introduction">
-      <!-- Drifting colour fields, blurred into each other. Pure CSS: no canvas,
-           no video, nothing to load. Sits over the static marble SVG that backs
-           this band, which is what shows if these rules never arrive. -->
-      <div class="hero-art" aria-hidden="true">
-        <span class="blob blob-1"></span>
-        <span class="blob blob-2"></span>
-        <span class="blob blob-3"></span>
-        <span class="blob blob-4"></span>
-        <span class="blob blob-5"></span>
-        <span class="blob blob-6"></span>
-        <span class="blob blob-7"></span>
+    <!-- The artwork is its own pinned layer, a sibling of the band rather than
+         a child of it. Inside the band it would be stuck to the wordmark, and
+         these two are meant to move at different rates: the fields hold still
+         while the wordmark scrolls away with the page.
+         The pin is zero height so it takes no space; the clip inside it is what
+         stops the blurred overhang widening the document. -->
+    <div class="hero-art-pin" aria-hidden="true">
+      <div class="hero-art-clip">
+        <div class="hero-art">
+          <span class="blob blob-1"></span>
+          <span class="blob blob-2"></span>
+          <span class="blob blob-3"></span>
+          <span class="blob blob-4"></span>
+          <span class="blob blob-5"></span>
+          <span class="blob blob-6"></span>
+          <span class="blob blob-7"></span>
+        </div>
       </div>
+    </div>
+
+    <section class="hero-banner" aria-label="RBGA introduction">
       <div class="hero-banner-content container reveal" style="--delay: 0.1s">
         <img
           src="media/RBGA_Vector_Horizontal.svg"

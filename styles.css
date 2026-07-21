@@ -556,9 +556,9 @@ a {
     animation: none;
   }
 
-  /* Scroll the band away with the page instead of pinning it. Parallax is
-     exactly the kind of decoupled movement this setting is asking about. */
-  .hero-banner {
+  /* Let the artwork scroll away with the page instead of pinning it. Parallax
+     is exactly the kind of decoupled movement this setting is asking about. */
+  .hero-art-pin {
     position: relative;
   }
 
@@ -650,12 +650,10 @@ a {
    HERO BANNER
    ========================= */
 
-/* The band stays pinned while the page rides up over it. Sticky rather than
-   fixed, so it still participates in layout and needs no spacer, and so it
-   releases naturally at the end of its container. */
+/* The band itself scrolls away normally, carrying the wordmark with it. What
+   stays pinned is the artwork layer above, so the two move at different rates. */
 .hero-banner {
-  position: sticky;
-  top: 0;
+  position: relative;
   z-index: 0;
   margin: -1rem 0 0;
   padding: 3rem 0;
@@ -682,12 +680,30 @@ a {
   border-block: 3px solid var(--ink);
 }
 
-.hero-banner::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: var(--primary) url("media/marble-swirl.svg") center/cover no-repeat;
+/* The static marble that used to back this band is gone. It sat behind an
+   opaque artwork layer, so it was already invisible; now that the artwork is
+   pinned *behind* the band, keeping it would paint the marble straight over the
+   fields. media/marble-swirl.svg is no longer referenced. */
+
+/* Zero height, so it takes no space in the flow and the band's own geometry is
+   untouched. This is what holds still while the page scrolls. */
+.hero-art-pin {
+  position: sticky;
+  top: 0;
+  height: 0;
   z-index: 0;
+}
+
+/* The clip. The artwork overhangs its box to keep the blur's edges outside the
+   frame, and without something to clip against, that overhang would widen the
+   document and add a horizontal scrollbar. */
+.hero-art-clip {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
 }
 
 /* Colour fields drifting behind the wordmark, blurred until they read as one
