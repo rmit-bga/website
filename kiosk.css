@@ -3,15 +3,27 @@
    one; a website QR stays pinned top right. */
 
 :root {
-  --felt: #0c2f1c;
-  --felt-deep: #071f12;
-  --card: #fdfbf5;
-  --ink: #0f172a;
-  --ink-muted: #46554d;
-  --brand: #15803d;
-  --brand-bright: #22c55e;
-  --accent: #8b5e34;
+  --felt: #12433d; /* deep teal table, matching the poster ground */
+  --felt-deep: #0a2b27;
+  --card: #fbf8e6; /* poster cream */
+  --paper: #f0efa9;
+  --ink: #143b36;
+  --ink-muted: #3f6b62;
+  --brand: #e8862b; /* poster orange */
+  --brand-bright: #b8451f;
+  --accent: #1e6f66; /* teal */
+  --font-display: "KN Yuanmo", "Arial Black", system-ui, sans-serif;
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Shared with the main site; see styles.css for the subsetting note. */
+@font-face {
+  font-family: "KN Yuanmo";
+  src: url("media/fonts/knyuanmo-latin.woff2") format("woff2"),
+    url("media/fonts/knyuanmo-latin.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
 }
 
 * {
@@ -167,11 +179,13 @@ body::before {
 
 .display {
   margin: 0;
+  font-family: var(--font-display);
   font-size: clamp(40px, 6.5vw, 110px);
-  font-weight: 800;
-  line-height: 1.02;
-  letter-spacing: -0.02em;
+  font-weight: 400;
+  line-height: 0.98;
+  letter-spacing: 0.01em;
   text-transform: uppercase;
+  text-shadow: 5px 5px 0 var(--ink);
 }
 
 .display span {
@@ -231,8 +245,8 @@ body::before {
   font-size: clamp(22px, 2.6vw, 42px);
   font-weight: 700;
   line-height: 1.25;
-  color: #ffffff;
-  background: linear-gradient(to top, rgba(5, 20, 12, 0.85), rgba(5, 20, 12, 0));
+  color: var(--card);
+  background: linear-gradient(to top, rgba(10, 43, 39, 0.88), rgba(10, 43, 39, 0));
   text-wrap: balance;
 }
 
@@ -252,8 +266,9 @@ body::before {
 
 .session h3 {
   margin: 0;
+  font-family: var(--font-display);
   font-size: clamp(22px, 2.6vw, 42px);
-  font-weight: 800;
+  font-weight: 400;
   text-transform: uppercase;
   letter-spacing: 0.02em;
 }
@@ -289,7 +304,7 @@ body::before {
   overflow: hidden;
   border: 2px solid rgba(15, 23, 42, 0.08);
   border-radius: 18px;
-  background: #ffffff;
+  background: var(--card);
 }
 
 .whats-on-image {
@@ -316,7 +331,7 @@ body::before {
   padding: clamp(6px, 0.9vh, 12px) 0;
   border-radius: 14px;
   background: var(--brand);
-  color: #ffffff;
+  color: var(--card);
 }
 
 .whats-on-month {
@@ -412,7 +427,7 @@ body::before {
   width: clamp(160px, 22vh, 300px);
   height: clamp(160px, 22vh, 300px);
   padding: clamp(10px, 1.4vh, 18px);
-  background: #ffffff;
+  background: var(--card);
   border: 3px solid var(--ink);
   border-radius: 20px;
 }
@@ -437,7 +452,7 @@ body::before {
   align-items: center;
   padding: clamp(8px, 1.2vh, 14px);
   border-radius: 14px;
-  background: #ffffff;
+  background: var(--card);
   box-shadow: 0 8px 26px rgba(15, 23, 42, 0.22);
 }
 
@@ -482,7 +497,7 @@ body::before {
   padding: 10px 22px;
   border-radius: 999px;
   background: var(--ink);
-  color: #ffffff;
+  color: var(--card);
   font-size: clamp(14px, 1.4vw, 20px);
   font-weight: 700;
   text-transform: uppercase;

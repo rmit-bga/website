@@ -1,34 +1,50 @@
 /* =========================
-   RBGA (LIGHT MODE) - Green & Brown Primary
+   RBGA - Retro poster theme
+   Cream paper, orange display type, teal ink, hard offset shadows.
+   Sampled from the "Board games are coming to Bundoora" poster.
    ========================= */
 
 :root {
   /* Core */
-  --bg: #ffffff;
-  --surface: #ffffff;
-  --surface-soft: #f6f7fb;
-  --surface-tint: #f2f7f2; /* very light green tint */
+  --paper: #f0efa9; /* pale yellow poster stock */
+  --bg: var(--paper);
+  --surface: #fbf8e6; /* warm off-white: cards and speech bubbles */
+  --surface-soft: #f5f1d4;
+  --surface-tint: #e6efd8; /* mossy tint */
 
-  --text: #0f172a; /* slate-900 */
-  --text-muted: #475569; /* slate-600 */
-  --border: #e7e9f2;
-  --shadow: 0 18px 60px rgba(15, 23, 42, 0.08);
+  --ink: #143b36; /* deep teal-black: text, borders, shadows */
+  --ink-muted: #3f6b62;
+  --text: var(--ink);
+  --text-muted: var(--ink-muted);
+  --border: var(--ink);
+  --shadow: 6px 6px 0 var(--ink);
 
-  /* Primary (green) */
-  --primary: #15803d; /* green-700 */
-  --primary-hover: #166534; /* green-800 */
-  --primary-soft: rgba(21, 128, 61, 0.12);
-  --primary-rgb: 21 128 61;
+  /* Primary (teal) */
+  --primary: #1e6f66;
+  --primary-hover: #0f4a44;
+  --primary-soft: rgba(30, 111, 102, 0.14);
+  --primary-rgb: 30 111 102;
 
-  /* Secondary (brown) */
-  --accent: #8b5e34;
-  --accent-soft: rgba(139, 94, 52, 0.12);
-  --accent-rgb: 139 94 52;
+  /* Secondary (poster orange).
+     --accent is a FILL colour: ink on it reads 4.6:1, so it carries buttons and
+     badges. --accent-deep is the TEXT orange, darkened from the poster's #e4622c
+     to clear 4.5:1 on both cream surfaces. Don't swap their roles. */
+  --accent: #e8862b;
+  --accent-deep: #b8451f;
+  --accent-soft: rgba(232, 134, 43, 0.16);
+  --accent-rgb: 232 134 43;
+
+  /* Poster extras */
+  --signal: #d9422b; /* dashed route lines, small highlights */
+  --moss: #6e9b4e;
+
+  /* Type */
+  --font-display: "KN Yuanmo", "Arial Black", system-ui, sans-serif;
 
   /* Radii */
-  --radius: 18px;
-  --radius-md: 14px;
-  --radius-sm: 12px;
+  --radius: 22px;
+  --radius-md: 16px;
+  --radius-sm: 14px;
   --radius-full: 999px;
 
   /* Transitions */
@@ -47,13 +63,30 @@
   --facebook: #1877f2;
   --facebook-rgb: 24 119 242;
 
-  /* Shadow scale */
-  --shadow-xs: 0 8px 18px rgba(15, 23, 42, 0.08);
-  --shadow-sm: 0 10px 28px rgba(15, 23, 42, 0.06);
-  --shadow-hover: 0 16px 36px rgba(15, 23, 42, 0.12);
+  /* Shadow scale. Hard offsets, not blurs: this is what makes the page
+     read as screen print rather than a dashboard. */
+  --shadow-xs: 2px 2px 0 var(--ink);
+  --shadow-sm: 4px 4px 0 var(--ink);
+  --shadow-hard: 5px 5px 0 var(--ink);
+  --shadow-hover: 9px 9px 0 var(--ink);
 
   /* Layout */
   --container: 1200px;
+}
+
+/* =========================
+   FONTS
+   ========================= */
+
+/* KN Yuanmo SC, subset to Latin (3.1MB TTF -> 13KB woff2). Display only:
+   its CJK-derived metrics are too loose for running body copy. */
+@font-face {
+  font-family: "KN Yuanmo";
+  src: url("media/fonts/knyuanmo-latin.woff2") format("woff2"),
+    url("media/fonts/knyuanmo-latin.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
 }
 
 /* =========================
@@ -74,11 +107,51 @@ body {
   margin: 0;
   font-family: "Montserrat", system-ui, -apple-system, BlinkMacSystemFont,
     "Segoe UI", sans-serif;
-  background: radial-gradient(900px 520px at 20% -10%, var(--primary-soft), transparent),
-    radial-gradient(820px 500px at 90% 10%, var(--accent-soft), transparent),
-    var(--bg);
+  background: var(--paper);
   color: var(--text);
   line-height: 1.6;
+}
+
+/* Printed-paper tooth over the cream. Same feTurbulence trick as kiosk.css. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.055;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Display type: chunky, tight, uppercase. */
+h1,
+h2,
+h3,
+.big-title,
+.hero-title,
+.games-page-header h1,
+.whats-on-title,
+.featured-games-title,
+.games-status h2 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+}
+
+h2,
+.big-title,
+.games-page-header h1 {
+  text-transform: uppercase;
+  line-height: 0.98;
+}
+
+/* The display face has wide advances, so long headings must be free to break. */
+h1,
+h2,
+h3,
+.big-title {
+  overflow-wrap: break-word;
+  text-wrap: balance;
 }
 
 img {
@@ -117,6 +190,21 @@ a {
 
 .section {
   padding: 4.5rem 0;
+}
+
+/* Dashed route line, echoing the poster's path from the bubble to the pin.
+   Decorative only. */
+.route-divider {
+  width: min(100% - 2rem, var(--container));
+  margin-inline: auto;
+  height: 4px;
+  border-radius: var(--radius-full);
+  background-image: repeating-linear-gradient(
+    to right,
+    var(--signal) 0 18px,
+    transparent 18px 34px
+  );
+  opacity: 0.8;
 }
 
 /* Keep [hidden] working on elements whose class sets a display */
@@ -200,15 +288,15 @@ a {
   padding: 0.85rem 1.25rem;
   width: min(100% - 2rem, var(--container));
 
-  background: rgba(255, 255, 255, 0.72);
+  background: rgba(251, 248, 230, 0.88);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
 
-  border: 1px solid rgba(231, 233, 242, 0.9);
+  border: 2px solid var(--ink);
   border-radius: var(--radius);
   overflow: hidden;
   background-clip: padding-box;
-  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+  box-shadow: var(--shadow-hard);
   transition: transform var(--duration-normal) ease, border-radius var(--duration-normal) ease,
     box-shadow var(--duration-normal) ease, background var(--duration-normal) ease;
   will-change: transform;
@@ -261,25 +349,24 @@ a {
   overflow: hidden;
 }
 
+.hero-banner {
+  border-block: 3px solid var(--ink);
+}
+
 .hero-banner::before {
   content: "";
   position: absolute;
-  inset: -12%;
-  background: url("media/picture-of-boardgames.jpg") center/cover no-repeat;
-  background-image: image-set(
-    url("media/picture-of-boardgames.webp") type("image/webp"),
-    url("media/picture-of-boardgames.jpg") type("image/jpeg")
-  );
-  filter: blur(5px);
-  transform: scale(1.05);
+  inset: 0;
+  background: var(--primary) url("media/marble-swirl.svg") center/cover no-repeat;
   z-index: 0;
 }
 
+/* Light cream veil so the logo reads as ink on marble, like the poster band. */
 .hero-banner::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: rgba(8, 12, 24, 0.38);
+  background: rgba(240, 239, 169, 0.1);
   z-index: 0;
 }
 
@@ -291,12 +378,17 @@ a {
   justify-content: center;
 }
 
+/* Width-first, so the wordmark never runs past the viewport on narrow screens. */
 .hero-banner-content img {
-  height: 70vh;
-  width: auto;
-  max-width: 90%;
+  width: min(90%, 1000px);
+  height: auto;
+  max-height: 70vh;
   object-fit: contain;
-  filter: brightness(0) invert(1) drop-shadow(0 18px 40px rgba(0, 0, 0, 0.35));
+  /* Knock the logo out to cream, then a hard offset shadow in ink. The offset
+     is proportional so the small subtitle line doesn't read as a double print. */
+  filter: brightness(0) invert(1) sepia(1) saturate(0.6) hue-rotate(5deg)
+    brightness(1.05)
+    drop-shadow(var(--logo-shadow, 6px) var(--logo-shadow, 6px) 0 rgba(20, 59, 54, 0.9));
 }
 
 .nav-links {
@@ -313,8 +405,8 @@ a {
   width: 44px;
   height: 44px;
   border-radius: var(--radius-sm);
-  border: 1px solid var(--border);
-  background: #fff;
+  border: 2px solid var(--ink);
+  background: var(--surface);
   cursor: pointer;
   padding: 0;
 }
@@ -326,9 +418,12 @@ a {
 }
 
 .nav-links a {
-  color: var(--text-muted);
+  color: var(--ink);
   text-decoration: none;
-  font-weight: 600;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 0.95rem;
+  text-transform: uppercase;
   position: relative;
   padding: 0.25rem 0;
 }
@@ -339,13 +434,13 @@ a {
   left: 0;
   bottom: -6px;
   width: 0;
-  height: 2px;
-  background: var(--primary);
+  height: 3px;
+  background: var(--signal);
   transition: width var(--duration-normal) ease;
 }
 
 .nav-links a:hover {
-  color: var(--text);
+  color: var(--accent-deep);
 }
 
 .nav-links a:hover::after {
@@ -353,15 +448,21 @@ a {
 }
 
 #membershipButton {
-  color: #fff;
-  padding: 0.45rem 0.85rem;
+  color: var(--ink);
+  padding: 0.45rem 0.95rem;
   border-radius: var(--radius-sm);
-  background: var(--primary);
-  box-shadow: 0 10px 22px rgba(var(--primary-rgb), 0.18);
+  background: var(--accent);
+  border: 2px solid var(--ink);
+  box-shadow: var(--shadow-xs);
+}
+
+#membershipButton::after {
+  content: none;
 }
 
 #membershipButton:hover {
-  background: var(--primary-hover);
+  background: var(--accent-deep);
+  color: var(--surface);
 }
 
 /* =========================
@@ -392,18 +493,17 @@ header.container {
   border-radius: var(--radius-full);
   display: grid;
   place-items: center;
-  background: #fff;
-  border: 1px solid var(--border);
+  background: var(--surface);
+  border: 2px solid var(--ink);
   color: var(--text);
   box-shadow: var(--shadow-xs);
-  transition: transform var(--duration-fast) ease, box-shadow var(--duration-fast) ease, border-color var(--duration-fast) ease;
+  transition: transform var(--duration-fast) ease, box-shadow var(--duration-fast) ease;
 }
 
 .mini-social:hover,
 .mini-social:focus-visible {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.14);
-  border-color: rgba(15, 23, 42, 0.2);
+  transform: translate(-2px, -2px);
+  box-shadow: 4px 4px 0 var(--ink);
 }
 
 /* =========================
@@ -443,21 +543,19 @@ header.container {
   -webkit-mask-image: url("media/discord-icon-svgrepo-com.svg");
 }
 
+/* Ink borders stay; only the glyph carries the brand colour. */
 .mini-social.instagram,
 .social-link.instagram {
-  border-color: rgba(var(--instagram-rgb), 0.35);
   color: var(--instagram);
 }
 
 .mini-social.facebook,
 .social-link.facebook {
-  border-color: rgba(var(--facebook-rgb), 0.35);
   color: var(--facebook);
 }
 
 .mini-social.discord,
 .social-link.discord {
-  border-color: rgba(var(--discord-rgb), 0.35);
   color: var(--discord);
 }
 
@@ -467,29 +565,35 @@ header.container {
 
 .hero-title {
   margin: 0 0 0.85rem;
-  display: inline-flex;
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 0.6rem;
   font-size: 0.82rem;
-  font-weight: 700;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--primary);
 }
 
 .hero-title::before {
   content: "";
-  width: 36px;
-  height: 2px;
+  width: 44px;
+  height: 4px;
   border-radius: var(--radius-full);
-  background: var(--accent);
-  opacity: 0.7;
+  background-image: repeating-linear-gradient(
+    to right,
+    var(--signal) 0 9px,
+    transparent 9px 16px
+  );
 }
 
+/* The poster marquee: orange fill, hard ink shadow, no daylight between lines. */
 .big-title {
-  font-size: clamp(3rem, 6vw, 4.5rem);
-  line-height: 1.05;
+  font-size: clamp(2.4rem, 6vw, 4.5rem);
+  line-height: 0.95;
   margin: 0;
+  color: var(--accent);
+  text-shadow: 5px 5px 0 var(--ink);
 }
 
 .hero-copy > p {
@@ -501,8 +605,10 @@ header.container {
   margin-bottom: 1.4rem;
 }
 
+/* Speech bubble, tail and all, mirroring the poster's "Every Wednesday" panel. */
 .hero-callout {
-  margin-bottom: 2rem;
+  position: relative;
+  margin-bottom: 2.6rem;
 }
 
 .hero-callout-text p + p {
@@ -511,6 +617,19 @@ header.container {
 
 .hero-callout.event-card-info {
   align-items: flex-start;
+}
+
+.bubble-tail {
+  position: absolute;
+  left: 2.6rem;
+  bottom: -18px;
+  width: 34px;
+  height: 20px;
+  background: var(--surface-tint);
+  border-right: 2px solid var(--ink);
+  border-bottom: 2px solid var(--ink);
+  border-bottom-right-radius: 4px;
+  transform: skewX(-24deg);
 }
 
 .hero-actions {
@@ -527,46 +646,50 @@ header.container {
   text-decoration: none;
   padding: 0.9rem 1.55rem;
   border-radius: var(--radius-sm);
-  border: 1px solid transparent;
+  border: 2px solid var(--ink);
   cursor: pointer;
-  font-weight: 700;
-  transition: transform 0.12s ease, background var(--duration-fast) ease, border-color var(--duration-fast) ease,
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  box-shadow: var(--shadow-hard);
+  transition: transform 0.12s ease, background var(--duration-fast) ease, color var(--duration-fast) ease,
     box-shadow var(--duration-fast) ease;
 }
 
+/* Press the button down into its own shadow. */
 .hero-actions button:active,
 .hero-actions .hero-button:active {
-  transform: translateY(1px);
+  transform: translate(5px, 5px);
+  box-shadow: 0 0 0 var(--ink);
 }
 
 .hero-actions button:first-child,
 .hero-actions .hero-button.primary {
-  background: var(--primary);
-  color: #fff;
-  box-shadow: 0 16px 32px rgba(var(--primary-rgb), 0.18);
+  background: var(--accent);
+  color: var(--ink);
 }
 
 .hero-actions button:first-child:hover,
 .hero-actions .hero-button.primary:hover {
-  background: var(--primary-hover);
+  background: var(--accent-deep);
+  color: var(--surface);
 }
 
 .hero-actions button:last-child,
 .hero-actions .hero-button.secondary {
-  background: #fff;
-  color: var(--text);
-  border-color: var(--border);
+  background: var(--surface);
+  color: var(--primary);
 }
 
 .hero-actions button:last-child:hover,
 .hero-actions .hero-button.secondary:hover {
-  background: var(--surface-soft);
-  color: var(--discord);
-  border-color: rgba(var(--discord-rgb), 0.45);
+  background: var(--primary);
+  color: var(--surface);
 }
 
 #header-image {
   border-radius: var(--radius);
+  border: 3px solid var(--ink);
   box-shadow: var(--shadow);
   width: 100%;
   height: clamp(260px, 35vw, 420px);
@@ -581,7 +704,8 @@ header.container {
 .rusu-support {
   --rusu-purple: #682f92;
   padding: 5.5rem 0;
-  background: linear-gradient(135deg, rgba(104, 47, 146, 0.12) 0%, #ffffff 60%);
+  background: var(--surface);
+  border-block: 3px solid var(--ink);
 }
 
 .rusu-support-inner {
@@ -631,7 +755,7 @@ header.container {
   max-height: 560px;
   object-fit: cover;
   border-radius: calc(var(--radius) + 8px);
-  border: 1px solid var(--border);
+  border: 3px solid var(--ink);
   box-shadow: var(--shadow);
 }
 
@@ -647,7 +771,7 @@ header.container {
 }
 
 .event-content h2 span {
-  color: var(--primary);
+  color: var(--accent-deep);
 }
 
 .event-content > p {
@@ -683,28 +807,28 @@ header.container {
   padding: 1.4rem 1.6rem;
   border-radius: var(--radius);
   background: var(--surface);
-  border: 1px solid var(--border);
+  border: 2px solid var(--ink);
   box-shadow: var(--shadow-sm);
-  transition: transform var(--duration-fast) ease, box-shadow var(--duration-fast) ease, border-color var(--duration-fast) ease;
+  transition: transform var(--duration-fast) ease, box-shadow var(--duration-fast) ease;
   will-change: transform;
 }
 
 .js .event-card.reveal-fade,
 .js .discord-feature.reveal-fade,
 .js .contact-card.reveal-fade {
-  transition-property: opacity, transform, box-shadow, border-color;
-  transition-duration: 0.6s, var(--duration-fast), var(--duration-fast), var(--duration-fast);
-  transition-timing-function: var(--easing), ease, ease, ease;
-  transition-delay: var(--delay, 0s), 0s, 0s, 0s;
+  transition-property: opacity, transform, box-shadow;
+  transition-duration: 0.6s, var(--duration-fast), var(--duration-fast);
+  transition-timing-function: var(--easing), ease, ease;
+  transition-delay: var(--delay, 0s), 0s, 0s;
 }
 
+/* Lift away from the shadow rather than growing a blur. */
 .event-card:hover,
 .event-card:focus-within,
 .discord-feature:hover,
 .discord-feature:focus-within {
-  transform: translateY(-4px);
+  transform: translate(-4px, -4px);
   box-shadow: var(--shadow-hover);
-  border-color: rgba(var(--primary-rgb), 0.25);
 }
 
 /* Shared icon box structure */
@@ -716,18 +840,18 @@ header.container {
   border-radius: var(--radius-md);
   display: grid;
   place-items: center;
-  background: #fff;
+  background: var(--paper);
   box-shadow: var(--shadow-xs);
 }
 
 .event-icon {
-  color: var(--accent);
-  border: 1px solid rgba(var(--primary-rgb), 0.18);
+  color: var(--accent-deep);
+  border: 2px solid var(--ink);
 }
 
 .discord-feature-icon {
   color: var(--discord-accent);
-  border: 1px solid rgba(var(--discord-accent-rgb), 0.18);
+  border: 2px solid var(--ink);
 }
 
 .event-icon svg,
@@ -781,18 +905,19 @@ header.container {
 }
 
 .event-card-info {
-  background: #eef4ff;
-  border-color: #cfe0ff;
+  background: var(--surface-tint);
 }
 
 .event-card-info p {
-  color: #1f2a44;
+  color: var(--ink);
 }
 
 .event-card-info a {
-  color: #1d4ed8;
+  color: var(--primary);
   font-weight: 700;
-  text-decoration: none;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
 }
 
 .event-card-info a:hover {
@@ -840,14 +965,16 @@ header.container {
 
 .discord-cta {
   background: var(--discord);
-  color: #fff;
-  border: none;
+  color: var(--surface);
+  border: 2px solid var(--ink);
   padding: 0.95rem 1.7rem;
   border-radius: var(--radius-md);
-  font-weight: 800;
+  font-family: var(--font-display);
+  text-transform: uppercase;
   cursor: pointer;
-  box-shadow: 0 16px 32px rgba(var(--discord-rgb), 0.3);
-  transition: transform 0.12s ease, background var(--duration-fast) ease;
+  box-shadow: var(--shadow-hard);
+  transition: transform 0.12s ease, background var(--duration-fast) ease,
+    box-shadow var(--duration-fast) ease;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
@@ -859,13 +986,14 @@ header.container {
 }
 
 .discord-cta:active {
-  transform: translateY(1px);
+  transform: translate(5px, 5px);
+  box-shadow: 0 0 0 var(--ink);
 }
 
 .discord-widget {
   border-radius: var(--radius);
   overflow: hidden;
-  border: 1px solid var(--border);
+  border: 2px solid var(--ink);
   box-shadow: var(--shadow-sm);
   background: #1f2024;
   display: grid;
@@ -915,7 +1043,7 @@ header.container {
 .contact-card {
   padding: 1.6rem;
   border-radius: var(--radius);
-  border: 1px solid var(--border);
+  border: 2px solid var(--ink);
   background: var(--surface);
   box-shadow: var(--shadow-sm);
   display: grid;
@@ -954,13 +1082,14 @@ header.container {
   font-weight: 700;
   padding: 0.5rem 0.9rem;
   border-radius: var(--radius-full);
-  border: 1px solid var(--border);
+  border: 2px solid var(--ink);
   color: var(--text);
-  background: #fff;
+  background: var(--surface);
   display: inline-flex;
   align-items: center;
   gap: 0.55rem;
-  transition: transform var(--duration-fast) ease, box-shadow var(--duration-fast) ease, border-color var(--duration-fast) ease;
+  box-shadow: var(--shadow-xs);
+  transition: transform var(--duration-fast) ease, box-shadow var(--duration-fast) ease;
 }
 
 .social-link::before {
@@ -969,9 +1098,8 @@ header.container {
 
 .social-link:hover,
 .social-link:focus-visible {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.12);
-  border-color: rgba(15, 23, 42, 0.2);
+  transform: translate(-2px, -2px);
+  box-shadow: 4px 4px 0 var(--ink);
 }
 
 /* =========================
@@ -1002,7 +1130,7 @@ footer {
 }
 
 .whats-on-title span {
-  color: var(--primary);
+  color: var(--accent-deep);
 }
 
 .whats-on-list {
@@ -1017,26 +1145,25 @@ footer {
   overflow: hidden;
   border-radius: var(--radius);
   background: var(--surface);
-  border: 1px solid var(--border);
+  border: 2px solid var(--ink);
   box-shadow: var(--shadow-sm);
   text-decoration: none;
   color: var(--text);
-  transition: transform var(--duration-fast) ease, box-shadow var(--duration-fast) ease, border-color var(--duration-fast) ease;
+  transition: transform var(--duration-fast) ease, box-shadow var(--duration-fast) ease;
   will-change: transform;
 }
 
 .whats-on-card:hover,
 .whats-on-card:focus-visible {
-  transform: translateY(-4px);
+  transform: translate(-4px, -4px);
   box-shadow: var(--shadow-hover);
-  border-color: rgba(var(--primary-rgb), 0.25);
 }
 
 .whats-on-image {
   width: 100%;
   aspect-ratio: 2 / 1;
   object-fit: cover;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 2px solid var(--ink);
   background: var(--surface-soft);
 }
 
@@ -1054,8 +1181,8 @@ footer {
   border-radius: var(--radius-md);
   display: grid;
   justify-items: center;
-  background: var(--surface-tint);
-  border: 1px solid rgba(var(--primary-rgb), 0.18);
+  background: var(--paper);
+  border: 2px solid var(--ink);
   box-shadow: var(--shadow-xs);
 }
 
@@ -1064,7 +1191,7 @@ footer {
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--primary);
+  color: var(--accent-deep);
 }
 
 .whats-on-day {
@@ -1116,7 +1243,7 @@ footer {
 }
 
 .find-us-header h2 span {
-  color: var(--primary);
+  color: var(--accent-deep);
 }
 
 .find-us-header p {
@@ -1130,7 +1257,7 @@ footer {
   width: min(100%, 900px);
   height: auto;
   border-radius: var(--radius);
-  border: 1px solid var(--border);
+  border: 3px solid var(--ink);
   box-shadow: var(--shadow);
   background: #000;
 }
@@ -1150,7 +1277,7 @@ footer {
 }
 
 .games-teaser-header h2 span {
-  color: var(--primary);
+  color: var(--accent-deep);
 }
 
 .games-teaser-header p {
@@ -1182,7 +1309,7 @@ footer {
 }
 
 .featured-games-title span {
-  color: var(--primary);
+  color: var(--accent-deep);
 }
 
 .featured-games-strip {
@@ -1196,20 +1323,19 @@ footer {
   gap: 0.6rem;
   padding: 0.75rem;
   border-radius: var(--radius-md);
-  border: 1px solid var(--border);
+  border: 2px solid var(--ink);
   background: var(--surface);
   box-shadow: var(--shadow-sm);
   text-decoration: none;
   color: var(--text);
-  transition: transform var(--duration-fast) ease, box-shadow var(--duration-fast) ease, border-color var(--duration-fast) ease;
+  transition: transform var(--duration-fast) ease, box-shadow var(--duration-fast) ease;
   will-change: transform;
 }
 
 .featured-game:hover,
 .featured-game:focus-visible {
-  transform: translateY(-4px);
+  transform: translate(-4px, -4px);
   box-shadow: var(--shadow-hover);
-  border-color: rgba(var(--primary-rgb), 0.25);
 }
 
 .featured-game img {
@@ -1247,7 +1373,7 @@ footer {
 }
 
 .games-page-header h1 span {
-  color: var(--primary);
+  color: var(--accent-deep);
 }
 
 .games-page-header p {
@@ -1266,8 +1392,8 @@ footer {
 .games-toolbar select {
   font: inherit;
   color: var(--text);
-  background: #fff;
-  border: 1px solid var(--border);
+  background: var(--surface);
+  border: 2px solid var(--ink);
   border-radius: var(--radius-sm);
   padding: 0.8rem 1.1rem;
   box-shadow: var(--shadow-xs);
@@ -1280,8 +1406,7 @@ footer {
 .games-toolbar input[type="search"]:focus-visible,
 .games-toolbar select:focus-visible {
   outline: none;
-  border-color: rgba(var(--primary-rgb), 0.45);
-  box-shadow: 0 0 0 3px var(--primary-soft);
+  box-shadow: 0 0 0 3px var(--signal);
 }
 
 .games-count {
@@ -1300,27 +1425,26 @@ footer {
   display: flex;
   flex-direction: column;
   border-radius: var(--radius);
-  border: 1px solid var(--border);
+  border: 2px solid var(--ink);
   background: var(--surface);
   box-shadow: var(--shadow-sm);
   overflow: hidden;
-  transition: transform var(--duration-fast) ease, box-shadow var(--duration-fast) ease, border-color var(--duration-fast) ease;
+  transition: transform var(--duration-fast) ease, box-shadow var(--duration-fast) ease;
   will-change: transform;
 }
 
 .game-card:hover,
 .game-card:focus-within {
-  transform: translateY(-4px);
+  transform: translate(-4px, -4px);
   box-shadow: var(--shadow-hover);
-  border-color: rgba(var(--primary-rgb), 0.25);
 }
 
 .game-thumb {
   padding: 1rem;
   display: grid;
   place-items: center;
-  background: var(--surface-soft);
-  border-bottom: 1px solid var(--border);
+  background: var(--paper);
+  border-bottom: 2px solid var(--ink);
 }
 
 .game-thumb img {
@@ -1368,8 +1492,9 @@ footer {
   font-weight: 600;
   padding: 0.2rem 0.6rem;
   border-radius: var(--radius-full);
-  background: var(--primary-soft);
-  color: var(--primary);
+  background: var(--accent-soft);
+  border: 1px solid var(--ink);
+  color: var(--ink);
 }
 
 .game-bgg {
@@ -1408,9 +1533,9 @@ footer {
   justify-items: center;
   text-align: center;
   padding: 3rem 1rem;
-  border: 1px dashed var(--border);
+  border: 3px dashed var(--signal);
   border-radius: var(--radius);
-  background: var(--surface-soft);
+  background: var(--surface);
 }
 
 .games-status h2 {
@@ -1427,22 +1552,26 @@ footer {
 .games-retry {
   margin-top: 0.5rem;
   padding: 0.75rem 1.4rem;
-  border: none;
+  border: 2px solid var(--ink);
   border-radius: var(--radius-sm);
-  background: var(--primary);
-  color: #fff;
-  font-weight: 700;
+  background: var(--accent);
+  color: var(--ink);
+  font-family: var(--font-display);
+  text-transform: uppercase;
   cursor: pointer;
-  box-shadow: 0 16px 32px rgba(var(--primary-rgb), 0.18);
-  transition: transform 0.12s ease, background var(--duration-fast) ease;
+  box-shadow: var(--shadow-hard);
+  transition: transform 0.12s ease, background var(--duration-fast) ease,
+    box-shadow var(--duration-fast) ease;
 }
 
 .games-retry:hover {
-  background: var(--primary-hover);
+  background: var(--accent-deep);
+  color: var(--surface);
 }
 
 .games-retry:active {
-  transform: translateY(1px);
+  transform: translate(5px, 5px);
+  box-shadow: 0 0 0 var(--ink);
 }
 
 /* =========================
@@ -1489,7 +1618,7 @@ footer {
     align-items: flex-start;
     gap: 0.75rem;
     padding-top: 0.75rem;
-    border-top: 1px solid var(--border);
+    border-top: 2px solid var(--ink);
   }
 
   .nav.is-open .nav-links {
@@ -1542,6 +1671,45 @@ footer {
   }
 }
 
+/* The poster display face is much wider than Montserrat at the same size, so
+   headings need their own step-down below the layout breakpoint. */
+@media (max-width: 560px) {
+  .big-title {
+    font-size: clamp(1.9rem, 8.4vw, 2.6rem);
+    text-shadow: 3px 3px 0 var(--ink);
+  }
+
+  .hero-title {
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+  }
+
+  .event-content h2,
+  .find-us-header h2,
+  .faq-header h2,
+  .games-teaser-header h2,
+  .discord-copy h2,
+  .contact-header h2,
+  .games-page-header h1 {
+    font-size: clamp(1.6rem, 7.2vw, 2.1rem);
+  }
+
+  .hero-actions button,
+  .hero-actions .hero-button,
+  .discord-cta {
+    font-size: 0.85rem;
+    padding-inline: 1.1rem;
+  }
+
+  .nav-links a {
+    font-size: 0.9rem;
+  }
+
+  .hero-banner-content img {
+    --logo-shadow: 3px;
+  }
+}
+
 /* =========================
    FAQ
    ========================= */
@@ -1552,7 +1720,7 @@ footer {
 }
 
 .faq-header h2 span {
-  color: var(--primary);
+  color: var(--accent-deep);
 }
 
 .faq-list {
@@ -1564,15 +1732,14 @@ footer {
 .faq-item {
   border-radius: var(--radius);
   background: var(--surface);
-  border: 1px solid var(--border);
+  border: 2px solid var(--ink);
   box-shadow: var(--shadow-sm);
-  transition: border-color var(--duration-fast) ease, box-shadow var(--duration-fast) ease;
+  transition: box-shadow var(--duration-fast) ease;
 }
 
 .faq-item:hover,
 .faq-item[open] {
-  box-shadow: var(--shadow-hover);
-  border-color: rgba(var(--primary-rgb), 0.25);
+  box-shadow: var(--shadow-hard);
 }
 
 .faq-item summary {
@@ -1594,9 +1761,9 @@ footer {
   right: 1.6rem;
   top: 50%;
   transform: translateY(-50%);
-  color: var(--primary);
-  font-size: 1.4rem;
-  font-weight: 400;
+  color: var(--accent-deep);
+  font-size: 1.6rem;
+  font-weight: 700;
 }
 
 .faq-item[open] summary::after {
