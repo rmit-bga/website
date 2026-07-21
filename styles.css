@@ -386,6 +386,7 @@ a {
   .intro-running .intro,
   .intro-running .hero-banner,
   .intro-running .hero-banner-content,
+  .intro-running .hero-art,
   .intro-running .nav {
     animation: none;
   }
@@ -548,6 +549,13 @@ a {
     animation: none;
   }
 
+  /* Hold the fields still rather than hiding them: they are the band's
+     artwork now, not an enhancement over something else. */
+  .hero-art,
+  .blob {
+    animation: none;
+  }
+
   .js .drop-title,
   .js .drop-title.is-dropped,
   .js .drop-title.is-dropped .l,
@@ -656,6 +664,191 @@ a {
   inset: 0;
   background: var(--primary) url("media/marble-swirl.svg") center/cover no-repeat;
   z-index: 0;
+}
+
+/* Colour fields drifting behind the wordmark, blurred until they read as one
+   poured surface rather than separate discs.
+
+   Overhangs the band on every side. Blur samples past an element's edges, so at
+   inset 0 the corners would pull in transparency and halo against the border;
+   the overhang keeps that outside what .hero-banner clips. */
+.hero-art {
+  position: absolute;
+  inset: -18%;
+  z-index: 0;
+  background: var(--primary);
+  filter: blur(72px);
+  pointer-events: none;
+  /* Its own layer, so drifting children do not repaint the band behind them. */
+  will-change: transform;
+}
+
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  /* Soft-edged to start with, so the blur has less work to do for the same
+     result: a hard disc needs a much larger radius before it stops reading as
+     a circle. */
+  background: radial-gradient(
+    circle at 50% 50%,
+    var(--blob) 0%,
+    var(--blob) 42%,
+    transparent 72%
+  );
+  animation: var(--drift, drift-a) var(--dur, 24s) ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+}
+
+/* Mismatched durations, none of them multiples of another, so the field never
+   settles into a visible repeat. */
+.blob-1 {
+  --blob: var(--accent);
+  --drift: drift-a;
+  --dur: 19s;
+  width: 46%;
+  aspect-ratio: 1;
+  top: -6%;
+  left: -4%;
+}
+
+.blob-2 {
+  --blob: var(--signal);
+  --drift: drift-b;
+  --dur: 23s;
+  --delay: -6s;
+  width: 32%;
+  aspect-ratio: 1;
+  top: 34%;
+  left: 16%;
+}
+
+.blob-3 {
+  --blob: var(--moss);
+  --drift: drift-c;
+  --dur: 29s;
+  --delay: -19s;
+  width: 50%;
+  aspect-ratio: 1;
+  top: -12%;
+  left: 38%;
+}
+
+.blob-4 {
+  --blob: var(--paper);
+  --drift: drift-d;
+  --dur: 17s;
+  --delay: -11s;
+  width: 26%;
+  aspect-ratio: 1;
+  top: 44%;
+  left: 60%;
+}
+
+.blob-5 {
+  --blob: var(--primary-hover);
+  --drift: drift-a;
+  --dur: 25s;
+  --delay: -23s;
+  width: 42%;
+  aspect-ratio: 1;
+  top: 6%;
+  left: 72%;
+}
+
+.blob-6 {
+  --blob: var(--accent-deep);
+  --drift: drift-b;
+  --dur: 21s;
+  --delay: -3s;
+  width: 24%;
+  aspect-ratio: 1;
+  top: 54%;
+  left: 32%;
+}
+
+.blob-7 {
+  --blob: var(--accent);
+  --drift: drift-c;
+  --dur: 27s;
+  --delay: -15s;
+  width: 36%;
+  aspect-ratio: 1;
+  top: 22%;
+  left: 4%;
+}
+
+/* Four paths rather than one. Sharing a single set made every field travel the
+   same vector at the same moment, which reads as the whole band sliding rather
+   than anything moving within it. Each path closes on itself (0% and 100% are
+   the same point) so it can run infinite instead of alternate: a straight
+   there-and-back has a visible hesitation at each end. */
+@keyframes drift-a {
+  0%,
+  100% {
+    transform: translate3d(-8%, -5%, 0) scale(1);
+  }
+  33% {
+    transform: translate3d(9%, 3%, 0) scale(1.14);
+  }
+  66% {
+    transform: translate3d(2%, 11%, 0) scale(0.9);
+  }
+}
+
+@keyframes drift-b {
+  0%,
+  100% {
+    transform: translate3d(7%, 6%, 0) scale(1.08);
+  }
+  33% {
+    transform: translate3d(-9%, 2%, 0) scale(0.92);
+  }
+  66% {
+    transform: translate3d(-1%, -10%, 0) scale(1.16);
+  }
+}
+
+@keyframes drift-c {
+  0%,
+  100% {
+    transform: translate3d(-4%, 9%, 0) scale(0.95);
+  }
+  33% {
+    transform: translate3d(8%, -7%, 0) scale(1.18);
+  }
+  66% {
+    transform: translate3d(-10%, -2%, 0) scale(1.02);
+  }
+}
+
+@keyframes drift-d {
+  0%,
+  100% {
+    transform: translate3d(5%, -8%, 0) scale(1.12);
+  }
+  33% {
+    transform: translate3d(-7%, 8%, 0) scale(0.94);
+  }
+  66% {
+    transform: translate3d(10%, 4%, 0) scale(1.06);
+  }
+}
+
+/* The intro holds this band in a cutout for 2.4s. The ambient drift is far too
+   slow to register in that window, so the whole field gets one extra sweep that
+   comes to rest as the page is revealed. Self-terminating, which matters
+   because .intro-running is never removed. */
+.intro-running .hero-art {
+  animation: intro-art-sweep 2.4s ease-out forwards;
+}
+
+@keyframes intro-art-sweep {
+  from {
+    transform: translate3d(-7%, 4%, 0) scale(1.16);
+  }
+  to {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
 }
 
 /* Light cream veil so the logo reads as ink on marble, like the poster band. */
