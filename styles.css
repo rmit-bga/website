@@ -744,8 +744,8 @@ a {
 .blob-1 {
   --blob: var(--accent);
   --drift: drift-a;
-  --dur: 19s;
-  width: 46%;
+  --dur: 13s;
+  width: 54%;
   aspect-ratio: 1;
   top: -6%;
   left: -4%;
@@ -754,9 +754,9 @@ a {
 .blob-2 {
   --blob: var(--signal);
   --drift: drift-b;
-  --dur: 23s;
+  --dur: 17s;
   --delay: -6s;
-  width: 32%;
+  width: 40%;
   aspect-ratio: 1;
   top: 34%;
   left: 16%;
@@ -765,9 +765,9 @@ a {
 .blob-3 {
   --blob: var(--moss);
   --drift: drift-c;
-  --dur: 29s;
-  --delay: -19s;
-  width: 50%;
+  --dur: 21s;
+  --delay: -9s;
+  width: 58%;
   aspect-ratio: 1;
   top: -12%;
   left: 38%;
@@ -776,9 +776,9 @@ a {
 .blob-4 {
   --blob: var(--paper);
   --drift: drift-d;
-  --dur: 17s;
-  --delay: -11s;
-  width: 26%;
+  --dur: 11s;
+  --delay: -4s;
+  width: 34%;
   aspect-ratio: 1;
   top: 44%;
   left: 60%;
@@ -786,10 +786,10 @@ a {
 
 .blob-5 {
   --blob: var(--primary-hover);
-  --drift: drift-a;
-  --dur: 25s;
-  --delay: -23s;
-  width: 42%;
+  --drift: drift-b;
+  --dur: 19s;
+  --delay: -13s;
+  width: 50%;
   aspect-ratio: 1;
   top: 6%;
   left: 72%;
@@ -797,10 +797,10 @@ a {
 
 .blob-6 {
   --blob: var(--accent-deep);
-  --drift: drift-b;
-  --dur: 21s;
+  --drift: drift-a;
+  --dur: 15s;
   --delay: -3s;
-  width: 24%;
+  width: 32%;
   aspect-ratio: 1;
   top: 54%;
   left: 32%;
@@ -808,10 +808,10 @@ a {
 
 .blob-7 {
   --blob: var(--accent);
-  --drift: drift-c;
-  --dur: 27s;
-  --delay: -15s;
-  width: 36%;
+  --drift: drift-d;
+  --dur: 18s;
+  --delay: -8s;
+  width: 44%;
   aspect-ratio: 1;
   top: 22%;
   left: 4%;
@@ -819,58 +819,78 @@ a {
 
 /* Four paths rather than one. Sharing a single set made every field travel the
    same vector at the same moment, which reads as the whole band sliding rather
-   than anything moving within it. Each path closes on itself (0% and 100% are
-   the same point) so it can run infinite instead of alternate: a straight
-   there-and-back has a visible hesitation at each end. */
+   than anything moving within it.
+
+   Percentages in a transform resolve against the element's own size, so a value
+   like 130% is what carries a field right across the band; the ~10% these
+   started at only ever produced a slow breathe on the spot.
+
+   Each path closes on itself (0% and 100% are the same point) so it can run
+   infinite instead of alternate: a straight there-and-back has a visible
+   hesitation at each end. Four stops rather than two, arranged so the horizontal
+   sweep and the vertical rise are out of phase with each other, which is what
+   makes the travel read as a wave rather than a slide. */
 @keyframes drift-a {
   0%,
   100% {
-    transform: translate3d(-8%, -5%, 0) scale(1);
+    transform: translate3d(-135%, -28%, 0) scale(1);
   }
-  33% {
-    transform: translate3d(9%, 3%, 0) scale(1.14);
+  25% {
+    transform: translate3d(-25%, 42%, 0) scale(1.2);
   }
-  66% {
-    transform: translate3d(2%, 11%, 0) scale(0.9);
+  50% {
+    transform: translate3d(125%, -12%, 0) scale(0.86);
+  }
+  75% {
+    transform: translate3d(15%, -46%, 0) scale(1.1);
   }
 }
 
 @keyframes drift-b {
   0%,
   100% {
-    transform: translate3d(7%, 6%, 0) scale(1.08);
+    transform: translate3d(130%, 30%, 0) scale(1.14);
   }
-  33% {
-    transform: translate3d(-9%, 2%, 0) scale(0.92);
+  25% {
+    transform: translate3d(20%, -38%, 0) scale(0.88);
   }
-  66% {
-    transform: translate3d(-1%, -10%, 0) scale(1.16);
+  50% {
+    transform: translate3d(-125%, 18%, 0) scale(1.24);
+  }
+  75% {
+    transform: translate3d(-15%, 46%, 0) scale(0.94);
   }
 }
 
 @keyframes drift-c {
   0%,
   100% {
-    transform: translate3d(-4%, 9%, 0) scale(0.95);
+    transform: translate3d(-60%, 44%, 0) scale(0.92);
   }
-  33% {
-    transform: translate3d(8%, -7%, 0) scale(1.18);
+  25% {
+    transform: translate3d(70%, -30%, 0) scale(1.22);
   }
-  66% {
-    transform: translate3d(-10%, -2%, 0) scale(1.02);
+  50% {
+    transform: translate3d(140%, 34%, 0) scale(0.84);
+  }
+  75% {
+    transform: translate3d(-105%, -40%, 0) scale(1.16);
   }
 }
 
 @keyframes drift-d {
   0%,
   100% {
-    transform: translate3d(5%, -8%, 0) scale(1.12);
+    transform: translate3d(55%, -44%, 0) scale(1.18);
   }
-  33% {
-    transform: translate3d(-7%, 8%, 0) scale(0.94);
+  25% {
+    transform: translate3d(-115%, 14%, 0) scale(0.9);
   }
-  66% {
-    transform: translate3d(10%, 4%, 0) scale(1.06);
+  50% {
+    transform: translate3d(30%, 46%, 0) scale(1.26);
+  }
+  75% {
+    transform: translate3d(145%, -10%, 0) scale(0.96);
   }
 }
 
