@@ -236,10 +236,10 @@
       </button>
 
       <div class="nav-links" id="primary-navigation">
-        <a href="#discord">Discord</a>
-        <a href="#events">Events</a>
-        <a href="games.html">Games</a>
         <a href="#faq">FAQ</a>
+        <a href="games.html">Games</a>
+        <a href="#discord">Discord</a>
+        <a href="#details">Sessions</a>
         <a href="#contact">Contact</a>
         <a
           id="membershipButton"
@@ -334,6 +334,12 @@
           </a>
           <a class="hero-button secondary" href="#discord">Join Discord</a>
         </div>
+
+        <!-- Bridge to the second half, for anyone who already got the pitch in
+             person at a stall and only needs the times and the room. -->
+        <p class="skip-to-details">
+          Already coming? <a href="#details">Session times and directions</a>
+        </p>
       </div>
 
       <picture>
@@ -354,134 +360,9 @@
     </header>
 
     <main id="app">
-      <section
-        id="events"
-        class="section container events-section"
-        aria-labelledby="events-title"
-      >
-        <div class="events-grid">
-          <div class="event-media reveal" style="--delay: 0.1s">
-            <picture>
-              <source data-srcset="media/big-social-game.webp" type="image/webp" />
-              <img
-                src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABcQERQRDhcUEhQaGBcbIjklIh8fIkYyNSk5UkhXVVFIUE5bZoNvW2F8Yk5QcptzfIeLkpSSWG2grJ+OqoOPko3/2wBDARgaGiIeIkMlJUONXlBejY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY3/wAARCAAQABgDASIAAhEBAxEB/8QAFwABAQEBAAAAAAAAAAAAAAAABAADBf/EAB8QAAEEAgMBAQAAAAAAAAAAAAEAAgMREiEEEzEUMv/EABQBAQAAAAAAAAAAAAAAAAAAAAL/xAAXEQEBAQEAAAAAAAAAAAAAAAABAAIR/9oADAMBAAIRAxEAPwDlcJhkLs/yHYmhST19M7mhwFHRJ0g8SbrO3GibK3lmk5ctiIkXdNG6QSRqb9EjS4OdZPpBu1ILgInZHJja8cNqRcsjXL//2Q=="
-                data-src="media/big-social-game.jpg"
-                alt="Club members playing a big social game"
-                loading="lazy"
-                decoding="async"
-                class="lazy-image"
-                width="4831"
-                height="3221"
-              />
-            </picture>
-          </div>
 
-          <div class="event-content reveal" style="--delay: 0.2s">
-            <h2 id="events-title">Weekly Sessions &amp; <span>Social Events</span></h2>
-            <p>
-              We gather several times a week across our City and Bundoora
-              campuses to play our expansive library of games. Favourites
-              include Monikers, The Mind, Blood on the Clocktower, Root,
-              Wingspan, Skull and Coup. Plenty of people come down after class
-              just to hang out. If you're after social events at RMIT that
-              don't need a ticket or a plan, this is the low-effort option:
-              same rooms, same times, every week. Becoming a regular is the
-              best way to make friends here, but you're welcome to drop in
-              whenever you like.
-            </p>
-
-            <div class="event-stack">
-              <article class="event-card reveal-fade">
-                <div class="event-icon" aria-hidden="true">
-                  <span
-                    class="event-icon-mask location"
-                    aria-hidden="true"
-                  ></span>
-                </div>
-                <div class="event-text">
-                  <h3>City: Mondays &amp; Wednesdays</h3>
-                  <p>
-                    From 2:30 PM until late. Building 57, Level 4, Room
-                    57.4.37, RMIT City Campus.
-                  </p>
-                </div>
-              </article>
-
-              <article class="event-card reveal-fade">
-                <div class="event-icon" aria-hidden="true">
-                  <span
-                    class="event-icon-mask location"
-                    aria-hidden="true"
-                  ></span>
-                </div>
-                <div class="event-text">
-                  <h3>Bundoora: Wednesdays</h3>
-                  <p>
-                    From 3 PM. Building 204, 225-245 Plenty Rd, Bundoora VIC
-                    3083.
-                  </p>
-                </div>
-              </article>
-
-              <article class="event-card event-card-info reveal-fade">
-                <div class="event-text">
-                  <h3>Want the full calendar?</h3>
-                  <p>
-                    Every session and special event, with all dates and
-                    tickets, is on our
-                    <a
-                      href="https://campus.hellorubric.com/?s=10742"
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      Rubric page</a
-                    >.
-                  </p>
-                </div>
-              </article>
-            </div>
-          </div>
-        </div>
-
-        <div id="whats-on" class="whats-on" hidden>
-          <h3 class="whats-on-title">What's <span>On</span></h3>
-          <div class="whats-on-list" id="whats-on-list"></div>
-        </div>
-      </section>
-
-      <div class="route-divider" aria-hidden="true"></div>
-
-      <section
-        id="find-us"
-        class="section container find-us"
-        aria-labelledby="find-us-title"
-      >
-        <div class="find-us-header reveal" style="--delay: 0.1s">
-          <h2 id="find-us-title">How to <span>Find Us</span></h2>
-          <p>
-            First time on campus? Follow along to reach our City session room:
-            Building 57, Level 4, Room 57.4.37.
-          </p>
-        </div>
-
-        <video
-          class="find-us-video reveal"
-          style="--delay: 0.15s"
-          controls
-          playsinline
-          preload="metadata"
-          poster="media/how-to-get-to-rbga-poster.jpg"
-          width="1280"
-          height="720"
-        >
-          <source src="media/how-to-get-to-rbga.mp4" type="video/mp4" />
-          Your browser can't play this video.
-          <a href="media/how-to-get-to-rbga.mp4">Download it instead</a>.
-        </video>
-      </section>
-
-      <div class="route-divider" aria-hidden="true"></div>
-
+      <!-- The pitch. Everything above the info-half is aimed at someone
+           who has not decided yet. -->
       <section
         id="faq"
         class="section container faq-section"
@@ -696,62 +577,192 @@
         </div>
       </section>
 
-      <div class="route-divider" aria-hidden="true"></div>
-
-      <section
-        id="contact"
-        class="section container contact"
-        aria-labelledby="contact-title"
-      >
-        <div class="contact-header reveal" style="--delay: 0.1s">
-          <h2 id="contact-title">Contact & Socials</h2>
-          <p>
-            For official business, please reach us by email. For updates,
-            events, and community chat, connect with us on social media.
-          </p>
-        </div>
-
-        <div class="contact-grid">
-          <article class="contact-card reveal-fade">
-            <h3>Official Email</h3>
-            <p>For business and formal enquiries.</p>
-            <a class="contact-link" href="mailto:rbga@rmit.edu.au"
-              >rbga@rmit.edu.au</a
-            >
-          </article>
-
-          <article class="contact-card reveal-fade">
-            <h3>Follow Us</h3>
-            <p>Stay in the loop with events, photos, and announcements.</p>
-            <div class="social-links">
-              <a
-                class="social-link instagram"
-                href="https://www.instagram.com/rmit_board_game_association/"
-                target="_blank"
-                rel="noreferrer"
-              >
-                Instagram
-              </a>
-              <a
-                class="social-link facebook"
-                href="https://www.facebook.com/RMITBGA"
-                target="_blank"
-                rel="noreferrer"
-              >
-                Facebook
-              </a>
-              <a
-                class="social-link discord"
-                href="https://discord.gg/gNFaQWjpEn"
-                target="_blank"
-                rel="noreferrer"
-              >
-                Discord
-              </a>
+      <!-- Critical information. Everything below assumes you are already
+           coming: when, where, how to get there, how to reach us. -->
+      <div class="info-half" id="details">
+        <section
+          id="events"
+          class="section container events-section"
+          aria-labelledby="events-title"
+        >
+          <div class="events-grid">
+            <div class="event-media reveal" style="--delay: 0.1s">
+              <picture>
+                <source data-srcset="media/big-social-game.webp" type="image/webp" />
+                <img
+                  src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABcQERQRDhcUEhQaGBcbIjklIh8fIkYyNSk5UkhXVVFIUE5bZoNvW2F8Yk5QcptzfIeLkpSSWG2grJ+OqoOPko3/2wBDARgaGiIeIkMlJUONXlBejY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY3/wAARCAAQABgDASIAAhEBAxEB/8QAFwABAQEBAAAAAAAAAAAAAAAABAADBf/EAB8QAAEEAgMBAQAAAAAAAAAAAAEAAgMREiEEEzEUMv/EABQBAQAAAAAAAAAAAAAAAAAAAAL/xAAXEQEBAQEAAAAAAAAAAAAAAAABAAIR/9oADAMBAAIRAxEAPwDlcJhkLs/yHYmhST19M7mhwFHRJ0g8SbrO3GibK3lmk5ctiIkXdNG6QSRqb9EjS4OdZPpBu1ILgInZHJja8cNqRcsjXL//2Q=="
+                  data-src="media/big-social-game.jpg"
+                  alt="Club members playing a big social game"
+                  loading="lazy"
+                  decoding="async"
+                  class="lazy-image"
+                  width="4831"
+                  height="3221"
+                />
+              </picture>
             </div>
-          </article>
-        </div>
-      </section>
+
+            <div class="event-content reveal" style="--delay: 0.2s">
+              <h2 id="events-title">Weekly Sessions &amp; <span>Social Events</span></h2>
+              <p>
+                We gather several times a week across our City and Bundoora
+                campuses to play our expansive library of games. Favourites
+                include Monikers, The Mind, Blood on the Clocktower, Root,
+                Wingspan, Skull and Coup. Plenty of people come down after class
+                just to hang out. If you're after social events at RMIT that
+                don't need a ticket or a plan, this is the low-effort option:
+                same rooms, same times, every week. Becoming a regular is the
+                best way to make friends here, but you're welcome to drop in
+                whenever you like.
+              </p>
+
+              <div class="event-stack">
+                <article class="event-card reveal-fade">
+                  <div class="event-icon" aria-hidden="true">
+                    <span
+                      class="event-icon-mask location"
+                      aria-hidden="true"
+                    ></span>
+                  </div>
+                  <div class="event-text">
+                    <h3>City: Mondays &amp; Wednesdays</h3>
+                    <p>
+                      From 2:30 PM until late. Building 57, Level 4, Room
+                      57.4.37, RMIT City Campus.
+                    </p>
+                  </div>
+                </article>
+
+                <article class="event-card reveal-fade">
+                  <div class="event-icon" aria-hidden="true">
+                    <span
+                      class="event-icon-mask location"
+                      aria-hidden="true"
+                    ></span>
+                  </div>
+                  <div class="event-text">
+                    <h3>Bundoora: Wednesdays</h3>
+                    <p>
+                      From 3 PM. Building 204, 225-245 Plenty Rd, Bundoora VIC
+                      3083.
+                    </p>
+                  </div>
+                </article>
+
+                <article class="event-card event-card-info reveal-fade">
+                  <div class="event-text">
+                    <h3>Want the full calendar?</h3>
+                    <p>
+                      Every session and special event, with all dates and
+                      tickets, is on our
+                      <a
+                        href="https://campus.hellorubric.com/?s=10742"
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        Rubric page</a
+                      >.
+                    </p>
+                  </div>
+                </article>
+              </div>
+            </div>
+          </div>
+
+          <div id="whats-on" class="whats-on" hidden>
+            <h3 class="whats-on-title">What's <span>On</span></h3>
+            <div class="whats-on-list" id="whats-on-list"></div>
+          </div>
+        </section>
+
+        <div class="route-divider" aria-hidden="true"></div>
+
+        <section
+          id="find-us"
+          class="section container find-us"
+          aria-labelledby="find-us-title"
+        >
+          <div class="find-us-header reveal" style="--delay: 0.1s">
+            <h2 id="find-us-title">How to <span>Find Us</span></h2>
+            <p>
+              First time on campus? Follow along to reach our City session room:
+              Building 57, Level 4, Room 57.4.37.
+            </p>
+          </div>
+
+          <video
+            class="find-us-video reveal"
+            style="--delay: 0.15s"
+            controls
+            playsinline
+            preload="metadata"
+            poster="media/how-to-get-to-rbga-poster.jpg"
+            width="1280"
+            height="720"
+          >
+            <source src="media/how-to-get-to-rbga.mp4" type="video/mp4" />
+            Your browser can't play this video.
+            <a href="media/how-to-get-to-rbga.mp4">Download it instead</a>.
+          </video>
+        </section>
+
+        <div class="route-divider" aria-hidden="true"></div>
+
+        <section
+          id="contact"
+          class="section container contact"
+          aria-labelledby="contact-title"
+        >
+          <div class="contact-header reveal" style="--delay: 0.1s">
+            <h2 id="contact-title">Contact & Socials</h2>
+            <p>
+              For official business, please reach us by email. For updates,
+              events, and community chat, connect with us on social media.
+            </p>
+          </div>
+
+          <div class="contact-grid">
+            <article class="contact-card reveal-fade">
+              <h3>Official Email</h3>
+              <p>For business and formal enquiries.</p>
+              <a class="contact-link" href="mailto:rbga@rmit.edu.au"
+                >rbga@rmit.edu.au</a
+              >
+            </article>
+
+            <article class="contact-card reveal-fade">
+              <h3>Follow Us</h3>
+              <p>Stay in the loop with events, photos, and announcements.</p>
+              <div class="social-links">
+                <a
+                  class="social-link instagram"
+                  href="https://www.instagram.com/rmit_board_game_association/"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Instagram
+                </a>
+                <a
+                  class="social-link facebook"
+                  href="https://www.facebook.com/RMITBGA"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Facebook
+                </a>
+                <a
+                  class="social-link discord"
+                  href="https://discord.gg/gNFaQWjpEn"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Discord
+                </a>
+              </div>
+            </article>
+          </div>
+        </section>
+      </div>
 
       <section class="section rusu-support" aria-labelledby="rusu-title">
         <div class="container rusu-support-inner">

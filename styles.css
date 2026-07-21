@@ -245,6 +245,29 @@ a {
   opacity: 1;
 }
 
+/* The page runs in two halves. Above .info-half is the pitch, aimed at someone
+   who has not decided yet. Inside it is everything that assumes they are
+   already coming, so it gets its own paper tone and a ruled edge to mark the
+   change of mode. */
+.info-half {
+  background: var(--surface-soft);
+  border-top: 2px solid var(--ink);
+  border-bottom: 2px solid var(--ink);
+  margin-top: 3.5rem;
+  scroll-margin-top: 120px;
+}
+
+.skip-to-details {
+  margin: 1.4rem 0 0;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+}
+
+.skip-to-details a {
+  color: var(--accent-deep);
+  font-weight: 600;
+}
+
 /* Hero headline drop.
    Letters fall under gravity, land, bounce and settle with a slight tilt, then
    the wave stops and the closing phrase arrives as one mass and squashes on
