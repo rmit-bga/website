@@ -200,9 +200,36 @@
     </script>
 
     <script src="main.js" defer></script>
+    <!-- Decide before first paint whether the intro plays, so it never flashes
+         and then vanishes. Anyone arriving at an anchor is following a direct
+         link (the stall QR points at #details) and wants the room number, not
+         a title card. Nothing is the default: any failure here, and the page
+         simply loads without an intro. -->
+    <script>
+      (function () {
+        try {
+          var seen = sessionStorage.getItem("rbga-intro-seen");
+          var reduced = window.matchMedia(
+            "(prefers-reduced-motion: reduce)"
+          ).matches;
+          if (!window.location.hash && !seen && !reduced) {
+            document.documentElement.classList.add("intro-running");
+            sessionStorage.setItem("rbga-intro-seen", "1");
+          }
+        } catch (e) {
+          /* leave the intro off */
+        }
+      })();
+    </script>
   </head>
 
   <body>
+    <!-- Title card: a sheet of ink with the wordmark punched out of it. What
+         shows through the cutout is the real page underneath, whose hero band
+         is briefly full screen. The hole opens until the sheet is gone, then
+         the hero settles to its normal height and the nav arrives. Driven
+         entirely by CSS with a forwards fill, so it retires on its own. -->
+    <div class="intro" aria-hidden="true"></div>
     <nav
       class="nav container reveal-fade"
       style="--delay: 0.05s"

@@ -245,6 +245,132 @@ a {
   opacity: 1;
 }
 
+/* =========================
+   INTRO
+   ========================= */
+
+/* A sheet of ink laid over the live page with the wordmark punched out of it,
+   so what shows through the cutout is the real hero artwork, not a copy of it.
+   The hole then opens until the sheet is gone.
+
+   Nothing here applies unless .intro-running is set on <html> before first
+   paint. That is deliberate: absence of the class is the safe state, so a
+   scripting failure means no intro rather than a page stuck behind ink.
+
+   mask-composite is what punches the hole: a full-bleed rectangle minus the
+   logo. Guarded by @supports, because without compositing the sheet would
+   render solid and the page would be a black rectangle for the duration. */
+@supports (mask-composite: exclude) or (-webkit-mask-composite: xor) {
+  .intro-running .intro {
+    position: fixed;
+    inset: 0;
+    z-index: 300; /* over the nav at 100 */
+    background: #0d211d; /* near-black, pulled toward the teal ink */
+
+    -webkit-mask-image: linear-gradient(#000, #000),
+      url("media/RBGA_Vector_Horizontal.svg");
+    mask-image: linear-gradient(#000, #000),
+      url("media/RBGA_Vector_Horizontal.svg");
+    -webkit-mask-position: center, center;
+    mask-position: center, center;
+    -webkit-mask-repeat: no-repeat, no-repeat;
+    mask-repeat: no-repeat, no-repeat;
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+
+    animation: intro-open 2.4s forwards;
+  }
+}
+
+/* The hole gathers inward before it opens, so the reveal reads as pressure
+   rather than a zoom. Same anticipation beat as the headline slam. */
+@keyframes intro-open {
+  0%,
+  18% {
+    -webkit-mask-size: 100% 100%, 72vw auto;
+    mask-size: 100% 100%, 72vw auto;
+    visibility: visible;
+  }
+  27% {
+    -webkit-mask-size: 100% 100%, 64vw auto;
+    mask-size: 100% 100%, 64vw auto;
+    animation-timing-function: cubic-bezier(0.7, 0, 0.85, 0.35);
+  }
+  62%,
+  100% {
+    -webkit-mask-size: 100% 100%, 1400vw auto;
+    mask-size: 100% 100%, 1400vw auto;
+    visibility: hidden;
+  }
+}
+
+/* The hero is full screen while the sheet is over it, then settles to its
+   normal band. That settle is what lifts the page content into view. */
+.intro-running .hero-banner {
+  animation: intro-hero-settle 2.4s forwards;
+}
+
+@keyframes intro-hero-settle {
+  0%,
+  60% {
+    min-height: 100vh;
+  }
+  100% {
+    min-height: 70vh;
+  }
+}
+
+/* The hero's own wordmark stays down while the sheet is over it. Otherwise it
+   shows through the cutout sitting almost on top of its own silhouette, and
+   the near-miss reads as a printing error. Only the artwork should be behind
+   the hole; the wordmark arrives once the hole has cleared. */
+.intro-running .hero-banner-content {
+  animation: intro-wordmark-arrive 2.4s forwards;
+}
+
+@keyframes intro-wordmark-arrive {
+  0%,
+  58% {
+    opacity: 0;
+  }
+  74%,
+  100% {
+    opacity: 1;
+  }
+}
+
+/* The nav arrives with the settle, not before: it would otherwise sit on top
+   of the ink sheet while the hole is still closed. */
+.intro-running .nav {
+  animation: intro-nav-arrive 2.4s forwards;
+}
+
+@keyframes intro-nav-arrive {
+  0%,
+  60% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* The inline script already refuses to set .intro-running under reduced
+   motion. This is the second lock: nothing here should animate even if the
+   class arrives by some other route. */
+@media (prefers-reduced-motion: reduce) {
+  .intro-running .intro,
+  .intro-running .hero-banner,
+  .intro-running .hero-banner-content,
+  .intro-running .nav {
+    animation: none;
+  }
+
+  .intro-running .intro {
+    display: none;
+  }
+}
+
 /* The page runs in two halves. Above .info-half is the pitch, aimed at someone
    who has not decided yet. Inside it is everything that assumes they are
    already coming, so it gets its own paper tone and a ruled edge to mark the
