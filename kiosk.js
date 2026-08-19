@@ -85,8 +85,8 @@ const setPaused = (value) => {
   }
 };
 
-// Point the join headline at the next session: City runs Mon & Wed, Bundoora
-// Wed, so the next session day is always today, tomorrow, or Monday
+// Point the join headline at the next session: City runs Mon & Wed, so the
+// next session day is always today, tomorrow, or Monday
 const joinDay = document.getElementById("join-day");
 const updateJoinDay = () => {
   const day = new Date().getDay();
