@@ -32,30 +32,43 @@
     <div class="timer" aria-hidden="true"><div class="timer-fill" id="timer-fill"></div></div>
 
     <main class="table" id="table" aria-label="RBGA stall display">
-      <!-- 1. Attract -->
-      <section class="card slide" data-duration="8000">
-        <div class="card-inner attract">
+      <!-- 1. Attract: circle reveal from the website QR corner -->
+      <section class="card slide" data-duration="8000" data-transition="circle">
+        <div class="card-inner split attract">
+          <div class="copy-col">
+            <img
+              class="attract-logo"
+              src="media/RBGA_Vector_Horizontal.svg"
+              alt="RBGA"
+              decoding="async"
+            />
+            <h1 class="display">
+              <span class="line"><span>There are better</span></span>
+              <span class="line"><span>games than <em>Monopoly.</em></span></span>
+            </h1>
+            <p class="lede">
+              We own hundreds of them. Come play, Mondays and Wednesdays at our
+              City campus.
+            </p>
+          </div>
           <img
-            class="attract-logo"
-            src="media/RBGA_Vector_Horizontal.svg"
-            alt="RBGA"
+            class="panel-img"
+            data-vt="pizza"
+            src="media/pizza-night.jpg"
+            alt="Four members around a table with pizza, giving a thumbs up"
             decoding="async"
           />
-          <h1 class="display">There are better<br />games than <span>Monopoly.</span></h1>
-          <p class="lede">
-            We own hundreds of them. Come play, Mondays and Wednesdays at our
-            City campus.
-          </p>
         </div>
       </section>
 
-      <!-- 2. Photo -->
-      <section class="card slide" data-duration="8000">
+      <!-- 2. Photo: the attract panel grows into the same photo at full bleed -->
+      <section class="card slide" data-duration="8000" data-transition="morph">
         <div class="card-inner photo">
           <img
             class="photo-img"
-            src="media/people-playing-boardgames.jpg"
-            alt="People playing board games at an RBGA session"
+            data-vt="pizza"
+            src="media/pizza-night.jpg"
+            alt="Four members around a table with pizza, giving a thumbs up"
             decoding="async"
           />
           <p class="photo-caption">
@@ -64,71 +77,110 @@
         </div>
       </section>
 
-      <!-- 3. New here -->
-      <section class="card slide" data-duration="9000">
-        <div class="card-inner copy">
-          <h2 class="display">Never played?<br /><span>Perfect.</span></h2>
-          <p class="lede">
-            Most of us hadn't either. Every game on the shelf comes with
-            someone who loves teaching it.
-          </p>
+      <!-- 3. New here: zoom through the photo into the copy -->
+      <section class="card slide" data-duration="9000" data-transition="zoom">
+        <div class="card-inner split">
+          <div class="copy-col">
+            <h2 class="display">
+              <span class="line"><span>Never played?</span></span>
+              <span class="line"><span><em>Perfect.</em></span></span>
+            </h2>
+            <p class="lede">
+              Most of us hadn't either. Every game on the shelf comes with
+              someone who loves teaching it.
+            </p>
+          </div>
+          <img
+            class="panel-img"
+            data-vt="rules"
+            src="media/reading-the-rules.jpg"
+            alt="Two members reading a rulebook together"
+            decoding="async"
+          />
         </div>
       </section>
 
-      <!-- 4. Sessions -->
-      <section class="card slide" data-duration="11000">
-        <div class="card-inner copy">
-          <h2 class="display">Same time,<br />same tables.</h2>
-          <p class="lede">
-            No bookings, no cost. Your first session is a walk-in. After that,
-            a free membership gets you in every week.
-          </p>
-          <div class="session-row">
-            <div class="session">
-              <h3>City</h3>
-              <p class="session-when">Mon &amp; Wed, 2:30 PM til late</p>
-              <p class="session-where">Building 57, Level 4, Room 57.4.37</p>
+      <!-- 4. Sessions: the headline glides, the rulebook panel drops out and this one rises -->
+      <section class="card slide" data-duration="11000" data-transition="morph">
+        <div class="card-inner split">
+          <div class="copy-col">
+            <h2 class="display">
+              <span class="line"><span>Same time,</span></span>
+              <span class="line"><span>same tables.</span></span>
+            </h2>
+            <p class="lede">
+              No bookings, no cost. Your first session is a walk-in. After that,
+              a free membership gets you in every week.
+            </p>
+            <div class="session-row">
+              <div class="session">
+                <h3>City</h3>
+                <p class="session-when">Mon &amp; Wed, 2:30 PM til late</p>
+                <p class="session-where">Building 57, Level 4, Room 57.4.37</p>
+              </div>
             </div>
           </div>
+          <img
+            class="panel-img"
+            data-vt="table"
+            src="media/big-board-game.jpg"
+            alt="Members around a big board game with pizza boxes behind them"
+            decoding="async"
+          />
         </div>
       </section>
 
-      <!-- 5. What's on (filled from the Rubric API; removed if it fails) -->
-      <section class="card slide" data-duration="12000" id="whats-on-slide" hidden>
-        <div class="card-inner copy">
-          <h2 class="display">What's on</h2>
-          <div class="whats-on-list" id="whats-on-list"></div>
-        </div>
-      </section>
-
-      <!-- 6. Games library (filled from the library API; removed if it fails) -->
-      <section class="card slide" data-duration="12000" id="library-slide" hidden>
-        <div class="card-inner library">
-          <div class="library-copy">
-            <h2 class="display" id="library-title">Hundreds of games.<br />All free to play.</h2>
-            <p class="lede">Five-minute bluffing games to four-hour epics: the hard part is choosing.</p>
-          </div>
-          <div class="library-marquee" id="library-marquee" aria-hidden="true"></div>
-        </div>
-      </section>
-
-      <!-- 7. Photo -->
-      <section class="card slide" data-duration="8000">
+      <!-- 5. Photo: the sessions panel grows into the same photo at full bleed -->
+      <section class="card slide" data-duration="8000" data-transition="morph">
         <div class="card-inner photo">
           <img
             class="photo-img"
-            src="media/big-social-game.jpg"
-            alt="Club members playing a big social game"
+            data-vt="table"
+            src="media/big-board-game.jpg"
+            alt="Members around a big board game with pizza boxes behind them"
             decoding="async"
           />
           <p class="photo-caption">Big social games, most weeks. Bring friends or make some.</p>
         </div>
       </section>
 
-      <!-- 8. Join -->
-      <section class="card slide" data-duration="14000">
+      <!-- 6. What's on (filled from the Rubric API; removed if it fails): blinds -->
+      <section class="card slide" data-duration="12000" data-transition="blinds" id="whats-on-slide" hidden>
+        <div class="card-inner copy">
+          <h2 class="display">
+            <span class="line"><span>What's on</span></span>
+          </h2>
+          <div class="whats-on-list" id="whats-on-list"></div>
+        </div>
+      </section>
+
+      <!-- 7. Games library (filled from the library API; removed if it fails): diagonal wipe -->
+      <section class="card slide" data-duration="12000" data-transition="wipe" id="library-slide" hidden>
+        <div class="card-inner library">
+          <img
+            class="photo-img library-bg"
+            src="media/games-shelf.jpg"
+            alt=""
+            decoding="async"
+          />
+          <div class="library-copy">
+            <h2 class="display" id="library-title">
+              <span class="line"><span>Hundreds of games.</span></span>
+              <span class="line"><span>All free to play.</span></span>
+            </h2>
+            <p class="lede">Five-minute bluffing games to four-hour epics: the hard part is choosing.</p>
+          </div>
+          <div class="library-marquee" id="library-marquee" aria-hidden="true"></div>
+        </div>
+      </section>
+
+      <!-- 8. Join: card flip -->
+      <section class="card slide" data-duration="14000" data-transition="flip">
         <div class="card-inner join">
-          <h2 class="display">Scan now,<br /><span id="join-day">play Wednesday.</span></h2>
+          <h2 class="display">
+            <span class="line"><span>Scan now,</span></span>
+            <span class="line"><span><em id="join-day">play Wednesday.</em></span></span>
+          </h2>
           <p class="lede">
             Free, takes about ten seconds, and covers every session after your
             first.

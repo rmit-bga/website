@@ -1,18 +1,35 @@
-// RBGA kiosk engine: crossfades slide cards on a timer, pulls live events
-// and the games library when the network allows, and keeps the laptop
-// screen awake at the stall. Unlinked from the rest of the site on purpose.
+// RBGA kiosk engine: runs slide changes through the View Transitions API,
+// pulls live events and the games library when the network allows, and
+// keeps the laptop screen awake at the stall. Unlinked from the rest of
+// the site on purpose.
 
 const slides = Array.from(document.querySelectorAll(".slide"));
 const timerFill = document.getElementById("timer-fill");
 const pausedBadge = document.getElementById("paused-badge");
 const fsHint = document.getElementById("fs-hint");
+const html = document.documentElement;
 
-const DEAL_MS = 750;
+// How long each reveal takes; kiosk.css keys its keyframes off the same
+// names. The timer bar and the auto-advance both wait this long on top
+// of the slide's own duration.
+const TRANSITION_MS = {
+  fade: 750,
+  circle: 900,
+  morph: 1000,
+  blinds: 1000,
+  wipe: 900,
+  zoom: 900,
+  flip: 1100,
+  push: 900,
+};
+const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
 let current = 0;
 let paused = false;
 let advanceTimer = null;
 let slideStartedAt = 0;
 let remainingMs = 0;
+let transitionToken = 0;
 
 const visibleSlides = () => slides.filter((slide) => !slide.hidden);
 
@@ -35,30 +52,61 @@ const scheduleAdvance = (delay) => {
   advanceTimer = setTimeout(() => showNext(1), delay);
 };
 
+const transitionName = (slide) =>
+  slide.dataset.transition in TRANSITION_MS ? slide.dataset.transition : "fade";
+
 const showSlide = (slide, direction) => {
   const previous = slides[current];
   current = slides.indexOf(slide);
+  const name = transitionName(slide);
 
-  if (previous && previous !== slide) {
-    previous.classList.remove("is-active", "is-entering");
+  const swap = () => {
+    if (previous && previous !== slide) {
+      previous.classList.remove("is-active", "is-morphed");
+    }
+    slide.classList.toggle("is-morphed", name === "morph");
+    slide.classList.add("is-active");
+  };
+
+  let transitionMs = 0;
+  const animate = direction !== 0 && previous !== slide && !reducedMotion.matches;
+
+  if (animate && document.startViewTransition) {
+    transitionMs = TRANSITION_MS[name];
+    html.style.setProperty("--enter", `${transitionMs}ms`);
+    // Set before the old capture so morph names apply to the leaving slide too
+    html.dataset.transition = name;
+    const token = (transitionToken += 1);
+    document
+      .startViewTransition(swap)
+      .finished.finally(() => {
+        if (token === transitionToken) delete html.dataset.transition;
+      });
+  } else if (animate) {
+    // No View Transitions API: the old crossfade, old card held underneath
+    transitionMs = TRANSITION_MS.fade;
+    html.style.setProperty("--enter", `${transitionMs}ms`);
     previous.classList.add("is-leaving");
     previous.addEventListener(
       "animationend",
       () => previous.classList.remove("is-leaving"),
       { once: true }
     );
+    slide.classList.add("is-entering");
+    slide.addEventListener(
+      "animationend",
+      (event) => {
+        if (event.target === slide) slide.classList.remove("is-entering");
+      },
+      { once: true }
+    );
+    swap();
+  } else {
+    html.style.setProperty("--enter", "0ms");
+    swap();
   }
 
-  slide.classList.add("is-active", "is-entering");
-  slide.addEventListener(
-    "animationend",
-    (event) => {
-      if (event.target === slide) slide.classList.remove("is-entering");
-    },
-    { once: true }
-  );
-
-  const duration = slideDuration(slide) + (direction === 0 ? 0 : DEAL_MS);
+  const duration = slideDuration(slide) + transitionMs;
   startTimerBar(duration);
   if (!paused) scheduleAdvance(duration);
 };
@@ -313,7 +361,9 @@ fetch("https://rmitbga.duckdns.org/board-games")
     }
 
     if (libraryMarquee.children.length) {
-      libraryTitle.innerHTML = `${inLibrary.length} games.<br />All free to play.`;
+      libraryTitle.innerHTML =
+        `<span class="line"><span>${inLibrary.length} games.</span></span>` +
+        '<span class="line"><span>All free to play.</span></span>';
       librarySlide.hidden = false;
     }
   })

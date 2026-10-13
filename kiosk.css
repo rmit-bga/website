@@ -1,6 +1,10 @@
 /* RBGA kiosk: an unlinked attract screen for stall laptops.
-   Full-bleed slides crossfade and their elements stagger in one by
-   one; a website QR stays pinned top right. */
+   Slides change through the View Transitions API. Each slide names the
+   effect that reveals it (data-transition), and on "morph" slides the
+   headline, logo and photo carry view-transition-names so the browser
+   glides them from their old box to their new one. The website QR, timer
+   and badges have their own names so they stay pinned while the slide
+   underneath wipes, flips or zooms. */
 
 :root {
   --felt: #12433d; /* deep teal table, matching the poster ground */
@@ -14,6 +18,10 @@
   --accent: #1e6f66; /* teal */
   --font-display: "KN Yuanmo", "Arial Black", system-ui, sans-serif;
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  /* Length of the slide transition in flight; set by kiosk.js so the
+     element staggers inside a slide wait for the reveal to finish */
+  --enter: 0ms;
 }
 
 /* Shared with the main site; see styles.css for the subsetting note. */
@@ -70,6 +78,7 @@ body::before {
   height: 3px;
   z-index: 30;
   background: rgba(255, 255, 255, 0.08);
+  view-transition-name: timer;
 }
 
 .timer-fill {
@@ -95,27 +104,28 @@ body::before {
   min-height: 0;
 }
 
+/* Inactive cards are not rendered at all. That is what keeps each
+   view-transition-name unique at capture time. */
 .card {
   position: absolute;
   inset: 0;
   background: var(--card);
   overflow: hidden;
-  visibility: hidden;
+  display: none;
 }
 
-/* Card states: the new card fades in over the old one, which holds
-   still underneath until the crossfade finishes */
 .card.is-active {
-  visibility: visible;
+  display: block;
   z-index: 2;
 }
 
+/* Fallback crossfade for browsers without startViewTransition */
 .card.is-entering {
   animation: card-fade 0.75s ease both;
 }
 
 .card.is-leaving {
-  visibility: visible;
+  display: block;
   z-index: 1;
   animation: card-hold 0.75s linear both;
 }
@@ -130,32 +140,269 @@ body::before {
   to { opacity: 1; }
 }
 
-/* Once the card is up, its elements rise in one after another.
-   Longhand properties on purpose: the animation shorthand would reset
-   the per-element animation-delay set below. */
-.card.is-active .card-inner > :not(.photo-img):not(.session-row):not(.whats-on-list):not(.join-row),
-.card.is-active .session-row > .session,
-.card.is-active .whats-on-list > .whats-on-card,
-.card.is-active .join-row > .join-qr {
+/* ---------- Slide transitions (View Transitions API) ---------- */
+
+/* Default: a soft crossfade over the whole transition length. "morph"
+   slides rely on this plus the named element groups below. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: var(--enter);
+  animation-timing-function: var(--ease-in-out);
+}
+
+/* Every effect that stacks the new slide over a still old slide needs
+   normal blending; the default plus-lighter is only right for a crossfade */
+html:not([data-transition="morph"])::view-transition-old(root),
+html:not([data-transition="morph"])::view-transition-new(root) {
+  mix-blend-mode: normal;
+}
+
+/* Circle: a disc opens from the website QR corner and swallows the old slide.
+   After the "circular page reveal" exercise on Educative. */
+html[data-transition="circle"]::view-transition-old(root) {
+  animation: none;
+}
+
+html[data-transition="circle"]::view-transition-new(root) {
+  animation: vt-circle var(--enter) var(--ease-in-out) both;
+}
+
+@keyframes vt-circle {
+  from { clip-path: circle(0 at calc(100% - clamp(52px, 8vh, 94px)) clamp(52px, 8vh, 94px)); }
+  to { clip-path: circle(170% at calc(100% - clamp(52px, 8vh, 94px)) clamp(52px, 8vh, 94px)); }
+}
+
+/* Wipe: a diagonal edge sweeps from bottom left to top right.
+   After ajv's diagonal clip-path swipe on CodePen. */
+html[data-transition="wipe"]::view-transition-old(root) {
+  animation: none;
+}
+
+html[data-transition="wipe"]::view-transition-new(root) {
+  animation: vt-wipe var(--enter) var(--ease-in-out) both;
+}
+
+@keyframes vt-wipe {
+  from { clip-path: polygon(0 100%, 0 100%, 0 100%); }
+  to { clip-path: polygon(0 100%, 220% 100%, 0 -120%); }
+}
+
+/* Blinds: the new slide arrives in twelve vertical strips that widen at
+   once, the venetian blinds effect from slideshow tools, done with an
+   animated mask. */
+@property --blind {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 0%;
+}
+
+html[data-transition="blinds"]::view-transition-old(root) {
+  animation: none;
+}
+
+html[data-transition="blinds"]::view-transition-new(root) {
+  --blind: 0%;
+  mask-image: linear-gradient(90deg, #000 0 var(--blind), transparent var(--blind) 100%);
+  mask-size: calc(100% / 12) 100%;
+  mask-repeat: repeat-x;
+  animation: vt-blinds var(--enter) var(--ease-in-out) both;
+}
+
+@keyframes vt-blinds {
+  from { --blind: 0%; }
+  to { --blind: 100%; }
+}
+
+/* Zoom-through: the old slide flies past the camera while the new one
+   settles in from slightly smaller. */
+html[data-transition="zoom"]::view-transition-old(root) {
+  animation: vt-zoom-out var(--enter) var(--ease-in-out) both;
+}
+
+html[data-transition="zoom"]::view-transition-new(root) {
+  animation: vt-zoom-in var(--enter) var(--ease-out) both;
+}
+
+@keyframes vt-zoom-out {
+  from { transform: scale(1); opacity: 1; }
+  to { transform: scale(1.18); opacity: 0; }
+}
+
+@keyframes vt-zoom-in {
+  from { transform: scale(0.92); opacity: 0; }
+  60% { opacity: 1; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* Flip: the old slide turns away to its edge like a card, the new one
+   turns in from the other side. A classic CSS 3D flip card. */
+html[data-transition="flip"]::view-transition-image-pair(root) {
+  perspective: 1800px;
+}
+
+html[data-transition="flip"]::view-transition-old(root),
+html[data-transition="flip"]::view-transition-new(root) {
+  backface-visibility: hidden;
+  transform-origin: center;
+}
+
+html[data-transition="flip"]::view-transition-old(root) {
+  animation: vt-flip-out var(--enter) var(--ease-in-out) both;
+}
+
+html[data-transition="flip"]::view-transition-new(root) {
+  animation: vt-flip-in var(--enter) var(--ease-in-out) both;
+}
+
+@keyframes vt-flip-out {
+  0% { transform: rotateY(0); opacity: 1; }
+  50% { transform: rotateY(-90deg); opacity: 1; }
+  50.1%, 100% { transform: rotateY(-90deg); opacity: 0; }
+}
+
+@keyframes vt-flip-in {
+  0%, 49.9% { transform: rotateY(90deg); opacity: 0; }
+  50% { transform: rotateY(90deg); opacity: 1; }
+  100% { transform: rotateY(0); opacity: 1; }
+}
+
+/* Push: the new slide pushes in from the right with the old one
+   drifting off slower, the "move" family from Codrops' page transitions.
+   Unused by default; available to any slide via data-transition="push". */
+html[data-transition="push"]::view-transition-old(root) {
+  animation: vt-push-out var(--enter) var(--ease-in-out) both;
+}
+
+html[data-transition="push"]::view-transition-new(root) {
+  animation: vt-push-in var(--enter) var(--ease-in-out) both;
+}
+
+@keyframes vt-push-out {
+  from { transform: translateX(0); filter: brightness(1); }
+  to { transform: translateX(-30%); filter: brightness(0.6); }
+}
+
+@keyframes vt-push-in {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+/* Morph: shared elements. Only switched on for morph slides so a flip or
+   wipe does not leave text floating outside the effect. Photos are named
+   by which picture they are, so a photo only ever morphs into itself and
+   two different pictures never crossfade. */
+html[data-transition="morph"] .card.is-active .display {
+  view-transition-name: headline;
+}
+
+html[data-transition="morph"] .card.is-active .attract-logo {
+  view-transition-name: logo;
+}
+
+html[data-transition="morph"] .card.is-active [data-vt="pizza"] {
+  view-transition-name: pizza;
+}
+
+html[data-transition="morph"] .card.is-active [data-vt="rules"] {
+  view-transition-name: rules;
+}
+
+html[data-transition="morph"] .card.is-active [data-vt="table"] {
+  view-transition-name: table;
+}
+
+::view-transition-group(headline),
+::view-transition-group(logo),
+::view-transition-group(pizza),
+::view-transition-group(rules),
+::view-transition-group(table) {
+  animation-duration: var(--enter);
+  animation-timing-function: var(--ease-out);
+}
+
+::view-transition-old(headline),
+::view-transition-new(headline),
+::view-transition-old(logo),
+::view-transition-new(logo) {
+  animation-duration: var(--enter);
+}
+
+/* The same photo, growing or shrinking: keep it covering the box while
+   the box changes shape, and skip the fade since both images are identical */
+::view-transition-old(pizza),
+::view-transition-new(pizza),
+::view-transition-old(rules),
+::view-transition-new(rules),
+::view-transition-old(table),
+::view-transition-new(table) {
+  height: 100%;
+  object-fit: cover;
+  animation: none;
+}
+
+::view-transition-old(pizza):not(:only-child),
+::view-transition-old(rules):not(:only-child),
+::view-transition-old(table):not(:only-child) {
+  display: none;
+}
+
+/* A photo with no twin on the next slide drops out in the first half;
+   one with no twin on the previous slide rises in during the second half.
+   They never overlap, so there is no dissolve between pictures. */
+::view-transition-old(pizza):only-child,
+::view-transition-old(rules):only-child,
+::view-transition-old(table):only-child {
+  animation: vt-photo-drop var(--enter) var(--ease-in-out) both;
+}
+
+::view-transition-new(pizza):only-child,
+::view-transition-new(rules):only-child,
+::view-transition-new(table):only-child {
+  animation: vt-photo-rise var(--enter) var(--ease-out) both;
+}
+
+@keyframes vt-photo-drop {
+  0% { transform: translateY(0); opacity: 1; }
+  45%, 100% { transform: translateY(32px); opacity: 0; }
+}
+
+@keyframes vt-photo-rise {
+  0%, 50% { transform: translateY(32px); opacity: 0; }
+  100% { transform: none; opacity: 1; }
+}
+
+/* A headline or logo with no counterpart slides off left or rises in */
+::view-transition-old(headline):only-child,
+::view-transition-old(logo):only-child {
+  animation: vt-exit-left var(--enter) var(--ease-in-out) both;
+}
+
+::view-transition-new(headline):only-child,
+::view-transition-new(logo):only-child {
+  animation: vt-rise var(--enter) var(--ease-out) both;
+}
+
+@keyframes vt-exit-left {
+  from { transform: translateX(0); opacity: 1; }
+  to { transform: translateX(-12vw); opacity: 0; }
+}
+
+@keyframes vt-rise {
+  from { transform: translateY(28px); opacity: 0; }
+  to { transform: none; opacity: 1; }
+}
+
+/* ---------- Element staggers inside a slide ----------
+   Everything waits for the slide transition (--enter) and then rises in
+   order. Longhand properties on purpose: the animation shorthand would
+   reset the per-element animation-delay set below. */
+
+.card.is-active :is(.attract-logo, .lede, .photo-caption, .session, .whats-on-card, .join-qr, .join-note) {
   animation-name: rise-in;
   animation-duration: 0.7s;
   animation-timing-function: var(--ease-out);
   animation-fill-mode: both;
 }
-
-.card.is-active .card-inner > :nth-child(1) { animation-delay: 0.25s; }
-.card.is-active .card-inner > :nth-child(2) { animation-delay: 0.4s; }
-.card.is-active .card-inner > :nth-child(3) { animation-delay: 0.55s; }
-.card.is-active .card-inner > :nth-child(4) { animation-delay: 0.85s; }
-
-.card.is-active .session-row > :nth-child(1),
-.card.is-active .whats-on-list > :nth-child(1),
-.card.is-active .join-row > :nth-child(1) { animation-delay: 0.55s; }
-.card.is-active .session-row > :nth-child(2),
-.card.is-active .whats-on-list > :nth-child(2),
-.card.is-active .join-row > :nth-child(2) { animation-delay: 0.7s; }
-.card.is-active .whats-on-list > :nth-child(3) { animation-delay: 0.85s; }
-.card.is-active .whats-on-list > :nth-child(4) { animation-delay: 1s; }
 
 @keyframes rise-in {
   from {
@@ -167,6 +414,52 @@ body::before {
     transform: none;
   }
 }
+
+/* Headline lines rise from behind a mask one after another, after
+   Codrops' "Making Stagger Reveal Animations for Text" */
+.display .line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
+}
+
+.display .line > span {
+  display: inline-block;
+}
+
+.card.is-active .display .line > span {
+  animation-name: line-up;
+  animation-duration: 0.8s;
+  animation-timing-function: var(--ease-out);
+  animation-fill-mode: both;
+}
+
+/* On morph slides the headline box itself is animated by the browser, so
+   its lines stay put and the text crossfades inside the moving box */
+.card.is-active.is-morphed .display .line > span {
+  animation-name: none;
+}
+
+@keyframes line-up {
+  from { transform: translateY(115%); }
+  to { transform: none; }
+}
+
+.card.is-active .attract-logo { animation-delay: var(--enter); }
+.card.is-active .display .line:nth-child(1) > span { animation-delay: calc(var(--enter) + 0.05s); }
+.card.is-active .display .line:nth-child(2) > span { animation-delay: calc(var(--enter) + 0.17s); }
+.card.is-active .display .line:nth-child(3) > span { animation-delay: calc(var(--enter) + 0.29s); }
+.card.is-active .lede { animation-delay: calc(var(--enter) + 0.4s); }
+.card.is-active .photo-caption { animation-delay: calc(var(--enter) + 0.3s); }
+.card.is-active .session { animation-delay: calc(var(--enter) + 0.6s); }
+.card.is-active .whats-on-card:nth-child(1) { animation-delay: calc(var(--enter) + 0.45s); }
+.card.is-active .whats-on-card:nth-child(2) { animation-delay: calc(var(--enter) + 0.6s); }
+.card.is-active .whats-on-card:nth-child(3) { animation-delay: calc(var(--enter) + 0.75s); }
+.card.is-active .whats-on-card:nth-child(4) { animation-delay: calc(var(--enter) + 0.9s); }
+.card.is-active .join-qr:nth-child(1) { animation-delay: calc(var(--enter) + 0.6s); }
+.card.is-active .join-qr:nth-child(2) { animation-delay: calc(var(--enter) + 0.75s); }
+.card.is-active .join-note { animation-delay: calc(var(--enter) + 0.95s); }
 
 .card-inner {
   height: 100%;
@@ -189,7 +482,8 @@ body::before {
   text-shadow: 5px 5px 0 var(--ink);
 }
 
-.display span {
+.display em {
+  font-style: normal;
   color: var(--brand);
 }
 
@@ -202,15 +496,33 @@ body::before {
   color: var(--ink-muted);
 }
 
-/* ---------- Attract slide ---------- */
+/* ---------- Split slides: copy left, photo panel right ---------- */
 
-.attract {
-  align-items: flex-start;
-  text-align: left;
+.card-inner.split {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  align-items: center;
+  gap: clamp(24px, 4vw, 64px);
 }
 
+.split .display {
+  font-size: clamp(36px, 5.4vw, 92px);
+}
+
+.panel-img {
+  width: 100%;
+  max-height: 74vh;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 24px;
+  border: 3px solid var(--ink);
+  box-shadow: 10px 10px 0 var(--ink);
+}
+
+/* ---------- Attract slide ---------- */
+
 .attract-logo {
-  width: clamp(220px, 30vw, 460px);
+  width: clamp(200px, 24vw, 400px);
   height: auto;
   margin-bottom: clamp(16px, 3vh, 36px);
 }
@@ -257,7 +569,7 @@ body::before {
   display: grid;
   grid-auto-flow: column;
   grid-auto-columns: auto;
-  justify-content: center;
+  justify-content: start;
   gap: clamp(16px, 3vw, 40px);
   margin-top: clamp(24px, 4.5vh, 52px);
 }
@@ -363,15 +675,46 @@ body::before {
   color: var(--ink-muted);
 }
 
-/* ---------- Library slide ---------- */
+/* ---------- Library slide: shelf photo under a teal wash ---------- */
 
 .card-inner.library {
   padding: 0;
   justify-content: space-between;
+  background: var(--felt-deep);
 }
 
+.card-inner.library::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    to bottom,
+    rgba(10, 43, 39, 0.86) 0%,
+    rgba(10, 43, 39, 0.66) 55%,
+    rgba(10, 43, 39, 0.82) 100%
+  );
+}
+
+/* Above the shelf photo and its wash, which are both absolute in the card */
+.library-copy,
+.library-marquee {
+  position: relative;
+  z-index: 2;
+}
+
+/* Extra right padding keeps the headline clear of the pinned QR */
 .library-copy {
-  padding: clamp(28px, 5vh, 64px) clamp(28px, 6vw, 96px) 0;
+  padding: clamp(28px, 5vh, 64px) clamp(150px, 14vw, 240px) 0 clamp(28px, 6vw, 96px);
+}
+
+.library .display {
+  color: var(--card);
+  text-shadow: 5px 5px 0 var(--brand-bright);
+}
+
+.library .lede {
+  color: rgba(251, 248, 230, 0.82);
 }
 
 .library-marquee {
@@ -392,7 +735,7 @@ body::before {
   height: clamp(84px, 9.5vw, 150px);
   object-fit: cover;
   border-radius: 12px;
-  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.18);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
 }
 
 .marquee-row.drift-left {
@@ -468,6 +811,7 @@ body::before {
   border-radius: 14px;
   background: var(--card);
   box-shadow: 0 8px 26px rgba(15, 23, 42, 0.22);
+  view-transition-name: site-qr;
 }
 
 .site-qr img {
@@ -495,6 +839,7 @@ body::before {
   font-size: clamp(11px, 1vw, 15px);
   color: rgba(15, 23, 42, 0.45);
   transition: opacity 0.6s ease;
+  view-transition-name: fs-hint;
 }
 
 .fs-hint.is-hidden {
@@ -516,16 +861,17 @@ body::before {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.12em;
+  view-transition-name: paused-badge;
 }
 
-/* ---------- Reduced motion: keep the gentle crossfade, drop the rest ---------- */
+/* ---------- Reduced motion: plain cuts, no staggers ---------- */
 
 @media (prefers-reduced-motion: reduce) {
-  .card.is-active .card-inner > *,
-  .card.is-active .session-row > .session,
-  .card.is-active .whats-on-list > .whats-on-card,
-  .card.is-active .join-row > .join-qr,
+  .card.is-active :is(.attract-logo, .lede, .photo-caption, .session, .whats-on-card, .join-qr, .join-note),
+  .card.is-active .display .line > span,
   .card.is-active .photo-img,
+  .card.is-entering,
+  .card.is-leaving,
   .marquee-row.drift-left,
   .marquee-row.drift-right {
     animation: none;
@@ -534,6 +880,16 @@ body::before {
 
 /* Portrait or narrow screens: stack what needs stacking */
 @media (max-width: 760px), (orientation: portrait) {
+  .card-inner.split {
+    grid-template-columns: 1fr;
+    align-content: center;
+  }
+
+  .panel-img {
+    max-height: 36vh;
+    aspect-ratio: 16 / 9;
+  }
+
   .session-row {
     grid-template-columns: 1fr;
   }
