@@ -817,7 +817,7 @@ html[data-transition="morph"] .card.is-active [data-vt="table"] {
 /* ---------- Split slides: copy plus one photo, placed differently each time ----------
    Poster layout guidance: vary where the single image sits, let it break
    the frame, and keep one dominant headline. Three treatments here: a
-   tilted snapshot, a photo bleeding off the left edge, and a circle crop. */
+   tilted snapshot, a photo tucked into a corner, and a circle crop. */
 
 .card-inner.split {
   display: grid;
@@ -847,22 +847,32 @@ html[data-transition="morph"] .card.is-active [data-vt="table"] {
   box-shadow: 0 18px 40px rgba(15, 23, 42, 0.28);
 }
 
-/* Bleed: the photo runs off the left edge at full height, copy on the right */
-.card-inner.split.layout-bleed {
-  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
-  padding-left: 0;
-  padding-top: 0;
-  padding-bottom: 0;
+/* Corner: the photo is tucked into the bottom right, bleeding off two
+   edges, with the copy plate top left overlapping its corner */
+.card-inner.split.layout-corner {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
 }
 
-.layout-bleed .panel-img {
-  order: -1;
-  height: 100%;
+.layout-corner .plate {
+  position: relative;
+  z-index: 1;
+  margin-top: clamp(8px, 4vh, 48px);
+}
+
+.layout-corner .panel-img {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 54%;
+  height: 64%;
   max-height: none;
   aspect-ratio: auto;
   border: 0;
-  border-radius: 0 36px 36px 0;
-  box-shadow: 14px 0 0 var(--brand);
+  border-radius: 40px 0 0 0;
+  box-shadow: -14px -14px 0 var(--brand);
 }
 
 /* Circle: the table and the people around it, cropped to a disc */
@@ -1245,8 +1255,9 @@ html[data-transition="morph"] .card.is-active [data-vt="table"] {
   }
 
   .panel-img,
-  .layout-bleed .panel-img,
+  .layout-corner .panel-img,
   .layout-circle .panel-img {
+    position: static;
     width: 100%;
     height: auto;
     max-height: 36vh;
@@ -1256,8 +1267,8 @@ html[data-transition="morph"] .card.is-active [data-vt="table"] {
     transform: none;
   }
 
-  .card-inner.split.layout-bleed {
-    padding: clamp(28px, 5vh, 72px) clamp(28px, 6vw, 96px);
+  .card-inner.split.layout-corner {
+    display: grid;
   }
 
   .session-row {
