@@ -146,6 +146,7 @@ body::before {
 .card.is-active .card-inner > :nth-child(1) { animation-delay: 0.25s; }
 .card.is-active .card-inner > :nth-child(2) { animation-delay: 0.4s; }
 .card.is-active .card-inner > :nth-child(3) { animation-delay: 0.55s; }
+.card.is-active .card-inner > :nth-child(4) { animation-delay: 0.85s; }
 
 .card.is-active .session-row > :nth-child(1),
 .card.is-active .whats-on-list > :nth-child(1),
@@ -440,6 +441,17 @@ body::before {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.06em;
+}
+
+/* Associate membership, for the odd non-student at the stall. Smaller than
+   the lede so the QR codes stay the point of the slide. */
+.join-note {
+  margin: clamp(20px, 4vh, 44px) 0 0;
+  max-width: 30em;
+  font-size: clamp(15px, 1.5vw, 24px);
+  font-weight: 500;
+  line-height: 1.45;
+  color: var(--ink-muted);
 }
 
 /* ---------- Persistent website QR, top right ---------- */
