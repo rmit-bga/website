@@ -145,6 +145,59 @@ const updateJoinDay = () => {
 updateJoinDay();
 setInterval(updateJoinDay, 60 * 60 * 1000);
 
+
+// ---------- Headline bricks ----------
+// Each headline is split into bricks of one or two words so they can slam in
+// one after another, with the hollow key word landing last as the big hit.
+// Same idea as the homepage drop-title, built per slide instead of once.
+// Split in JS rather than the markup to keep kiosk.html readable.
+
+const BRICK_MS = 140;
+
+const buildBricks = (display) => {
+  let index = 0;
+  display.querySelectorAll(".line > span").forEach((lineText) => {
+    const bricks = [];
+    let pending = [];
+    const flush = () => {
+      if (!pending.length) return;
+      const brick = document.createElement("span");
+      brick.className = "brick";
+      brick.textContent = pending.join(" ");
+      bricks.push(brick);
+      pending = [];
+    };
+    Array.from(lineText.childNodes).forEach((node) => {
+      if (node.nodeType === Node.TEXT_NODE) {
+        node.textContent.split(/\s+/).filter(Boolean).forEach((word) => {
+          pending.push(word);
+          if (pending.length === 2) flush();
+        });
+      } else if (node.nodeType === Node.ELEMENT_NODE) {
+        flush();
+        const brick = document.createElement("span");
+        brick.className = "brick";
+        brick.append(node);
+        bricks.push(brick);
+      }
+    });
+    flush();
+    lineText.textContent = "";
+    bricks.forEach((brick, i) => {
+      brick.style.setProperty("--i", index);
+      index += 1;
+      lineText.append(brick, i < bricks.length - 1 ? " " : "");
+    });
+  });
+  const all = display.querySelectorAll(".brick");
+  if (all.length) all[all.length - 1].classList.add("brick-last");
+  const card = display.closest(".card");
+  display.style.setProperty("--last", Math.max(index - 1, 0));
+  if (card) card.style.setProperty("--last", Math.max(index - 1, 0));
+};
+
+document.querySelectorAll(".display").forEach(buildBricks);
+
 // First card
 showSlide(slides[0], 0);
 
@@ -364,6 +417,7 @@ fetch("https://rmitbga.duckdns.org/board-games")
       libraryTitle.innerHTML =
         `<span class="line"><span>${inLibrary.length} games.</span></span>` +
         '<span class="line"><span>All free to play.</span></span>';
+      buildBricks(libraryTitle);
       librarySlide.hidden = false;
     }
   })

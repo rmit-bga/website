@@ -415,51 +415,123 @@ html[data-transition="morph"] .card.is-active [data-vt="table"] {
   }
 }
 
-/* Headline lines rise from behind a mask one after another, after
-   Codrops' "Making Stagger Reveal Animations for Text" */
+/* Headline bricks. Each line is split into one or two word bricks by
+   kiosk.js. Bricks slide in hard from the left one after another and
+   settle with an overshoot, then the last brick (the hollow key word)
+   drops from above and squashes on impact, and the whole headline rattles.
+   Squash and stretch and the rattle are lifted from the homepage drop
+   title in styles.css; the 140ms stagger follows the "dramatic" end of
+   the stagger guidance in kinetic typography write-ups. */
 .display .line {
   display: block;
-  overflow: hidden;
-  padding-bottom: 0.12em;
-  margin-bottom: -0.12em;
 }
 
-.display .line > span {
+.display .brick {
   display: inline-block;
+  white-space: nowrap;
 }
 
-.card.is-active .display .line > span {
-  animation-name: line-up;
-  animation-duration: 0.8s;
-  animation-timing-function: var(--ease-out);
+.display .brick-last {
+  transform-origin: 50% 100%;
+}
+
+.card.is-active .display .brick {
+  animation-name: brick-in;
+  animation-duration: 0.42s;
+  animation-timing-function: cubic-bezier(0.2, 0.9, 0.3, 1.15);
   animation-fill-mode: both;
+  animation-delay: calc(var(--enter) + var(--i) * 0.14s);
+}
+
+.card.is-active .display .brick-last {
+  animation-name: brick-slam;
+  animation-duration: 0.46s;
+  animation-timing-function: linear;
+  animation-delay: calc(var(--enter) + var(--i) * 0.14s + 0.18s);
+}
+
+/* Rattle lands at the moment the slam bottoms out, 58% into it */
+.card.is-active .display {
+  animation-name: line-rattle;
+  animation-duration: 0.34s;
+  animation-timing-function: ease-out;
+  animation-delay: calc(var(--enter) + var(--last) * 0.14s + 0.18s + 0.27s);
 }
 
 /* On morph slides the headline box itself is animated by the browser, so
-   its lines stay put and the text crossfades inside the moving box */
-.card.is-active.is-morphed .display .line > span {
+   the bricks stay put and the text crossfades inside the moving box */
+.card.is-active.is-morphed .display,
+.card.is-active.is-morphed .display .brick {
   animation-name: none;
 }
 
-@keyframes line-up {
-  from { transform: translateY(115%); }
-  to { transform: none; }
+@keyframes brick-in {
+  0% {
+    opacity: 0;
+    transform: translateX(-70px) scale(1.22);
+  }
+  55% {
+    opacity: 1;
+    transform: translateX(8px) scale(0.96);
+  }
+  75% {
+    transform: translateX(-4px) scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes brick-slam {
+  0% {
+    opacity: 0;
+    transform: translateY(-110px) scaleY(1.18) scaleX(0.94);
+    animation-timing-function: cubic-bezier(0.7, 0.02, 0.98, 0.3);
+  }
+  58% {
+    opacity: 1;
+    transform: translateY(0) scaleY(0.78) scaleX(1.09);
+    animation-timing-function: ease-out;
+  }
+  72% {
+    transform: translateY(-7px) scaleY(1.06) scaleX(0.97);
+  }
+  86% {
+    transform: translateY(0) scaleY(0.96) scaleX(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes line-rattle {
+  0%,
+  100% { transform: translate(0, 0) rotate(0); }
+  15% { transform: translate(-4px, 3px) rotate(-0.4deg); }
+  35% { transform: translate(4px, -2px) rotate(0.35deg); }
+  55% { transform: translate(-3px, 1px) rotate(-0.2deg); }
+  78% { transform: translate(1px, 0) rotate(0.1deg); }
+}
+
+/* Everything under the headline waits for the big hit */
+.card {
+  --last: 0;
+  --after-title: calc(var(--enter) + var(--last) * 0.14s + 0.18s + 0.5s);
 }
 
 .card.is-active .attract-logo { animation-delay: var(--enter); }
-.card.is-active .display .line:nth-child(1) > span { animation-delay: calc(var(--enter) + 0.05s); }
-.card.is-active .display .line:nth-child(2) > span { animation-delay: calc(var(--enter) + 0.17s); }
-.card.is-active .display .line:nth-child(3) > span { animation-delay: calc(var(--enter) + 0.29s); }
-.card.is-active .lede { animation-delay: calc(var(--enter) + 0.4s); }
+.card.is-active .lede { animation-delay: var(--after-title); }
 .card.is-active .photo-caption { animation-delay: calc(var(--enter) + 0.3s); }
-.card.is-active .session { animation-delay: calc(var(--enter) + 0.6s); }
-.card.is-active .whats-on-card:nth-child(1) { animation-delay: calc(var(--enter) + 0.45s); }
-.card.is-active .whats-on-card:nth-child(2) { animation-delay: calc(var(--enter) + 0.6s); }
-.card.is-active .whats-on-card:nth-child(3) { animation-delay: calc(var(--enter) + 0.75s); }
-.card.is-active .whats-on-card:nth-child(4) { animation-delay: calc(var(--enter) + 0.9s); }
-.card.is-active .join-qr:nth-child(1) { animation-delay: calc(var(--enter) + 0.6s); }
-.card.is-active .join-qr:nth-child(2) { animation-delay: calc(var(--enter) + 0.75s); }
-.card.is-active .join-note { animation-delay: calc(var(--enter) + 0.95s); }
+.card.is-active .session { animation-delay: calc(var(--after-title) + 0.2s); }
+.card.is-active .whats-on-card:nth-child(1) { animation-delay: calc(var(--after-title) + 0.05s); }
+.card.is-active .whats-on-card:nth-child(2) { animation-delay: calc(var(--after-title) + 0.2s); }
+.card.is-active .whats-on-card:nth-child(3) { animation-delay: calc(var(--after-title) + 0.35s); }
+.card.is-active .whats-on-card:nth-child(4) { animation-delay: calc(var(--after-title) + 0.5s); }
+.card.is-active .join-qr:nth-child(1) { animation-delay: calc(var(--after-title) + 0.2s); }
+.card.is-active .join-qr:nth-child(2) { animation-delay: calc(var(--after-title) + 0.35s); }
+.card.is-active .join-note { animation-delay: calc(var(--after-title) + 0.55s); }
 
 .card-inner {
   height: 100%;
@@ -479,12 +551,14 @@ html[data-transition="morph"] .card.is-active [data-vt="table"] {
   line-height: 0.98;
   letter-spacing: 0.01em;
   text-transform: uppercase;
-  text-shadow: 5px 5px 0 var(--ink);
 }
 
+/* The key word is set hollow: same font, outline only. A poster
+   technique that pairs outlined type with the filled version of itself. */
 .display em {
   font-style: normal;
-  color: var(--brand);
+  -webkit-text-fill-color: transparent;
+  -webkit-text-stroke: 0.045em currentColor;
 }
 
 .lede {
@@ -496,7 +570,10 @@ html[data-transition="morph"] .card.is-active [data-vt="table"] {
   color: var(--ink-muted);
 }
 
-/* ---------- Split slides: copy left, photo panel right ---------- */
+/* ---------- Split slides: copy plus one photo, placed differently each time ----------
+   Poster layout guidance: vary where the single image sits, let it break
+   the frame, and keep one dominant headline. Three treatments here: a
+   tilted snapshot, a photo bleeding off the left edge, and a circle crop. */
 
 .card-inner.split {
   display: grid;
@@ -516,7 +593,43 @@ html[data-transition="morph"] .card.is-active [data-vt="table"] {
   object-fit: cover;
   border-radius: 24px;
   border: 3px solid var(--ink);
-  box-shadow: 10px 10px 0 var(--ink);
+}
+
+/* Snapshot: thick cream mount, dropped on the table at a slight angle */
+.layout-snap .panel-img {
+  transform: rotate(2.5deg);
+  border: clamp(10px, 1.4vw, 18px) solid #fff;
+  border-radius: 6px;
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.28);
+}
+
+/* Bleed: the photo runs off the left edge at full height, copy on the right */
+.card-inner.split.layout-bleed {
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  padding-left: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.layout-bleed .panel-img {
+  order: -1;
+  height: 100%;
+  max-height: none;
+  aspect-ratio: auto;
+  border: 0;
+  border-radius: 0 36px 36px 0;
+  box-shadow: 14px 0 0 var(--brand);
+}
+
+/* Circle: the table and the people around it, cropped to a disc */
+.layout-circle .panel-img {
+  width: min(100%, 70vh);
+  justify-self: center;
+  aspect-ratio: 1;
+  max-height: none;
+  border-radius: 50%;
+  border: 4px solid var(--ink);
+  box-shadow: 16px 16px 0 var(--brand);
 }
 
 /* ---------- Attract slide ---------- */
@@ -710,7 +823,6 @@ html[data-transition="morph"] .card.is-active [data-vt="table"] {
 
 .library .display {
   color: var(--card);
-  text-shadow: 5px 5px 0 var(--brand-bright);
 }
 
 .library .lede {
@@ -868,7 +980,8 @@ html[data-transition="morph"] .card.is-active [data-vt="table"] {
 
 @media (prefers-reduced-motion: reduce) {
   .card.is-active :is(.attract-logo, .lede, .photo-caption, .session, .whats-on-card, .join-qr, .join-note),
-  .card.is-active .display .line > span,
+  .card.is-active .display,
+  .card.is-active .display .brick,
   .card.is-active .photo-img,
   .card.is-entering,
   .card.is-leaving,
@@ -885,9 +998,20 @@ html[data-transition="morph"] .card.is-active [data-vt="table"] {
     align-content: center;
   }
 
-  .panel-img {
+  .panel-img,
+  .layout-bleed .panel-img,
+  .layout-circle .panel-img {
+    width: 100%;
+    height: auto;
     max-height: 36vh;
     aspect-ratio: 16 / 9;
+    border-radius: 24px;
+    order: 0;
+    transform: none;
+  }
+
+  .card-inner.split.layout-bleed {
+    padding: clamp(28px, 5vh, 72px) clamp(28px, 6vw, 96px);
   }
 
   .session-row {
