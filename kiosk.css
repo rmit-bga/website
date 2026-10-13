@@ -16,6 +16,9 @@
   --brand: #e8862b; /* poster orange */
   --brand-bright: #b8451f;
   --accent: #1e6f66; /* teal */
+  --signal: #d9422b; /* poster red, from styles.css */
+  --navy: #1b2d52; /* deep blue for the dark slides */
+  --navy-deep: #101d38;
   --font-display: "KN Yuanmo", "Arial Black", system-ui, sans-serif;
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
@@ -328,7 +331,10 @@ html[data-transition="morph"] .card.is-active [data-vt="table"] {
 }
 
 /* The same photo, growing or shrinking: keep it covering the box while
-   the box changes shape, and skip the fade since both images are identical */
+   the box changes shape. Only the incoming copy is shown, since both
+   images are identical, so there is no fade. Chrome ignores
+   :not(:only-child) on these pseudo-elements, so the paired state is the
+   default and :only-child overrides it below. */
 ::view-transition-old(pizza),
 ::view-transition-new(pizza),
 ::view-transition-old(rules),
@@ -340,10 +346,32 @@ html[data-transition="morph"] .card.is-active [data-vt="table"] {
   animation: none;
 }
 
-::view-transition-old(pizza):not(:only-child),
-::view-transition-old(rules):not(:only-child),
-::view-transition-old(table):not(:only-child) {
+::view-transition-old(pizza),
+::view-transition-old(rules),
+::view-transition-old(table) {
   display: none;
+}
+
+/* The box the browser animates is only ever a rectangle, so the mask has
+   to move with it: the circle crop opens like a lens until it clears the
+   corners of the full screen, and the tilted snapshot straightens as it
+   grows. Both run on the incoming photo over the same length as the box. */
+::view-transition-new(table) {
+  animation: vt-lens-open var(--enter) var(--ease-out) both;
+}
+
+::view-transition-new(pizza) {
+  animation: vt-straighten var(--enter) var(--ease-out) both;
+}
+
+@keyframes vt-lens-open {
+  from { clip-path: circle(50% at 50% 50%); }
+  to { clip-path: circle(76% at 50% 50%); }
+}
+
+@keyframes vt-straighten {
+  from { transform: rotate(2.5deg); }
+  to { transform: rotate(0); }
 }
 
 /* A photo with no twin on the next slide drops out in the first half;
@@ -352,6 +380,7 @@ html[data-transition="morph"] .card.is-active [data-vt="table"] {
 ::view-transition-old(pizza):only-child,
 ::view-transition-old(rules):only-child,
 ::view-transition-old(table):only-child {
+  display: block;
   animation: vt-photo-drop var(--enter) var(--ease-in-out) both;
 }
 
@@ -532,6 +561,185 @@ html[data-transition="morph"] .card.is-active [data-vt="table"] {
 .card.is-active .join-qr:nth-child(1) { animation-delay: calc(var(--after-title) + 0.2s); }
 .card.is-active .join-qr:nth-child(2) { animation-delay: calc(var(--after-title) + 0.35s); }
 .card.is-active .join-note { animation-delay: calc(var(--after-title) + 0.55s); }
+
+/* ---------- Slide backgrounds ----------
+   No two neighbouring slides share a ground: cream with the drifting blob
+   field from the homepage hero, navy with time-displaced rings, orange
+   with drifting dice pips, and the dark shelf photo on the library slide. */
+
+.card-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.card-inner {
+  position: relative;
+}
+
+/* Blob field: a port of .hero-art in styles.css. Colour fields drift behind
+   the copy, blurred until they read as one poured surface. Overhangs the
+   card so the blur never samples transparency at the edges. Warm only on
+   cream slides, since ink type has to stay readable on top of it. */
+.blob-field {
+  inset: -18%;
+  background: linear-gradient(
+    118deg,
+    var(--signal) 0%,
+    var(--brand) 26%,
+    var(--paper) 50%,
+    var(--card) 72%,
+    var(--brand) 100%
+  );
+  filter: blur(72px);
+  will-change: transform;
+}
+
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  aspect-ratio: 1;
+  background: radial-gradient(
+    circle at 50% 50%,
+    var(--blob) 0%,
+    var(--blob) 42%,
+    transparent 72%
+  );
+  animation: var(--drift, drift-a) var(--dur, 24s) ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+}
+
+.blob-1 { --blob: var(--brand); --drift: drift-a; --dur: 13s; width: 72vmax; top: -18%; left: -14%; }
+.blob-2 { --blob: var(--signal); --drift: drift-b; --dur: 17s; --delay: -6s; width: 30vmax; top: 34%; left: 16%; }
+.blob-3 { --blob: var(--paper); --drift: drift-c; --dur: 21s; --delay: -9s; width: 58vmax; top: -12%; left: 38%; }
+.blob-4 { --blob: var(--brand-bright); --drift: drift-d; --dur: 11s; --delay: -4s; width: 40vmax; top: 44%; left: 60%; }
+.blob-5 { --blob: var(--card); --drift: drift-b; --dur: 19s; --delay: -13s; width: 66vmax; top: 2%; left: 70%; }
+.blob-6 { --blob: var(--brand); --drift: drift-a; --dur: 15s; --delay: -3s; width: 38vmax; top: 54%; left: 30%; }
+.blob-7 { --blob: var(--signal); --drift: drift-d; --dur: 18s; --delay: -8s; width: 46vmax; top: 20%; left: 2%; }
+
+/* Four closed paths, out of phase, from styles.css */
+@keyframes drift-a {
+  0%, 100% { transform: translate3d(-135%, -28%, 0) scale(1); }
+  25% { transform: translate3d(-25%, 42%, 0) scale(1.2); }
+  50% { transform: translate3d(125%, -12%, 0) scale(0.86); }
+  75% { transform: translate3d(15%, -46%, 0) scale(1.1); }
+}
+
+@keyframes drift-b {
+  0%, 100% { transform: translate3d(130%, 30%, 0) scale(1.14); }
+  25% { transform: translate3d(20%, -38%, 0) scale(0.88); }
+  50% { transform: translate3d(-125%, 18%, 0) scale(1.24); }
+  75% { transform: translate3d(-15%, 46%, 0) scale(0.94); }
+}
+
+@keyframes drift-c {
+  0%, 100% { transform: translate3d(-60%, 44%, 0) scale(0.92); }
+  25% { transform: translate3d(70%, -30%, 0) scale(1.22); }
+  50% { transform: translate3d(140%, 34%, 0) scale(0.84); }
+  75% { transform: translate3d(-105%, -40%, 0) scale(1.16); }
+}
+
+@keyframes drift-d {
+  0%, 100% { transform: translate3d(55%, -44%, 0) scale(1.18); }
+  25% { transform: translate3d(-115%, 14%, 0) scale(0.9); }
+  50% { transform: translate3d(30%, 46%, 0) scale(1.26); }
+  75% { transform: translate3d(145%, -10%, 0) scale(0.96); }
+}
+
+/* Navy: cream type. Behind it, time-displaced rings: eight concentric
+   discs share one rotating navy-to-orange gradient, each one step behind
+   the last, and the rotation ping-pongs. A CSS take on the After Effects
+   time displacement map trick. Transform only, so it stays composited. */
+.card.bg-navy {
+  background: var(--navy);
+  color: var(--card);
+}
+
+.ring {
+  --s: calc(240vmax - var(--i) * 30vmax);
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: var(--s);
+  aspect-ratio: 1;
+  margin: calc(var(--s) / -2) 0 0 calc(var(--s) / -2);
+  border-radius: 50%;
+  background: linear-gradient(
+    90deg,
+    var(--navy-deep) 0%,
+    var(--navy) 40%,
+    var(--brand-bright) 66%,
+    var(--brand) 100%
+  );
+  animation: ring-turn 9s linear infinite alternate;
+  animation-delay: calc(var(--i) * -0.28s);
+  will-change: transform;
+}
+
+@keyframes ring-turn {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.bg-navy .lede,
+.bg-navy .session-where,
+.bg-navy .join-note,
+.bg-navy .join-qr p {
+  color: rgba(251, 248, 230, 0.84);
+}
+
+.bg-navy .session-when {
+  color: var(--brand);
+}
+
+/* Warm blobs over navy sit back so the navy stays the ground */
+.bg-navy .blob-field {
+  opacity: 0.7;
+  background: linear-gradient(118deg, var(--navy-deep) 0%, var(--navy) 45%, var(--brand-bright) 100%);
+}
+
+/* Muted ink gets lost on the orange fields; full ink for the small copy */
+.bg-blobs:not(.bg-navy) .lede {
+  color: var(--ink);
+}
+
+/* Orange: ink type, and a grid of dice pips drifting diagonally */
+.card.bg-orange {
+  background: var(--brand);
+  color: var(--ink);
+}
+
+.card.bg-orange::before {
+  content: "";
+  position: absolute;
+  inset: -96px 0 0 -96px;
+  background-image: radial-gradient(circle, rgba(20, 59, 54, 0.16) 0 7px, transparent 8px);
+  background-size: 48px 48px;
+  animation: pips-drift 4s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes pips-drift {
+  to { transform: translate3d(48px, 48px, 0); }
+}
+
+.bg-orange .lede,
+.bg-orange .session-where {
+  color: var(--ink);
+}
+
+.bg-orange .session {
+  border-left-color: var(--ink);
+}
+
+.bg-orange .session-when {
+  color: var(--card);
+}
+
+.bg-orange.card .layout-circle .panel-img {
+  box-shadow: 16px 16px 0 var(--ink);
+}
 
 .card-inner {
   height: 100%;
@@ -986,7 +1194,10 @@ html[data-transition="morph"] .card.is-active [data-vt="table"] {
   .card.is-entering,
   .card.is-leaving,
   .marquee-row.drift-left,
-  .marquee-row.drift-right {
+  .marquee-row.drift-right,
+  .blob,
+  .ring,
+  .card.bg-orange::before {
     animation: none;
   }
 }
