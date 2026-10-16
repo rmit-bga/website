@@ -467,17 +467,6 @@ a {
   scroll-margin-top: 120px;
 }
 
-.skip-to-details {
-  margin: 1.4rem 0 0;
-  font-size: 0.95rem;
-  color: var(--text-muted);
-}
-
-.skip-to-details a {
-  color: var(--accent-deep);
-  font-weight: 600;
-}
-
 /* Hero headline drop.
    Letters fall under gravity, land, bounce and settle with a slight tilt, then
    the wave stops and the closing phrase arrives as one mass and squashes on
