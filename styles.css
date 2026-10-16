@@ -55,6 +55,8 @@
   /* Brand colors */
   --discord: #5865f2;
   --discord-dark: #4752c4;
+  --discord-soft: #e3e6fd; /* pale fill for the secondary Discord button */
+  --navy: #1b2d52; /* the kiosk's dark-slide blue, reused for the hero's key phrase */
   --discord-accent: #4f46e5;
   --discord-rgb: 88 101 242;
   --discord-accent-rgb: 79 70 229;
@@ -453,10 +455,10 @@ a {
   }
 }
 
-/* The page runs in two halves. Above .info-half is the pitch, aimed at someone
-   who has not decided yet. Inside it is everything that assumes they are
-   already coming, so it gets its own paper tone and a ruled edge to mark the
-   change of mode. */
+/* The page runs in two halves. .info-half comes straight after the hero and
+   holds everything that assumes they are already coming (times and the room),
+   so it gets its own paper tone and a ruled edge. Below it is the pitch, aimed
+   at someone who has not decided yet. */
 .info-half {
   background: var(--surface-soft);
   border-top: 2px solid var(--ink);
@@ -492,9 +494,11 @@ a {
   display: inline-block;
 }
 
+/* The key phrase lands in navy so it reads as the point of the line. */
 .drop-title .slam {
   display: inline-block;
   transform-origin: 50% 100%;
+  color: var(--navy);
 }
 
 .js .drop-title .l,
@@ -1345,15 +1349,17 @@ header.container {
   color: var(--surface);
 }
 
+/* A light take on the Discord button further down: pale blurple fill that
+   darkens to the full brand colour on hover. */
 .hero-actions button:last-child,
 .hero-actions .hero-button.secondary {
-  background: var(--surface);
-  color: var(--primary);
+  background: var(--discord-soft);
+  color: var(--discord-dark);
 }
 
 .hero-actions button:last-child:hover,
 .hero-actions .hero-button.secondary:hover {
-  background: var(--primary);
+  background: var(--discord);
   color: var(--surface);
 }
 

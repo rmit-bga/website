@@ -263,10 +263,10 @@
       </button>
 
       <div class="nav-links" id="primary-navigation">
-        <a href="#faq">FAQ</a>
+        <a href="#details">Sessions</a>
         <a href="games.html">Games</a>
         <a href="#discord">Discord</a>
-        <a href="#details">Sessions</a>
+        <a href="#faq">FAQ</a>
         <a href="#contact">Contact</a>
         <a
           id="membershipButton"
@@ -362,8 +362,7 @@
             Based at RMIT University in Melbourne, RBGA is one of Victoria's most
             active university board game clubs with a diverse library of modern board
             games and tabletop RPGs. Some of us came for the games. Most came
-            because a lecture hall is a hard place to meet people, and a table
-            with a game on it isn't.
+            because a lecture hall is a hard place to meet people.
           </p>
 
           <div class="hero-callout event-card event-card-info reveal-fade" style="--delay: 0.2s">
@@ -375,7 +374,7 @@
                 don't need to bring anything, know any rules, or stay the whole time.
                 Just turn up and someone will get you seated!
               </p>
-              <p>Walk in alone, leave with a group chat.</p>
+              <p>Come for the games, stay for the people.</p>
             </div>
             <span class="bubble-tail" aria-hidden="true"></span>
           </div>
@@ -418,8 +417,233 @@
 
       <main id="app">
 
-        <!-- The pitch. Everything above the info-half is aimed at someone
-             who has not decided yet. -->
+        <!-- Critical information first. Everything inside the info-half
+             assumes you are already coming: when, where, how to get there. -->
+        <div class="info-half" id="details">
+          <section
+            id="events"
+            class="section container events-section"
+            aria-labelledby="events-title"
+          >
+            <div class="events-grid">
+              <div class="event-media reveal" style="--delay: 0.1s">
+                <picture>
+                  <source data-srcset="media/big-social-game.webp" type="image/webp" />
+                  <img
+                    src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABcQERQRDhcUEhQaGBcbIjklIh8fIkYyNSk5UkhXVVFIUE5bZoNvW2F8Yk5QcptzfIeLkpSSWG2grJ+OqoOPko3/2wBDARgaGiIeIkMlJUONXlBejY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY3/wAARCAAQABgDASIAAhEBAxEB/8QAFwABAQEBAAAAAAAAAAAAAAAABAADBf/EAB8QAAEEAgMBAQAAAAAAAAAAAAEAAgMREiEEEzEUMv/EABQBAQAAAAAAAAAAAAAAAAAAAAL/xAAXEQEBAQEAAAAAAAAAAAAAAAABAAIR/9oADAMBAAIRAxEAPwDlcJhkLs/yHYmhST19M7mhwFHRJ0g8SbrO3GibK3lmk5ctiIkXdNG6QSRqb9EjS4OdZPpBu1ILgInZHJja8cNqRcsjXL//2Q=="
+                    data-src="media/big-social-game.jpg"
+                    alt="Club members playing a big social game"
+                    loading="lazy"
+                    decoding="async"
+                    class="lazy-image"
+                    width="4831"
+                    height="3221"
+                  />
+                </picture>
+              </div>
+
+              <div class="event-content reveal" style="--delay: 0.2s">
+                <h2 id="events-title">Weekly Sessions &amp; <span>Social Events</span></h2>
+                <p>
+                  We gather twice a week at our City campus to play our
+                  expansive library of games. Favourites
+                  include Monikers, The Mind, Blood on the Clocktower, Root,
+                  Wingspan, Skull and Coup. Plenty of people come down after class
+                  just to hang out. If you're after social events at RMIT that
+                  don't need a ticket or a plan, this is the low-effort option:
+                  same rooms, same times, every week. Becoming a regular is the
+                  best way to make friends here, but you're welcome to drop in
+                  whenever you like.
+                </p>
+
+                <div class="event-stack">
+                  <article class="event-card reveal-fade">
+                    <div class="event-icon" aria-hidden="true">
+                      <span
+                        class="event-icon-mask location"
+                        aria-hidden="true"
+                      ></span>
+                    </div>
+                    <div class="event-text">
+                      <h3>City: Mondays &amp; Wednesdays</h3>
+                      <p>
+                        From 2:30 PM until late. Building 57, Level 4, Room
+                        57.4.37, RMIT City Campus.
+                      </p>
+                    </div>
+                  </article>
+
+                  <article class="event-card event-card-info reveal-fade">
+                    <div class="event-text">
+                      <h3>Want the full calendar?</h3>
+                      <p>
+                        Every session and special event, with all dates and
+                        tickets, is on our
+                        <a
+                          href="https://campus.hellorubric.com/?s=10742"
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          Rubric page</a
+                        >.
+                      </p>
+                    </div>
+                  </article>
+                </div>
+              </div>
+            </div>
+
+            <div id="whats-on" class="whats-on" hidden>
+              <h3 class="whats-on-title">What's <span>On</span></h3>
+              <div class="whats-on-list" id="whats-on-list"></div>
+            </div>
+          </section>
+
+          <div class="route-divider" aria-hidden="true"></div>
+
+          <section
+            id="find-us"
+            class="section container find-us"
+            aria-labelledby="find-us-title"
+          >
+            <div class="find-us-header reveal" style="--delay: 0.1s">
+              <h2 id="find-us-title">How to <span>Find Us</span></h2>
+              <p>
+                First time on campus? Follow along to reach our City session room:
+                Building 57, Level 4, Room 57.4.37.
+              </p>
+            </div>
+
+            <video
+              class="find-us-video reveal"
+              style="--delay: 0.15s"
+              controls
+              playsinline
+              preload="metadata"
+              poster="media/how-to-get-to-rbga-poster.jpg"
+              width="1280"
+              height="720"
+            >
+              <source src="media/how-to-get-to-rbga.mp4" type="video/mp4" />
+              Your browser can't play this video.
+              <a href="media/how-to-get-to-rbga.mp4">Download it instead</a>.
+            </video>
+          </section>
+        </div>
+
+        <!-- The pitch, for anyone still deciding: what we play, where we
+             talk, and what a first session is like. -->
+        <section
+          id="games"
+          class="section container games-section"
+          aria-labelledby="games-title"
+        >
+          <div class="games-teaser-header reveal" style="--delay: 0.1s">
+            <h2 id="games-title">Explore Our <span>Games Library</span></h2>
+            <p>
+              We own a huge collection of modern board games and card games, all
+              free to play at our sessions. Party games, heavy strategy, quick
+              fillers. There's something for every table.
+            </p>
+          </div>
+
+          <div id="featured-games" class="featured-games" hidden>
+            <h3 class="featured-games-title">
+              Featured: <span id="featured-tag"></span>
+            </h3>
+            <div class="featured-games-strip" id="featured-strip"></div>
+          </div>
+
+          <div class="hero-actions games-teaser-actions reveal" style="--delay: 0.2s">
+            <a class="hero-button primary" id="browse-games-cta" href="games.html">
+              Browse the Library
+            </a>
+          </div>
+        </section>
+
+        <div class="route-divider" aria-hidden="true"></div>
+
+        <section
+          id="discord"
+          class="section container"
+          aria-labelledby="discord-title"
+        >
+          <div class="discord-copy reveal" style="--delay: 0.1s">
+            <h2 id="discord-title">Join our <span>Discord</span></h2>
+            <p>
+              We are most active on our Discord server, where we share event
+              updates, photos, and have general chat about all things tabletop.
+              It's the best way to connect with the community and stay in the loop
+              on upcoming events and game nights.
+            </p>
+
+            <div class="discord-features">
+              <article class="discord-feature reveal-fade">
+                <div class="discord-feature-icon" aria-hidden="true">
+                  <span class="discord-icon-mask" aria-hidden="true"></span>
+                </div>
+                <div>
+                  <h3>Meet people before you show up</h3>
+                  <p>
+                    If walking into a room cold isn't your thing, say hi in the
+                    server first. You'll recognise usernames at your first
+                    session. Hundreds of RMIT students are already in there.
+                  </p>
+                </div>
+              </article>
+
+              <article class="discord-feature reveal-fade">
+                <div class="discord-feature-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" role="presentation" focusable="false">
+                    <path
+                      d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </div>
+                <div>
+                  <h3>Regular News</h3>
+                  <p>
+                    Be the first to hear about our weekly meetups and special
+                    events.
+                  </p>
+                </div>
+              </article>
+            </div>
+
+            <a
+              class="discord-cta"
+              href="https://discord.gg/gNFaQWjpEn"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Join RBGA Discord Server
+            </a>
+          </div>
+
+          <div
+            class="discord-widget reveal"
+            style="--delay: 0.2s"
+            aria-label="Discord server widget"
+          >
+            <iframe
+              title="RBGA Discord"
+              src="https://discord.com/widget?id=559991381863563264&theme=dark"
+              width="100%"
+              height="500"
+              allowtransparency="true"
+              frameborder="0"
+              loading="lazy"
+              sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"
+            ></iframe>
+          </div>
+        </section>
+
+        <div class="route-divider" aria-hidden="true"></div>
+
         <section
           id="faq"
           class="section container faq-section"
@@ -537,284 +761,59 @@
         <div class="route-divider" aria-hidden="true"></div>
 
         <section
-          id="games"
-          class="section container games-section"
-          aria-labelledby="games-title"
+          id="contact"
+          class="section container contact"
+          aria-labelledby="contact-title"
         >
-          <div class="games-teaser-header reveal" style="--delay: 0.1s">
-            <h2 id="games-title">Explore Our <span>Games Library</span></h2>
+          <div class="contact-header reveal" style="--delay: 0.1s">
+            <h2 id="contact-title">Contact & Socials</h2>
             <p>
-              We own a huge collection of modern board games and card games, all
-              free to play at our sessions. Party games, heavy strategy, quick
-              fillers. There's something for every table.
+              For official business, please reach us by email. For updates,
+              events, and community chat, connect with us on social media.
             </p>
           </div>
 
-          <div id="featured-games" class="featured-games" hidden>
-            <h3 class="featured-games-title">
-              Featured: <span id="featured-tag"></span>
-            </h3>
-            <div class="featured-games-strip" id="featured-strip"></div>
-          </div>
+          <div class="contact-grid">
+            <article class="contact-card reveal-fade">
+              <h3>Official Email</h3>
+              <p>For business and formal enquiries.</p>
+              <a class="contact-link" href="mailto:rbga@rmit.edu.au"
+                >rbga@rmit.edu.au</a
+              >
+            </article>
 
-          <div class="hero-actions games-teaser-actions reveal" style="--delay: 0.2s">
-            <a class="hero-button primary" id="browse-games-cta" href="games.html">
-              Browse the Library
-            </a>
-          </div>
-        </section>
-
-        <div class="route-divider" aria-hidden="true"></div>
-
-        <section
-          id="discord"
-          class="section container"
-          aria-labelledby="discord-title"
-        >
-          <div class="discord-copy reveal" style="--delay: 0.1s">
-            <h2 id="discord-title">Join our <span>Discord</span></h2>
-            <p>
-              We are most active on our Discord server, where we share event
-              updates, photos, and have general chat about all things tabletop.
-              It's the best way to connect with the community and stay in the loop
-              on upcoming events and game nights.
-            </p>
-
-            <div class="discord-features">
-              <article class="discord-feature reveal-fade">
-                <div class="discord-feature-icon" aria-hidden="true">
-                  <span class="discord-icon-mask" aria-hidden="true"></span>
-                </div>
-                <div>
-                  <h3>Meet people before you show up</h3>
-                  <p>
-                    If walking into a room cold isn't your thing, say hi in the
-                    server first. You'll recognise usernames at your first
-                    session. Hundreds of RMIT students are already in there.
-                  </p>
-                </div>
-              </article>
-
-              <article class="discord-feature reveal-fade">
-                <div class="discord-feature-icon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" role="presentation" focusable="false">
-                    <path
-                      d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linejoin="round"
-                    />
-                  </svg>
-                </div>
-                <div>
-                  <h3>Regular News</h3>
-                  <p>
-                    Be the first to hear about our weekly meetups and special
-                    events.
-                  </p>
-                </div>
-              </article>
-            </div>
-
-            <a
-              class="discord-cta"
-              href="https://discord.gg/gNFaQWjpEn"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Join RBGA Discord Server
-            </a>
-          </div>
-
-          <div
-            class="discord-widget reveal"
-            style="--delay: 0.2s"
-            aria-label="Discord server widget"
-          >
-            <iframe
-              title="RBGA Discord"
-              src="https://discord.com/widget?id=559991381863563264&theme=dark"
-              width="100%"
-              height="500"
-              allowtransparency="true"
-              frameborder="0"
-              loading="lazy"
-              sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"
-            ></iframe>
-          </div>
-        </section>
-
-        <!-- Critical information. Everything below assumes you are already
-             coming: when, where, how to get there, how to reach us. -->
-        <div class="info-half" id="details">
-          <section
-            id="events"
-            class="section container events-section"
-            aria-labelledby="events-title"
-          >
-            <div class="events-grid">
-              <div class="event-media reveal" style="--delay: 0.1s">
-                <picture>
-                  <source data-srcset="media/big-social-game.webp" type="image/webp" />
-                  <img
-                    src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABcQERQRDhcUEhQaGBcbIjklIh8fIkYyNSk5UkhXVVFIUE5bZoNvW2F8Yk5QcptzfIeLkpSSWG2grJ+OqoOPko3/2wBDARgaGiIeIkMlJUONXlBejY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY3/wAARCAAQABgDASIAAhEBAxEB/8QAFwABAQEBAAAAAAAAAAAAAAAABAADBf/EAB8QAAEEAgMBAQAAAAAAAAAAAAEAAgMREiEEEzEUMv/EABQBAQAAAAAAAAAAAAAAAAAAAAL/xAAXEQEBAQEAAAAAAAAAAAAAAAABAAIR/9oADAMBAAIRAxEAPwDlcJhkLs/yHYmhST19M7mhwFHRJ0g8SbrO3GibK3lmk5ctiIkXdNG6QSRqb9EjS4OdZPpBu1ILgInZHJja8cNqRcsjXL//2Q=="
-                    data-src="media/big-social-game.jpg"
-                    alt="Club members playing a big social game"
-                    loading="lazy"
-                    decoding="async"
-                    class="lazy-image"
-                    width="4831"
-                    height="3221"
-                  />
-                </picture>
-              </div>
-
-              <div class="event-content reveal" style="--delay: 0.2s">
-                <h2 id="events-title">Weekly Sessions &amp; <span>Social Events</span></h2>
-                <p>
-                  We gather twice a week at our City campus to play our
-                  expansive library of games. Favourites
-                  include Monikers, The Mind, Blood on the Clocktower, Root,
-                  Wingspan, Skull and Coup. Plenty of people come down after class
-                  just to hang out. If you're after social events at RMIT that
-                  don't need a ticket or a plan, this is the low-effort option:
-                  same rooms, same times, every week. Becoming a regular is the
-                  best way to make friends here, but you're welcome to drop in
-                  whenever you like.
-                </p>
-
-                <div class="event-stack">
-                  <article class="event-card reveal-fade">
-                    <div class="event-icon" aria-hidden="true">
-                      <span
-                        class="event-icon-mask location"
-                        aria-hidden="true"
-                      ></span>
-                    </div>
-                    <div class="event-text">
-                      <h3>City: Mondays &amp; Wednesdays</h3>
-                      <p>
-                        From 2:30 PM until late. Building 57, Level 4, Room
-                        57.4.37, RMIT City Campus.
-                      </p>
-                    </div>
-                  </article>
-
-                  <article class="event-card event-card-info reveal-fade">
-                    <div class="event-text">
-                      <h3>Want the full calendar?</h3>
-                      <p>
-                        Every session and special event, with all dates and
-                        tickets, is on our
-                        <a
-                          href="https://campus.hellorubric.com/?s=10742"
-                          target="_blank"
-                          rel="noreferrer"
-                        >
-                          Rubric page</a
-                        >.
-                      </p>
-                    </div>
-                  </article>
-                </div>
-              </div>
-            </div>
-
-            <div id="whats-on" class="whats-on" hidden>
-              <h3 class="whats-on-title">What's <span>On</span></h3>
-              <div class="whats-on-list" id="whats-on-list"></div>
-            </div>
-          </section>
-
-          <div class="route-divider" aria-hidden="true"></div>
-
-          <section
-            id="find-us"
-            class="section container find-us"
-            aria-labelledby="find-us-title"
-          >
-            <div class="find-us-header reveal" style="--delay: 0.1s">
-              <h2 id="find-us-title">How to <span>Find Us</span></h2>
-              <p>
-                First time on campus? Follow along to reach our City session room:
-                Building 57, Level 4, Room 57.4.37.
-              </p>
-            </div>
-
-            <video
-              class="find-us-video reveal"
-              style="--delay: 0.15s"
-              controls
-              playsinline
-              preload="metadata"
-              poster="media/how-to-get-to-rbga-poster.jpg"
-              width="1280"
-              height="720"
-            >
-              <source src="media/how-to-get-to-rbga.mp4" type="video/mp4" />
-              Your browser can't play this video.
-              <a href="media/how-to-get-to-rbga.mp4">Download it instead</a>.
-            </video>
-          </section>
-
-          <div class="route-divider" aria-hidden="true"></div>
-
-          <section
-            id="contact"
-            class="section container contact"
-            aria-labelledby="contact-title"
-          >
-            <div class="contact-header reveal" style="--delay: 0.1s">
-              <h2 id="contact-title">Contact & Socials</h2>
-              <p>
-                For official business, please reach us by email. For updates,
-                events, and community chat, connect with us on social media.
-              </p>
-            </div>
-
-            <div class="contact-grid">
-              <article class="contact-card reveal-fade">
-                <h3>Official Email</h3>
-                <p>For business and formal enquiries.</p>
-                <a class="contact-link" href="mailto:rbga@rmit.edu.au"
-                  >rbga@rmit.edu.au</a
+            <article class="contact-card reveal-fade">
+              <h3>Follow Us</h3>
+              <p>Stay in the loop with events, photos, and announcements.</p>
+              <div class="social-links">
+                <a
+                  class="social-link instagram"
+                  href="https://www.instagram.com/rmit_board_game_association/"
+                  target="_blank"
+                  rel="noreferrer"
                 >
-              </article>
-
-              <article class="contact-card reveal-fade">
-                <h3>Follow Us</h3>
-                <p>Stay in the loop with events, photos, and announcements.</p>
-                <div class="social-links">
-                  <a
-                    class="social-link instagram"
-                    href="https://www.instagram.com/rmit_board_game_association/"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    Instagram
-                  </a>
-                  <a
-                    class="social-link facebook"
-                    href="https://www.facebook.com/RMITBGA"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    Facebook
-                  </a>
-                  <a
-                    class="social-link discord"
-                    href="https://discord.gg/gNFaQWjpEn"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    Discord
-                  </a>
-                </div>
-              </article>
-            </div>
-          </section>
-        </div>
+                  Instagram
+                </a>
+                <a
+                  class="social-link facebook"
+                  href="https://www.facebook.com/RMITBGA"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Facebook
+                </a>
+                <a
+                  class="social-link discord"
+                  href="https://discord.gg/gNFaQWjpEn"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Discord
+                </a>
+              </div>
+            </article>
+          </div>
+        </section>
 
         <section class="section rusu-support" aria-labelledby="rusu-title">
           <div class="container rusu-support-inner">
