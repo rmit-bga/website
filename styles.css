@@ -190,8 +190,12 @@ a {
   margin-inline: auto;
 }
 
+/* The nav is fixed and about 85px tall, so an anchor jump needs to stop
+   short of the section's top edge or the heading lands under the bar. With
+   the section's own top padding this puts the heading about 35px clear. */
 .section {
   padding: 4.5rem 0;
+  scroll-margin-top: 3rem;
 }
 
 /* Dashed route line, echoing the poster's path from the bubble to the pin.
