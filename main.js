@@ -323,14 +323,16 @@ if (whatsOn) {
     .catch(() => {});
 }
 
-// Landing page featured-games strip: pick a random tag every load and show a
-// handful of games from it. Fails silently; the static copy + CTA still work.
-const featuredGames = document.getElementById("featured-games");
-if (featuredGames) {
-  const featuredTag = document.getElementById("featured-tag");
-  const featuredStrip = document.getElementById("featured-strip");
+// Landing page games band: two rows of covers drifting in opposite directions,
+// the same marquee as the kiosk's library slide. The rows are built only once
+// the band is near the viewport so the thumbnails don't compete with the first
+// paint, and they pause while it is off screen. Fails silently; the static
+// copy and CTA still work.
+const gamesMarquee = document.getElementById("games-marquee");
+if (gamesMarquee) {
   const browseCta = document.getElementById("browse-games-cta");
-  const TILE_COUNT = 5;
+  const MARQUEE_ROWS = 2;
+  const TILES_PER_ROW = 14;
 
   const shuffle = (items) => {
     const copy = [...items];
@@ -341,6 +343,28 @@ if (featuredGames) {
     return copy;
   };
 
+  const buildMarquee = (withThumbs) => {
+    for (let row = 0; row < MARQUEE_ROWS; row += 1) {
+      const picks = withThumbs.slice(
+        row * TILES_PER_ROW,
+        (row + 1) * TILES_PER_ROW
+      );
+      if (picks.length < TILES_PER_ROW) break;
+      const strip = document.createElement("div");
+      strip.className = `marquee-row ${row % 2 ? "drift-right" : "drift-left"}`;
+      // Double the sequence so the -50% translate loops seamlessly.
+      [...picks, ...picks].forEach((game) => {
+        const img = document.createElement("img");
+        img.src = game.thumbnail;
+        img.alt = "";
+        img.decoding = "async";
+        strip.append(img);
+      });
+      gamesMarquee.append(strip);
+    }
+    if (gamesMarquee.children.length) gamesMarquee.hidden = false;
+  };
+
   fetch("https://rmitbga.duckdns.org/board-games")
     .then((response) => {
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
@@ -348,57 +372,38 @@ if (featuredGames) {
     })
     .then((games) => {
       const inLibrary = games.filter((game) => !game.missing);
-      // Only feature games with a real thumbnail URL (legacy rows hold bare filenames).
-      const withThumbs = inLibrary.filter(
-        (game) =>
-          typeof game.thumbnail === "string" &&
-          game.thumbnail.startsWith("http")
-      );
-
-      const byTag = new Map();
-      withThumbs.forEach((game) => {
-        (Array.isArray(game.tags) ? game.tags : []).forEach((tag) => {
-          if (!tag) return;
-          if (!byTag.has(tag)) byTag.set(tag, []);
-          byTag.get(tag).push(game);
-        });
-      });
-
-      const candidates = [...byTag.entries()].filter(
-        ([, tagged]) => tagged.length >= 4
-      );
-      if (!candidates.length) return;
-
-      const [tag, tagged] =
-        candidates[Math.floor(Math.random() * candidates.length)];
-      featuredTag.textContent = tag;
-
-      shuffle(tagged)
-        .slice(0, TILE_COUNT)
-        .forEach((game) => {
-          const tile = document.createElement("a");
-          tile.className = "featured-game";
-          tile.href = "games.html";
-
-          const img = document.createElement("img");
-          img.src = game.thumbnail;
-          img.alt = "";
-          img.loading = "lazy";
-          img.decoding = "async";
-          tile.append(img);
-
-          const label = document.createElement("span");
-          label.className = "featured-game-title";
-          label.textContent = game.title;
-          tile.append(label);
-
-          featuredStrip.append(tile);
-        });
-
-      if (browseCta) {
+      if (browseCta && inLibrary.length) {
         browseCta.textContent = `Browse all ${inLibrary.length} games`;
       }
-      featuredGames.hidden = false;
+      // Only games with a real thumbnail URL (legacy rows hold bare filenames).
+      const withThumbs = shuffle(
+        inLibrary.filter(
+          (game) =>
+            typeof game.thumbnail === "string" &&
+            game.thumbnail.startsWith("http")
+        )
+      );
+      if (withThumbs.length < TILES_PER_ROW) return;
+
+      const band = gamesMarquee.closest("section") || gamesMarquee;
+      if (!("IntersectionObserver" in window)) {
+        buildMarquee(withThumbs);
+        gamesMarquee.classList.add("is-live");
+        return;
+      }
+      let built = false;
+      const watcher = new IntersectionObserver(
+        (entries) => {
+          const near = entries.some((entry) => entry.isIntersecting);
+          if (near && !built) {
+            built = true;
+            buildMarquee(withThumbs);
+          }
+          gamesMarquee.classList.toggle("is-live", near);
+        },
+        { rootMargin: "400px 0px" }
+      );
+      watcher.observe(band);
     })
     .catch(() => {});
 }

@@ -37,6 +37,7 @@
   /* Poster extras */
   --signal: #d9422b; /* dashed route lines, small highlights */
   --moss: #6e9b4e;
+  --felt-deep: #0a2b27; /* the kiosk's dark teal table, under the games band */
 
   /* Type */
   --font-display: "KN Yuanmo", "Arial Black", system-ui, sans-serif;
@@ -133,7 +134,6 @@ h3,
 .hero-title,
 .games-page-header h1,
 .whats-on-title,
-.featured-games-title,
 .games-status h2 {
   font-family: var(--font-display);
   font-weight: 400;
@@ -274,7 +274,6 @@ a {
 .event-card,
 .discord-feature,
 .whats-on-card,
-.featured-game,
 .game-card {
   --lift: 4px;
 }
@@ -284,7 +283,6 @@ a {
 .event-card,
 .discord-feature,
 .whats-on-card,
-.featured-game,
 .game-card {
   position: relative;
 }
@@ -294,7 +292,6 @@ a {
 .event-card:hover::after,
 .discord-feature:hover::after,
 .whats-on-card:hover::after,
-.featured-game:hover::after,
 .game-card:hover::after {
   content: "";
   position: absolute;
@@ -598,8 +595,12 @@ a {
     transform: none;
   }
 
-  .featured-games,
   .whats-on {
+    animation: none;
+  }
+
+  .marquee-row.drift-left,
+  .marquee-row.drift-right {
     animation: none;
   }
 
@@ -1790,7 +1791,18 @@ footer {
   margin-top: 3rem;
   display: grid;
   gap: 1.25rem;
-  animation: featured-fade-in 0.6s var(--easing);
+  animation: whats-on-fade-in 0.6s var(--easing);
+}
+
+@keyframes whats-on-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 .whats-on-title {
@@ -1940,94 +1952,131 @@ footer {
    GAMES TEASER (landing page)
    ========================= */
 
+/* =========================
+   GAMES BAND
+   The kiosk's library slide brought home: the shelf photo under a teal wash,
+   cream type, and two rows of covers drifting in opposite directions.
+   ========================= */
+
 .games-section {
-  display: grid;
-  gap: 2rem;
+  position: relative;
+  overflow: hidden;
+  padding-bottom: 0;
+  margin-block: 3.5rem; /* hard-edged band, so it gets air instead of a route divider */
+  border-top: 2px solid var(--ink);
+  border-bottom: 2px solid var(--ink);
+  background: var(--felt-deep);
+  color: var(--surface);
+}
+
+.games-shelf {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.games-shelf img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 60%;
+}
+
+/* Same wash as the kiosk: heavier at the edges so the type and the covers
+   both sit on something calm. */
+.games-shelf::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(10, 43, 39, 0.86) 0%,
+    rgba(10, 43, 39, 0.66) 55%,
+    rgba(10, 43, 39, 0.82) 100%
+  );
+}
+
+.games-teaser-header,
+.games-marquee {
+  position: relative;
+  z-index: 1;
 }
 
 .games-teaser-header h2 {
   margin: 0 0 0.75rem;
   font-size: clamp(2.1rem, 3.7vw, 3rem);
+  color: var(--surface);
 }
 
 .games-teaser-header h2 span {
-  color: var(--accent-deep);
+  color: var(--accent);
 }
 
 .games-teaser-header p {
   margin: 0;
-  color: var(--text-muted);
+  color: rgba(251, 248, 230, 0.82);
   max-width: 620px;
-}
-
-.featured-games {
-  display: grid;
-  gap: 1rem;
-  animation: featured-fade-in 0.6s var(--easing);
-}
-
-@keyframes featured-fade-in {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-.featured-games-title {
-  margin: 0;
-  font-size: 1.15rem;
-}
-
-.featured-games-title span {
-  color: var(--accent-deep);
-}
-
-.featured-games-strip {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 1rem;
-}
-
-.featured-game {
-  display: grid;
-  gap: 0.6rem;
-  padding: 0.75rem;
-  border-radius: var(--radius-md);
-  border: 2px solid var(--ink);
-  background: var(--surface);
-  box-shadow: var(--shadow-sm);
-  text-decoration: none;
-  color: var(--text);
-  transition: transform var(--duration-fast) ease, box-shadow var(--duration-fast) ease;
-  will-change: transform;
-}
-
-.featured-game:hover,
-.featured-game:focus-visible {
-  transform: translate(-4px, -4px);
-  box-shadow: var(--shadow-hover);
-}
-
-.featured-game img {
-  width: 100%;
-  aspect-ratio: 4 / 3;
-  object-fit: contain;
-  border-radius: var(--radius-sm);
-  background: var(--surface-soft);
-}
-
-.featured-game-title {
-  font-weight: 600;
-  font-size: 0.9rem;
-  line-height: 1.35;
 }
 
 .games-teaser-actions {
   display: flex;
+  margin-top: 1.6rem;
+}
+
+/* Ink shadows vanish on the dark band, so the button's hard edge goes cream. */
+.games-section .hero-button.primary {
+  border-color: var(--surface);
+  box-shadow: 5px 5px 0 var(--surface);
+}
+
+.games-section .hero-button.primary:active {
+  box-shadow: 0 0 0 var(--surface);
+}
+
+.games-marquee {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(10px, 1.4vw, 18px);
+  margin-top: 2.75rem;
+  padding-bottom: 2.75rem;
+}
+
+.marquee-row {
+  display: flex;
+  gap: clamp(10px, 1.2vw, 18px);
+  width: max-content;
+  animation-play-state: paused;
+}
+
+.marquee-row img {
+  width: clamp(76px, 9vw, 132px);
+  height: clamp(76px, 9vw, 132px);
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+}
+
+.marquee-row.drift-left {
+  animation: drift-left 60s linear infinite;
+}
+
+.marquee-row.drift-right {
+  animation: drift-right 60s linear infinite;
+}
+
+/* Only drift while the band is on screen. */
+.games-marquee.is-live .marquee-row {
+  animation-play-state: running;
+}
+
+@keyframes drift-left {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@keyframes drift-right {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
 }
 
 /* =========================
@@ -2334,19 +2383,6 @@ footer {
     flex: 1 1 auto;
   }
 
-  /* 5 tiles wrap unevenly on small screens, so swipe sideways instead */
-  .featured-games-strip {
-    grid-template-columns: none;
-    grid-auto-flow: column;
-    grid-auto-columns: 42%;
-    overflow-x: auto;
-    scroll-snap-type: x proximity;
-    padding-bottom: 0.5rem;
-  }
-
-  .featured-game {
-    scroll-snap-align: start;
-  }
 }
 
 /* The poster display face is much wider than Montserrat at the same size, so

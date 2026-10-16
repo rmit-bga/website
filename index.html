@@ -529,33 +529,38 @@
              talk, and what a first session is like. -->
         <section
           id="games"
-          class="section container games-section"
+          class="section games-section"
           aria-labelledby="games-title"
         >
-          <div class="games-teaser-header reveal" style="--delay: 0.1s">
+          <!-- The kiosk's library slide, brought home: the shelf photo under a
+               teal wash, with two rows of covers drifting past below. -->
+          <picture class="games-shelf" aria-hidden="true">
+            <source srcset="media/games-shelf.webp" type="image/webp" />
+            <img
+              src="media/games-shelf.jpg"
+              alt=""
+              loading="lazy"
+              decoding="async"
+            />
+          </picture>
+
+          <div class="container games-teaser-header reveal" style="--delay: 0.1s">
             <h2 id="games-title">Explore Our <span>Games Library</span></h2>
             <p>
               We own a huge collection of modern board games and card games, all
               free to play at our sessions. Party games, heavy strategy, quick
               fillers. There's something for every table.
             </p>
+            <div class="hero-actions games-teaser-actions">
+              <a class="hero-button primary" id="browse-games-cta" href="games.html">
+                Browse the Library
+              </a>
+            </div>
           </div>
 
-          <div id="featured-games" class="featured-games" hidden>
-            <h3 class="featured-games-title">
-              Featured: <span id="featured-tag"></span>
-            </h3>
-            <div class="featured-games-strip" id="featured-strip"></div>
-          </div>
-
-          <div class="hero-actions games-teaser-actions reveal" style="--delay: 0.2s">
-            <a class="hero-button primary" id="browse-games-cta" href="games.html">
-              Browse the Library
-            </a>
-          </div>
+          <!-- Filled from the library API; stays hidden if that fails. -->
+          <div class="games-marquee" id="games-marquee" aria-hidden="true" hidden></div>
         </section>
-
-        <div class="route-divider" aria-hidden="true"></div>
 
         <section
           id="discord"
