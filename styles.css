@@ -2022,16 +2022,6 @@ footer {
   margin-top: 1.6rem;
 }
 
-/* Ink shadows vanish on the dark band, so the button's hard edge goes cream. */
-.games-section .hero-button.primary {
-  border-color: var(--surface);
-  box-shadow: 5px 5px 0 var(--surface);
-}
-
-.games-section .hero-button.primary:active {
-  box-shadow: 0 0 0 var(--surface);
-}
-
 .games-marquee {
   display: flex;
   flex-direction: column;
