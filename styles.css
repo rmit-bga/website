@@ -57,7 +57,6 @@
   --discord: #5865f2;
   --discord-dark: #4752c4;
   --discord-soft: #e3e6fd; /* pale fill for the secondary Discord button */
-  --aqua: #1fb3a8; /* bright poster aqua for the hero's key phrase */
   --discord-accent: #4f46e5;
   --discord-rgb: 88 101 242;
   --discord-accent-rgb: 79 70 229;
@@ -484,11 +483,11 @@ a {
   display: inline-block;
 }
 
-/* The key phrase lands in aqua so it reads as the point of the line. */
+/* The key phrase lands in the primary teal, matching the RBGA line above it. */
 .drop-title .slam {
   display: inline-block;
   transform-origin: 50% 100%;
-  color: var(--aqua);
+  color: var(--primary);
 }
 
 .js .drop-title .l,
