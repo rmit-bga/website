@@ -1969,6 +1969,13 @@ footer {
   color: var(--surface);
 }
 
+/* Straight after the info-half the two bands share one ruled edge, so there is
+   no sliver of page showing between them. */
+.info-half + .games-section {
+  margin-top: 0;
+  border-top: 0;
+}
+
 .games-shelf {
   position: absolute;
   inset: 0;
