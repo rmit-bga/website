@@ -1666,15 +1666,13 @@ header.container {
   border: 2px solid var(--ink);
   box-shadow: var(--shadow-sm);
   background: #1f2024;
-  display: grid;
-  grid-template-rows: auto 1fr auto;
+  display: block;
 }
 
-.discord-widget iframe {
+.discord-widget img {
   display: block;
   width: 100%;
-  height: 450px;
-  border: 0;
+  height: auto;
 }
 
 /* =========================
